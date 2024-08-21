@@ -8,6 +8,8 @@ public class SmartGarageApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SmartGarageApplication.class, args);
+
+        System.out.println("Hi bye");
     }
 
 }
