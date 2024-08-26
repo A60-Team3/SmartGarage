@@ -1,5 +1,6 @@
 package org.example.smartgarage.security;
 
+import org.example.smartgarage.security.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,10 +8,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,6 +22,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration implements WebMvcConfigurer {
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfiguration(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,11 +46,12 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.
-                            requestMatchers("/BGGForum/register", "/BGGForum/main", "/BGGForum", "/", "/BGGForum/login")
+                            requestMatchers("/garage/register", "/garage/main", "/garage", "/", "/garage/login")
                             .permitAll()
-                            .requestMatchers("/BGGForum/posts/most-commented", "/BGGForum/posts/most-recently-created")
+                            .requestMatchers("/api/garage/login")
                             .permitAll()
                             .requestMatchers("/resources/**", "/static/**", "/static/templates/**",
                                     "/css/**", "/images/**", "/js/**")
@@ -50,16 +59,17 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                     auth.anyRequest().authenticated();
                 })
                .formLogin(formLogin ->
-                        formLogin.loginPage("/BGGForum/login")
-                                .defaultSuccessUrl("/BGGForum/main?success", true)
-                                .failureUrl("/BGGForum/login?error")
+                        formLogin.loginPage("/garage/login")
+                                .defaultSuccessUrl("/garage/main?success", true)
+                                .failureUrl("/garage/login?error")
                                 .permitAll()
                 )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
-                        .logoutUrl("/BGGForum/logout")
+                        .logoutUrl("/garage/logout")
                         .addLogoutHandler(new SecurityContextLogoutHandler())
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/BGGForum/main?logout")
+                        .logoutSuccessUrl("/garage/main?logout")
                 );
 
         return http.build();

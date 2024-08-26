@@ -12,7 +12,7 @@ public class CustomUserDetails extends User {
     public CustomUserDetails(UserEntity user) {
         super(user.getUsername(), user.getPassword(),
                 user.isActive(), true,
-                true, !user.isActive(),
+                true, user.isActive(),
                 user.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
                         .collect(Collectors.toList())
