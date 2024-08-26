@@ -1,39 +1,61 @@
 package org.example.smartgarage.models;
 
-import org.example.smartgarage.models.base.BaseEntity;
+import jakarta.persistence.*;
+import org.example.smartgarage.models.baseEntity.BaseEntity;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
+@Table(name = "vehicles")
 public class Vehicle extends BaseEntity {
 
-    private String licencePlate;
+    @Column(name = "license_plate", nullable = false)
+    private String licensePlate;
 
+    @Column(name = "VIN", nullable = false)
     private String vin;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;
 
-    // subject to change
-    private String brandName;
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private UserEntity clerk;
 
-    private String modelName;
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private VehicleBrand brandName;
 
-    private int yearOfCreation;
-    // end of subject to change
+    @ManyToOne
+    @JoinColumn(name = "model_id", nullable = false)
+    private VehicleModel modelName;
 
-    private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "year_id", nullable = false)
+    private VehicleYear yearOfCreation;
 
-    private LocalDateTime updatedAt;
+    @Column(name = "added_on")
+    @CreationTimestamp
+    private LocalDate addedOn;
+
+    @Column(name = "updated_on")
+    @UpdateTimestamp
+    private LocalDate updatedOn;
 
     public Vehicle() {
     }
 
-    public String getLicencePlate() {
-        return licencePlate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicencePlate(String licencePlate) {
-        this.licencePlate = licencePlate;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
     public String getVin() {
@@ -52,44 +74,52 @@ public class Vehicle extends BaseEntity {
         this.owner = owner;
     }
 
-    public String getBrandName() {
+    public UserEntity getClerk() {
+        return clerk;
+    }
+
+    public void setClerk(UserEntity clerk) {
+        this.clerk = clerk;
+    }
+
+    public VehicleBrand getBrandName() {
         return brandName;
     }
 
-    public void setBrandName(String brandName) {
+    public void setBrandName(VehicleBrand brandName) {
         this.brandName = brandName;
     }
 
-    public String getModelName() {
+    public VehicleModel getModelName() {
         return modelName;
     }
 
-    public void setModelName(String modelName) {
+    public void setModelName(VehicleModel modelName) {
         this.modelName = modelName;
     }
 
-    public int getYearOfCreation() {
+    public VehicleYear getYearOfCreation() {
         return yearOfCreation;
     }
 
-    public void setYearOfCreation(int yearOfCreation) {
+    public void setYearOfCreation(VehicleYear yearOfCreation) {
         this.yearOfCreation = yearOfCreation;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDate getAddedOn() {
+        return addedOn;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setAddedOn(LocalDate addedOn) {
+        this.addedOn = addedOn;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public LocalDate getUpdatedOn() {
+        return updatedOn;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedOn(LocalDate updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     @Override
@@ -97,18 +127,12 @@ public class Vehicle extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return yearOfCreation == vehicle.yearOfCreation
-                && Objects.equals(licencePlate, vehicle.licencePlate)
-                && Objects.equals(vin, vehicle.vin)
-                && Objects.equals(owner, vehicle.owner)
-                && Objects.equals(brandName, vehicle.brandName)
-                && Objects.equals(modelName, vehicle.modelName)
-                && Objects.equals(createdAt, vehicle.createdAt)
-                && Objects.equals(updatedAt, vehicle.updatedAt);
+        return Objects.equals(licensePlate, vehicle.licensePlate)
+                || Objects.equals(vin, vehicle.vin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(licencePlate, vin, owner, brandName, modelName, yearOfCreation, createdAt, updatedAt);
+        return Objects.hash(licensePlate, vin);
     }
 }

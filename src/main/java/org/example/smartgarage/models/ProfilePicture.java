@@ -12,9 +12,6 @@ public class ProfilePicture extends BaseEntity {
     @Column(name = "photo_url", nullable = false)
     private String photoUrl;
 
-    @OneToOne(mappedBy = "profilePicture")
-    private UserEntity userId;
-
     public ProfilePicture() {
     }
 
@@ -28,13 +25,5 @@ public class ProfilePicture extends BaseEntity {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
-    }
-
-    public UserEntity getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UserEntity user) {
-        this.userId = user;
     }
 }

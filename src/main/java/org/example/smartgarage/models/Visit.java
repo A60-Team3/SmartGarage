@@ -1,31 +1,49 @@
 package org.example.smartgarage.models;
 
-import org.example.smartgarage.models.base.BaseEntity;
+import jakarta.persistence.*;
+import org.example.smartgarage.models.baseEntity.BaseEntity;
 import org.example.smartgarage.models.enums.Status;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "visits")
 public class Visit extends BaseEntity {
 
+    @Column(name = "schedule_date", nullable = false)
     private LocalDate scheduleDate;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
     private UserEntity client;
 
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
     private UserEntity clerk;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
+    @OneToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
+    @OneToMany(mappedBy = "visitId")
     private List<Service> services;
 
-    private LocalDateTime createdAt;
+    @Column(name = "booked_on")
+    @CreationTimestamp
+    private LocalDateTime bookedOn;
 
-    private LocalDateTime updatedAt;
+    @Column(name = "updated_on")
+    @CreationTimestamp
+    private LocalDateTime updatedOn;
 
+    @OneToMany(mappedBy = "visitId")
     private List<EventLog> eventLogs;
 
     public Visit() {
@@ -79,20 +97,20 @@ public class Visit extends BaseEntity {
         this.services = services;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getBookedOn() {
+        return bookedOn;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setBookedOn(LocalDateTime bookedOn) {
+        this.bookedOn = bookedOn;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public LocalDateTime getUpdatedOn() {
+        return updatedOn;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdatedOn(LocalDateTime updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     public List<EventLog> getEventLogs() {
@@ -110,16 +128,11 @@ public class Visit extends BaseEntity {
         Visit visit = (Visit) o;
         return Objects.equals(scheduleDate, visit.scheduleDate)
                 && Objects.equals(client, visit.client)
-                && Objects.equals(clerk, visit.clerk)
-                && status == visit.status
-                && Objects.equals(vehicle, visit.vehicle)
-                && Objects.equals(createdAt, visit.createdAt)
-                && Objects.equals(updatedAt, visit.updatedAt)
-                && Objects.equals(eventLogs, visit.eventLogs);
+                && Objects.equals(vehicle, visit.vehicle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(scheduleDate, client, clerk, status, vehicle, createdAt, updatedAt, eventLogs);
+        return Objects.hash(scheduleDate, client, vehicle);
     }
 }

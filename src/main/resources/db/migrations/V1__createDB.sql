@@ -4,6 +4,13 @@ CREATE TABLE roles
     user_role ENUM ('CUSTOMER', 'CLERK', 'MECHANIC', 'HR') NOT NULL
 );
 
+CREATE TABLE service_types
+(
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    service_name VARCHAR(50) NOT NULL,
+    service_price DECIMAL(19,2) NOT NULL
+);
+
 CREATE TABLE users
 (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -49,7 +56,7 @@ CREATE TABLE profile_pictures_users
 
 );
 
-CREATE TABLE production_years
+CREATE TABLE vehicle_years
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     year INT NOT NULL
@@ -72,7 +79,7 @@ CREATE TABLE production_years_models
     year_id  BIGINT NOT NULL,
     model_id BIGINT NOT NULL,
     constraint fk_production_years_models_years
-        foreign key (year_id) references production_years (id)
+        foreign key (year_id) references vehicle_years (id)
             ON DELETE CASCADE,
     constraint fk_production_years_models_models
         foreign key (model_id) references vehicle_models (id)
@@ -98,6 +105,8 @@ CREATE TABLE vehicles
     license_plate VARCHAR(8)  NOT NULL,
     VIN           VARCHAR(17) NOT NULL,
     brand_id      BIGINT      NOT NULL,
+    model_id      BIGINT      NOT NULL,
+    year_id       BIGINT      NOT NULL,
     employee_id   BIGINT      NOT NULL,
     owner_id      BIGINT      NOT NULL,
     added_on      DATE DEFAULT CURRENT_TIMESTAMP(),
@@ -105,22 +114,49 @@ CREATE TABLE vehicles
     CONSTRAINT fk_vehicles_clerks
         FOREIGN KEY (employee_id) REFERENCES users (id),
     CONSTRAINT fk_vehicles_customers
-        FOREIGN KEY (owner_id) REFERENCES users (id),
+        FOREIGN KEY (owner_id) REFERENCES users (id)
+            ON DELETE CASCADE,
     CONSTRAINT fk_vehicles_brands
         FOREIGN KEY (brand_id) REFERENCES vehicle_brands (id)
+            ON DELETE CASCADE,
+    CONSTRAINT fk_vehicles_models
+        FOREIGN KEY (model_id) REFERENCES vehicle_models (id)
+            ON DELETE CASCADE,
+    CONSTRAINT fk_vehicles_years
+        FOREIGN KEY (year_id) REFERENCES vehicle_years (id)
+            ON DELETE CASCADE
 );
 
-CREATE TABLE service_types
+CREATE TABLE visits
 (
-    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    service_type VARCHAR(50) NOT NULL
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    schedule_date DATE   NOT NULL,
+    customer_id   BIGINT NOT NULL,
+    employee_id   BIGINT NOT NULL,
+    vehicle_id    BIGINT NOT NULL,
+    status        ENUM ('NOT_STARTED','IN_PROGRESS','READY_FOR_PICKUP'),
+    booked_on     DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    updated_on    DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    constraint fk_visits_customers
+        foreign key (customer_id) references users (id)
+            ON DELETE CASCADE,
+    constraint fk_visits_clerks
+        foreign key (employee_id) references users (id),
+    constraint fk_visits_vehicles
+        foreign key (vehicle_id) references vehicles (id)
 );
 
 CREATE TABLE services
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    added_on   DATE DEFAULT CURRENT_TIMESTAMP(),
-    updated_on DATE DEFAULT CURRENT_TIMESTAMP()
+    service_type BIGINT NOT NULL ,
+    added_on   DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    updated_on DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    visit_id   BIGINT NOT NULL,
+    CONSTRAINT fk_services_visits
+        FOREIGN KEY (visit_id) REFERENCES visits (id),
+    CONSTRAINT fk_services_service_types
+        FOREIGN KEY (service_type) REFERENCES service_types (id)
 );
 
 CREATE TABLE services_service_types
@@ -139,41 +175,11 @@ CREATE TABLE logs
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(200) NOT NULL,
-    timestamp   DATETIME DEFAULT CURRENT_TIMESTAMP()
-);
-
-CREATE TABLE visits
-(
-    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
-    scheduled_date DATE   NOT NULL,
-    client_id      BIGINT NOT NULL,
-    employee_id    BIGINT NOT NULL,
-    vehicle_id     BIGINT NOT NULL,
-    status         ENUM ('NOT_STARTED','IN_PROGRESS','READY_FOR_PICKUP'),
-    booked_on      DATE DEFAULT CURRENT_TIMESTAMP(),
-    updated_on     DATE DEFAULT CURRENT_TIMESTAMP(),
-    constraint fk_visits_customers
-        foreign key (client_id) references users (id)
-            ON DELETE CASCADE,
-    constraint fk_visits_clerks
-        foreign key (employee_id) references users (id)
-            ON DELETE CASCADE,
-    constraint fk_visits_vehicles
-        foreign key (vehicle_id) references vehicles (id)
+    timestamp   DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    visit_id    BIGINT       NOT NULL,
+    CONSTRAINT fk_logs_visits
+        FOREIGN KEY (visit_id) REFERENCES visits (id)
             ON DELETE CASCADE
 );
-
-CREATE TABLE visits_logs
-(
-    visit_id BIGINT NOT NULL,
-    log_id   BIGINT NOT NULL,
-    constraint fk_visits_logs_visits
-        foreign key (visit_id) references visits (id)
-            ON DELETE CASCADE,
-    constraint fk_visits_logs_logs
-        foreign key (log_id) references logs (id)
-            ON DELETE CASCADE
-);
-
 
 
