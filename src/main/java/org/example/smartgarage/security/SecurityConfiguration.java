@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +22,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration implements WebMvcConfigurer {
+
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**",
+            "/swagger-resources", "/swagger-resources/**",
+            "/configuration/ui", "/configuration/security",
+            "/swagger-ui/**", "/swagger-ui.html",
+            "/webjars/**"
+    };
+
     private final JwtFilter jwtFilter;
 
     public SecurityConfiguration(JwtFilter jwtFilter) {
@@ -52,16 +61,17 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 //                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.
-                            requestMatchers("/garage/register", "/garage/main", "/garage", "/", "/garage/login")
+                            requestMatchers(AUTH_WHITELIST)
                             .permitAll()
-                            .requestMatchers("/api/garage/login")
-                            .permitAll()
+                            .requestMatchers("/api/garage/login").permitAll()
+                            .requestMatchers("/garage/register", "/garage/login",
+                                    "/", "/garage", "/garage/main").permitAll()
                             .requestMatchers("/resources/**", "/static/**", "/static/templates/**",
                                     "/css/**", "/images/**", "/js/**")
                             .permitAll();//
                     auth.anyRequest().authenticated();
                 })
-               .formLogin(formLogin ->
+                .formLogin(formLogin ->
                         formLogin.loginPage("/garage/login")
                                 .defaultSuccessUrl("/garage/main?success", true)
                                 .failureUrl("/garage/login?error")

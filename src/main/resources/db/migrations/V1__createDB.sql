@@ -149,14 +149,11 @@ CREATE TABLE visits
 CREATE TABLE services
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    service_type BIGINT NOT NULL ,
     added_on   DATETIME DEFAULT CURRENT_TIMESTAMP(),
     updated_on DATETIME DEFAULT CURRENT_TIMESTAMP(),
     visit_id   BIGINT NOT NULL,
     CONSTRAINT fk_services_visits
-        FOREIGN KEY (visit_id) REFERENCES visits (id),
-    CONSTRAINT fk_services_service_types
-        FOREIGN KEY (service_type) REFERENCES service_types (id)
+        FOREIGN KEY (visit_id) REFERENCES visits (id)
 );
 
 CREATE TABLE services_service_types

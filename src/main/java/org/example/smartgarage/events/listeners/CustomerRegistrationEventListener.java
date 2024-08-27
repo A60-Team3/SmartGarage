@@ -6,6 +6,7 @@ import org.example.smartgarage.events.CustomerRegistrationEvent;
 import org.example.smartgarage.models.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -20,12 +21,10 @@ public class CustomerRegistrationEventListener implements ApplicationListener<Cu
     private String password;
     @Value("${email.sender.email}")
     private String senderEmail;
-
     public CustomerRegistrationEventListener(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    @Override
     public void onApplicationEvent(CustomerRegistrationEvent event) {
         password = event.getPassword();
         user = event.getUser();
