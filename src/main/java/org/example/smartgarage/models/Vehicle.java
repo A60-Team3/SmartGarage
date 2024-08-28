@@ -20,14 +20,6 @@ public class Vehicle extends BaseEntity {
     private String vin;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private UserEntity owner;
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private UserEntity clerk;
-
-    @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private VehicleBrand brandName;
 
@@ -38,6 +30,14 @@ public class Vehicle extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "year_id", nullable = false)
     private VehicleYear yearOfCreation;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private UserEntity owner;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private UserEntity clerk;
 
     @Column(name = "added_on")
     @CreationTimestamp
