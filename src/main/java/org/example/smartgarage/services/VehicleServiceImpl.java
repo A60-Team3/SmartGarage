@@ -1,6 +1,8 @@
 package org.example.smartgarage.services;
 
+import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
+import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Vehicle;
 import org.example.smartgarage.repositories.contracts.VehicleRepository;
 import org.example.smartgarage.services.contracts.VehicleService;
@@ -33,6 +35,47 @@ public class VehicleServiceImpl implements VehicleService {
     public Vehicle getById(long id) {
         return vehicleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+    }
+
+    @Override
+    public Vehicle create(Vehicle vehicle, UserEntity user) {
+
+        Vehicle existingVehicle = vehicleRepository.findVehicleByLicensePlateOrVin(vehicle.getLicensePlate(), vehicle.getVin());
+        if (existingVehicle != null){
+            throw new EntityDuplicateException("Vehicle already exists.");
+        }
+        vehicle.setClerk(user);
+        vehicleRepository.save(vehicle);
+        return vehicleRepository.findVehicleByLicensePlate(vehicle.getLicensePlate());
+
+    }
+
+    @Override
+    public Vehicle update(long id, Vehicle vehicle, UserEntity user) {
+        Vehicle repoVehicle = vehicleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+        Vehicle existingVehicle = vehicleRepository.findVehicleByLicensePlateOrVin(vehicle.getLicensePlate(), vehicle.getVin());
+        if (existingVehicle != null){
+            if (existingVehicle.getId() != repoVehicle.getId()){
+                throw new EntityDuplicateException("Vehicle already exists");
+            }
+        }
+
+        repoVehicle.setLicensePlate(vehicle.getLicensePlate());
+        repoVehicle.setVin(vehicle.getVin());
+        repoVehicle.setBrandName(vehicle.getBrandName());
+        repoVehicle.setModelName(vehicle.getModelName());
+        repoVehicle.setYearOfCreation(vehicle.getYearOfCreation());
+        repoVehicle.setOwner(vehicle.getOwner());
+
+        vehicleRepository.save(repoVehicle);
+        return vehicleRepository.findById(id).get();
+    }
+
+    @Override
+    public void delete(long id, UserEntity user) {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+
+        vehicleRepository.delete(vehicle);
     }
 
 

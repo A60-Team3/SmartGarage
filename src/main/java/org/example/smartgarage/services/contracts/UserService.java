@@ -8,4 +8,6 @@ public interface UserService {
     Optional<UserEntity> findByUsername(String username);
 
     UserEntity saveUser(UserEntity user);
+
+    UserEntity getById(long id);
 }
