@@ -13,12 +13,9 @@ import java.util.Set;
 @Table(name = "services")
 public class Service extends BaseEntity {
 
-    @ManyToMany
-    @JoinTable(name = "services_service_types",
-            joinColumns = @JoinColumn(name = "service_id"),
-            inverseJoinColumns = @JoinColumn(name = "service_type_id")
-    )
-    private Set<ServiceType> serviceType;
+    @ManyToOne
+    @JoinColumn(name = "service_type_id")
+    private ServiceType serviceType;
 
     @Column(name = "added_on")
     @CreationTimestamp
@@ -35,11 +32,11 @@ public class Service extends BaseEntity {
     public Service() {
     }
 
-    public Set<ServiceType> getServiceType() {
+    public ServiceType getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(Set<ServiceType> serviceType) {
+    public void setServiceType(ServiceType serviceType) {
         this.serviceType = serviceType;
     }
 

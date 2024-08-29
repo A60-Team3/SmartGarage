@@ -1,2 +1,2 @@
 ALTER TABLE vehicles
-    ADD isDeleted BOOLEAN default 0
+    ADD is_deleted BOOLEAN default 0

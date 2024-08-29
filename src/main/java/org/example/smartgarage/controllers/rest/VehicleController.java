@@ -46,8 +46,8 @@ public class VehicleController {
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping
     public ResponseEntity<?> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                                      @AuthenticationPrincipal CustomUserDetails principal){
+                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                    @AuthenticationPrincipal CustomUserDetails principal){
         boolean hasRights = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));

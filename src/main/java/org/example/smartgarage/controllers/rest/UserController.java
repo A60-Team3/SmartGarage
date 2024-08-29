@@ -108,7 +108,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK') || #userId == principal.getId()")
-    @PutMapping("/users/{userId}")
+    @DeleteMapping("/users/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable long userId,
                                         @AuthenticationPrincipal CustomUserDetails principal) {
         boolean hasRights = principal.getAuthorities().stream()
