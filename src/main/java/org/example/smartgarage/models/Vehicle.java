@@ -47,6 +47,9 @@ public class Vehicle extends BaseEntity {
     @UpdateTimestamp
     private LocalDate updatedOn;
 
+    @Column(name = "isDeleted")
+    private boolean isDeleted;
+
     public Vehicle() {
     }
 

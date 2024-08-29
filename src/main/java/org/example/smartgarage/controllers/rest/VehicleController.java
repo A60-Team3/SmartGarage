@@ -8,12 +8,15 @@ import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.mappers.VehicleMapper;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Vehicle;
+import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.*;
+import org.mapstruct.control.MappingControl;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,17 +43,33 @@ public class VehicleController {
         this.vehicleMapper = vehicleMapper;
     }
 
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping
-    public ResponseEntity<Page<VehicleOutDTO>> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+    public ResponseEntity<?> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                      @AuthenticationPrincipal CustomUserDetails principal){
+        boolean hasRights = principal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
+        if (!hasRights) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+        }
         Page<Vehicle> vehicles = vehicleService.getAll(offset, pageSize);
         Page<VehicleOutDTO> vehicleOutDTOPage= vehicleMapper.vehiclesToVehicleDTOs(vehicles);
         return ResponseEntity.ok(vehicleOutDTOPage);
     }
 
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/{id}")
-    public ResponseEntity<VehicleOutDTO> getById(@PathVariable long id){
+    public ResponseEntity<?> getById(@PathVariable long id,
+                                     @AuthenticationPrincipal CustomUserDetails principal){
         try {
+            boolean hasRights = principal.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
+            if (!hasRights) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+            }
             Vehicle vehicle = vehicleService.getById(id);
             VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(vehicle);
             return ResponseEntity.ok(vehicleOutDTO);
@@ -59,14 +78,18 @@ public class VehicleController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PostMapping
-    public ResponseEntity<VehicleOutDTO> create(@Valid @RequestBody VehicleInDTO vehicleInDTO){
+    public ResponseEntity<?> create(@Valid @RequestBody VehicleInDTO vehicleInDTO,
+                                    @AuthenticationPrincipal CustomUserDetails principal){
         try {
-            /*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Optional<UserEntity> userEntityOptional = userService.findByUsername(auth.getName());
-            UserEntity user = userEntityOptional.get();*/
-
-            UserEntity user = userService.findByUsername("johndoe").orElseThrow();
+            boolean hasRights = principal.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
+            if (!hasRights) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+            }
+            UserEntity user = userService.getById(principal.getId());
             Vehicle vehicle = vehicleMapper.toEntity(vehicleInDTO, vehicleBrandService, vehicleModelService, vehicleYearService, userService);
             vehicleService.create(vehicle, user);
             VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(vehicle);
@@ -76,10 +99,19 @@ public class VehicleController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PutMapping("/{id}")
-    public ResponseEntity<VehicleOutDTO> update(@PathVariable long id, @Valid @RequestBody VehicleInDTO vehicleInDTO){
+    public ResponseEntity<?> update(@PathVariable long id,
+                                    @Valid @RequestBody VehicleInDTO vehicleInDTO,
+                                    @AuthenticationPrincipal CustomUserDetails principal){
         try {
-            UserEntity user = userService.findByUsername("johndoe").orElseThrow();
+            boolean hasRights = principal.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
+            if (!hasRights) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+            }
+            UserEntity user = userService.getById(principal.getId());
             Vehicle vehicle = vehicleMapper.toEntity(vehicleInDTO, vehicleBrandService, vehicleModelService, vehicleYearService, userService);
             Vehicle updated = vehicleService.update(id, vehicle, user);
             VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(updated);
@@ -91,11 +123,19 @@ public class VehicleController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id){
+    public ResponseEntity<?> delete(@PathVariable long id,
+                                    @AuthenticationPrincipal CustomUserDetails principal){
 
         try {
-            UserEntity user = userService.findByUsername("johndoe").orElseThrow();
+            boolean hasRights = principal.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
+            if (!hasRights) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+            }
+            UserEntity user = userService.getById(principal.getId());
 
             vehicleService.delete(id, user);
             return ResponseEntity.ok("Vehicle deleted successfully");
