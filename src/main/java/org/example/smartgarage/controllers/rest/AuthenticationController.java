@@ -7,6 +7,9 @@ import org.example.smartgarage.dtos.request.EmployeeRegistrationDto;
 import org.example.smartgarage.dtos.request.LoginDTO;
 import org.example.smartgarage.dtos.response.TokenDto;
 import org.example.smartgarage.dtos.response.UserOutDto;
+import org.example.smartgarage.exceptions.CustomAuthenticationException;
+import org.example.smartgarage.mappers.UserMapper;
+import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.services.contracts.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/garage")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserMapper userMapper;
 
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, UserMapper userMapper) {
         this.authenticationService = authenticationService;
+        this.userMapper = userMapper;
     }
 
     @PostMapping("/login")
@@ -36,16 +41,24 @@ public class AuthenticationController {
     @PostMapping("/users")
     public ResponseEntity<UserOutDto> registerNewCustomer(@Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
                                                           HttpServletRequest request){
-        UserOutDto userOutDto = authenticationService.registerCustomer(customerRegistrationDto, request);
+        UserEntity customer = userMapper.toEntity(customerRegistrationDto);
+        UserEntity savedCustomer = authenticationService.registerCustomer(customer, request);
+        UserOutDto userOutDto = userMapper.toDto(savedCustomer);
 
         return new ResponseEntity<>(userOutDto, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('HR')")
     @PostMapping("/clerks")
-    public ResponseEntity<UserOutDto> registerNewEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto,
+    public ResponseEntity<?> registerNewEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto,
                                                           HttpServletRequest request){
-        UserOutDto userOutDto = authenticationService.registerEmployee(employeeRegistrationDto, request);
+
+        if (!employeeRegistrationDto.password().equals(employeeRegistrationDto.passwordConfirm())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password confirmation should match password.");
+        }
+        UserEntity employee = userMapper.toEntity(employeeRegistrationDto);
+        UserEntity savedEmployee = authenticationService.registerEmployee(employee, request);
+        UserOutDto userOutDto = userMapper.toDto(savedEmployee);
 
         return new ResponseEntity<>(userOutDto, HttpStatus.CREATED);
     }

@@ -5,7 +5,6 @@ import jakarta.mail.internet.MimeMessage;
 import org.example.smartgarage.events.CustomerRegistrationEvent;
 import org.example.smartgarage.models.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 
 @Component
-public class CustomerRegistrationEventListener implements ApplicationListener<CustomerRegistrationEvent> {
+public class CustomerRegistrationEventListener{
     private final JavaMailSender mailSender;
 
     private UserEntity user;
@@ -25,7 +24,8 @@ public class CustomerRegistrationEventListener implements ApplicationListener<Cu
         this.mailSender = mailSender;
     }
 
-    public void onApplicationEvent(CustomerRegistrationEvent event) {
+    @EventListener
+    public void onCustomerRegistrationSuccess(CustomerRegistrationEvent event) {
         password = event.getPassword();
         user = event.getUser();
         String url = event.getAppUrl() + "/login";

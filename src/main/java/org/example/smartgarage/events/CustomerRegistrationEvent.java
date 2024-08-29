@@ -1,15 +1,13 @@
 package org.example.smartgarage.events;
 
 import org.example.smartgarage.models.UserEntity;
-import org.springframework.context.ApplicationEvent;
 
-public class CustomerRegistrationEvent extends ApplicationEvent {
+public class CustomerRegistrationEvent{
     private String password;
     private UserEntity user;
     private String appUrl;
 
     public CustomerRegistrationEvent(UserEntity user, String password, String appUrl) {
-        super(user);
         this.user = user;
         this.password = password;
         this.appUrl = appUrl;

@@ -1,14 +1,11 @@
 package org.example.smartgarage.services;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.smartgarage.dtos.request.CustomerRegistrationDto;
-import org.example.smartgarage.dtos.request.EmployeeRegistrationDto;
 import org.example.smartgarage.dtos.request.LoginDTO;
 import org.example.smartgarage.dtos.response.TokenDto;
 import org.example.smartgarage.dtos.response.UserOutDto;
 import org.example.smartgarage.events.CustomerRegistrationEvent;
 import org.example.smartgarage.exceptions.AuthenticationException;
-import org.example.smartgarage.exceptions.CustomAuthenticationException;
 import org.example.smartgarage.models.Role;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.enums.UserRole;
@@ -24,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -64,62 +62,40 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserOutDto registerCustomer(CustomerRegistrationDto customerRegistrationDto, HttpServletRequest request) {
+    public UserEntity registerCustomer(UserEntity user, HttpServletRequest request) {
         String rndCustomerPassword = UUID.randomUUID().toString();
 
-        UserEntity user = new UserEntity();
-        user.setUsername(customerRegistrationDto.email());
+        user.setUsername(user.getEmail());
         user.setPassword(passwordEncoder.encode(rndCustomerPassword));
-        user.setEmail(customerRegistrationDto.email());
-        user.setPhoneNumber(customerRegistrationDto.phoneNumber());
-        user.setFirstName(customerRegistrationDto.firstName());
-        user.setLastName(customerRegistrationDto.lastName());
 
         Role userRole = roleService.findByAuthority(UserRole.CUSTOMER);
 
-        user.setRoles(Set.of((userRole)));
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
+
+        user.setRoles(roles);
 
         UserEntity savedCustomer = userService.saveUser(user);
-        CustomerRegistrationEvent customerRegistrationEvent = new CustomerRegistrationEvent(user, rndCustomerPassword, applicationUrl(request));
 
-        eventPublisher.publishEvent(customerRegistrationEvent);
+        eventPublisher.publishEvent(new CustomerRegistrationEvent(savedCustomer, rndCustomerPassword, applicationUrl(request)));
 
-        return mapToUserOutDto(savedCustomer);
+        return savedCustomer;
     }
 
     @Override
-    public UserOutDto registerEmployee(EmployeeRegistrationDto employeeRegistrationDto, HttpServletRequest request) {
+    public UserEntity registerEmployee(UserEntity employee, HttpServletRequest request) {
         //TODO implement email validation email for employees (ValidationToken, tokenDeleteScheduler)
 
-        if (!employeeRegistrationDto.password().equals(employeeRegistrationDto.passwordConfirm())) {
-            throw new CustomAuthenticationException("Password confirmation should match password.");
-        }
-
-        UserEntity user = new UserEntity();
-        user.setUsername(employeeRegistrationDto.username());
-        user.setPassword(passwordEncoder.encode(employeeRegistrationDto.password()));
-        user.setEmail(employeeRegistrationDto.email());
-        user.setPhoneNumber(employeeRegistrationDto.phoneNumber());
-        user.setFirstName(employeeRegistrationDto.firstName());
-        user.setLastName(employeeRegistrationDto.lastName());
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
         Role userRole = roleService.findByAuthority(UserRole.CLERK);
 
-        user.setRoles(Set.of((userRole)));
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
 
-        UserEntity savedEmployee = userService.saveUser(user);
+        employee.setRoles(roles);
 
-        return mapToUserOutDto(savedEmployee);
-    }
-
-    private UserOutDto mapToUserOutDto(UserEntity user) {
-        return new UserOutDto(
-                String.format("%s %s", user.getFirstName(), user.getLastName()),
-                user.getEmail(),
-                user.getRegistered().format(DateTimeFormatter.ofPattern("yyyy MM dd")),
-                user.getUpdated().format(DateTimeFormatter.ofPattern("yyyy MM dd")),
-                user.getRoles().stream().map(Role::getAuthority).collect(Collectors.toSet())
-        );
+        return userService.saveUser(employee);
     }
 
     private String applicationUrl(HttpServletRequest request) {

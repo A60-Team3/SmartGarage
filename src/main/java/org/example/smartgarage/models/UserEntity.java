@@ -56,6 +56,9 @@ public class UserEntity extends BaseEntity {
                     { @JoinColumn(name = "photo_id", referencedColumnName = "id") })
     private ProfilePicture profilePicture;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Vehicle> vehicles;
+
     public String getFirstName() {
         return firstName;
     }
@@ -126,6 +129,14 @@ public class UserEntity extends BaseEntity {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     public Set<Role> getRoles() {
