@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
         uses = OrderTypeMapper.class)
 public interface OrderMapper {
 
+    @Mapping(target = "visitId", ignore = true)
+    @Mapping(target = "updatedOn", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "addedOn", ignore = true)
     @Mapping(target = "serviceType", expression = "java(orderTypeService.getById(orderInDTO.serviceTypeId()))")
     Service toEntity(OrderInDTO orderInDTO,
                      @Context OrderTypeService orderTypeService);

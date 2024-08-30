@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface VehicleMapper {
 
+    @Mapping(target = "updatedOn", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "clerk", ignore = true)
+    @Mapping(target = "addedOn", ignore = true)
     @Mapping(target="brandName", expression="java(vehicleBrandService.getById(vehicleInDTO.brandId()))")
     @Mapping(target="modelName", expression="java(vehicleModelService.getById(vehicleInDTO.modelId()))")
     @Mapping(target="yearOfCreation", expression="java(vehicleYearService.getById(vehicleInDTO.yearId()))")

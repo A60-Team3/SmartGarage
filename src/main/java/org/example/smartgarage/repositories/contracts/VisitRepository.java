@@ -1,4 +1,4 @@
-package org.example.smartgarage.repositories;
+package org.example.smartgarage.repositories.contracts;
 
 import org.example.smartgarage.models.Visit;
 import org.springframework.data.jpa.repository.JpaRepository;

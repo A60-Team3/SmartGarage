@@ -96,8 +96,8 @@ public class UserController {
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(s -> s.equals("ROLE_CLERK"));
 
-        if (principal.getId() != userId || !hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+        if (principal.getId() != userId && !hasRights) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized action");
         }
 
         UserEntity updatedUserInfo = userMapper.toEntity(dto);
@@ -107,7 +107,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toDto(updatedUser));
     }
 
-    @PreAuthorize("hasAnyRole('CLERK') || #userId == principal.getId()")
+    @PreAuthorize("hasAnyRole('CLERK')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable long userId,
                                         @AuthenticationPrincipal CustomUserDetails principal) {
@@ -115,12 +115,14 @@ public class UserController {
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(s -> s.equals("ROLE_CLERK"));
 
-        if (principal.getId() != userId || !hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
+        if (!hasRights) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only employees can delete");
         }
 
        userService.deleteUser(userId);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("Customer successfully removed from database");
     }
 }

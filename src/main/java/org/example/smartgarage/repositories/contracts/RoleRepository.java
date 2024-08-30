@@ -1,4 +1,4 @@
-package org.example.smartgarage.repositories;
+package org.example.smartgarage.repositories.contracts;
 
 import org.example.smartgarage.models.Role;
 import org.example.smartgarage.models.enums.UserRole;

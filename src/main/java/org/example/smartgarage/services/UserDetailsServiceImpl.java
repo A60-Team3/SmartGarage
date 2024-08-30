@@ -1,7 +1,7 @@
 package org.example.smartgarage.services;
 
 import org.example.smartgarage.models.UserEntity;
-import org.example.smartgarage.repositories.UserRepository;
+import org.example.smartgarage.repositories.contracts.UserRepository;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

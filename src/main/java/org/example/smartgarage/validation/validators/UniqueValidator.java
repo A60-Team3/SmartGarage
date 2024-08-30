@@ -3,7 +3,7 @@ package org.example.smartgarage.validation.validators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.example.smartgarage.models.enums.UniqueType;
-import org.example.smartgarage.repositories.UserRepository;
+import org.example.smartgarage.repositories.contracts.UserRepository;
 import org.example.smartgarage.validation.Unique;
 
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
