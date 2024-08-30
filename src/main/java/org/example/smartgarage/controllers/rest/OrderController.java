@@ -11,6 +11,7 @@ import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.OrderService;
 import org.example.smartgarage.services.contracts.OrderTypeService;
 import org.example.smartgarage.services.contracts.UserService;
+import org.example.smartgarage.services.contracts.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,15 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderTypeService orderTypeService;
+    private final VisitService visitService;
     private final UserService userService;
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderTypeService orderTypeService, UserService userService, OrderMapper orderMapper) {
+    public OrderController(OrderService orderService, OrderTypeService orderTypeService, VisitService visitService, UserService userService, OrderMapper orderMapper) {
         this.orderService = orderService;
         this.orderTypeService = orderTypeService;
+        this.visitService = visitService;
         this.userService = userService;
         this.orderMapper = orderMapper;
     }
@@ -95,7 +98,7 @@ public class OrderController {
         }
 
         Service order = orderMapper.toEntity(orderInDTO, orderTypeService);
-        orderService.create(order, visitService.getById(visitId));
+        orderService.create(order, visitService.findById(visitId));
         OrderOutDTO orderOutDTO = orderMapper.toDTO(order);
         return ResponseEntity.ok(orderOutDTO);
     }
@@ -118,7 +121,7 @@ public class OrderController {
 
         try {
             Service order = orderMapper.toEntity(orderInDTO, orderTypeService);
-            Service updated = orderService.update(orderId, order, visitService.getById(visitId));
+            Service updated = orderService.update(orderId, order, visitService.findById(visitId));
             OrderOutDTO orderOutDTO = orderMapper.toDTO(updated);
             return ResponseEntity.ok(orderOutDTO);
         } catch (EntityNotFoundException e) {
