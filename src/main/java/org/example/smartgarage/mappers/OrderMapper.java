@@ -27,8 +27,8 @@ public interface OrderMapper {
     Service toEntity(OrderInDTO orderInDTO,
                      @Context OrderTypeService orderTypeService);
 
-    /*@Mapping(target = "serviceType", expression = ("java(order.getServiceType().getServiceName())"))
-    @Mapping(target = "price", expression = ("java(order.getServiceType().getServicePrice())"))*/
+    @Mapping(target = "serviceType", source = "serviceType.serviceName")
+    @Mapping(target = "price", source = "serviceType.servicePrice")
     OrderOutDTO toDTO(Service order);
 
     default Page<OrderOutDTO> ordersToOrderDTOs(Page<Service> orders) {
