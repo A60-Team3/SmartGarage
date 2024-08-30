@@ -26,15 +26,30 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+    /*for currency exchange api*/
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    /*for pdf creation*/
+    implementation 'com.itextpdf:itextpdf:5.5.13.4'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+
+    /* mapping interface*/
     implementation 'org.mapstruct:mapstruct:1.6.0'
 
+    /* JWT security*/
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 
+    /*flyway dependency*/
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
 
+    /*swagger dependency*/
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    /* .env  support */
     implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '3.0.1'
+
+    /* image hosting api */
     implementation('com.cloudinary:cloudinary-http45:1.39.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
     }

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/garage")
+@RequestMapping("/api/garage/users")
 public class UserController {
 
     private final UserService userService;
@@ -38,7 +38,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/users")
+    @GetMapping()
     public ResponseEntity<List<UserOutDto>> getAllUsers(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
                                                         @Parameter(description = "Partial or full first name")
@@ -80,7 +80,7 @@ public class UserController {
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserOutDto> getById(@PathVariable Long userId) {
         UserEntity user = userService.getById(userId);
 
@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK') || #userId == principal.getId()")
-    @PutMapping("/users/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateDto dto,
                                         @PathVariable long userId,
                                         @AuthenticationPrincipal CustomUserDetails principal) {
@@ -108,7 +108,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK') || #userId == principal.getId()")
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable long userId,
                                         @AuthenticationPrincipal CustomUserDetails principal) {
         boolean hasRights = principal.getAuthorities().stream()

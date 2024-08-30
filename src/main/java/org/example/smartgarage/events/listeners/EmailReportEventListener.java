@@ -1,44 +1,44 @@
 package org.example.smartgarage.events.listeners;
 
+import com.itextpdf.text.Document;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.example.smartgarage.events.CustomerRegistrationEvent;
+import org.example.smartgarage.events.EmailReportEvent;
 import org.example.smartgarage.models.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 
-@Component
-public class CustomerRegistrationEventListener{
+public class EmailReportEventListener {
     private final JavaMailSender mailSender;
 
-    private UserEntity user;
-    private String password;
     @Value("${email.sender.email}")
     private String senderEmail;
-    public CustomerRegistrationEventListener(JavaMailSender mailSender) {
+
+    private Document document;
+    private UserEntity user;
+
+
+    public EmailReportEventListener(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    @EventListener
-    public void onCustomerRegistrationSuccess(CustomerRegistrationEvent event) {
-        password = event.password();
-        user = event.user();
-        String url = event.appUrl() + "/login";
+    public void onEmailReportGenerationSuccess(EmailReportEvent event) {
+        document = event.getPdfDocument();
+        user = event.getUser();
+
 
         try {
-            sendCredentialsEmail(url);
+            sendCredentialsEmail();
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void sendCredentialsEmail(String url) throws MessagingException, UnsupportedEncodingException {
-        String subject = "Registration email";
+    private void sendCredentialsEmail() throws MessagingException, UnsupportedEncodingException {
+        String subject = "Smart Garage Inc service report";
         String senderName = "A60 Team 3 Smart Garage App";
         String mailContent = "<p> Greetings, Mr./Mrs. " + user.getFirstName() + " " + user.getLastName() + ", </p>" +
                 "<p>Thank you for choosing Smart Garage Inc for your 'precious' maintenance.</p>" +

@@ -7,7 +7,6 @@ import org.example.smartgarage.dtos.request.EmployeeRegistrationDto;
 import org.example.smartgarage.dtos.request.LoginDTO;
 import org.example.smartgarage.dtos.response.TokenDto;
 import org.example.smartgarage.dtos.response.UserOutDto;
-import org.example.smartgarage.exceptions.CustomAuthenticationException;
 import org.example.smartgarage.mappers.UserMapper;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.services.contracts.AuthenticationService;

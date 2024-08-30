@@ -74,12 +74,10 @@ public class UserEntitySpecification implements Specification<UserEntity> {
 
         userFilterOptions.getBrandName().ifPresent(value -> {
             predicates.add(criteriaBuilder
-                    .equal(root.join("vehicles").join("brandName").get("brandName"), value));
-        });
-
-        userFilterOptions.getBrandName().ifPresent(value -> {
-            predicates.add(criteriaBuilder
-                    .equal(root.join("vehicles").join("brandName").get("brandName"), value));
+                    .equal(root.join("vehicles")
+                                    .join("brandName")
+                                    .get("brandName"),
+                            "%" + value + "%"));
         });
 
         userFilterOptions.getVehicleVin().ifPresent(value -> {

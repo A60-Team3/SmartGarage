@@ -2,10 +2,7 @@ package org.example.smartgarage.handlers;
 
 import io.jsonwebtoken.security.SignatureException;
 import org.example.smartgarage.dtos.response.ApiErrorResponseDTO;
-import org.example.smartgarage.exceptions.CustomAuthenticationException;
-import org.example.smartgarage.exceptions.EntityDuplicateException;
-import org.example.smartgarage.exceptions.EntityNotFoundException;
-import org.example.smartgarage.exceptions.InvalidFilterArgumentException;
+import org.example.smartgarage.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -94,6 +91,13 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidFilterArgumentException.class)
     public ResponseEntity<?> handleDateTimeException(InvalidFilterArgumentException ex) {
+        ApiErrorResponseDTO apiErrorResponseDTO =
+                new ApiErrorResponseDTO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(ex.getMessage()));
+        return new ResponseEntity<>(apiErrorResponseDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConversionRequestException.class)
+    public ResponseEntity<?> handleDateTimeException(ConversionRequestException ex) {
         ApiErrorResponseDTO apiErrorResponseDTO =
                 new ApiErrorResponseDTO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(ex.getMessage()));
         return new ResponseEntity<>(apiErrorResponseDTO, HttpStatus.BAD_REQUEST);

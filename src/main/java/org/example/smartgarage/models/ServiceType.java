@@ -32,6 +32,11 @@ public class ServiceType extends BaseEntity {
     }
 
     @Override
+    public String toString() {
+        return String.format("Service: %s, Cost: %s",serviceName, servicePrice);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

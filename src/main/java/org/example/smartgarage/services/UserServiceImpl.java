@@ -2,9 +2,7 @@ package org.example.smartgarage.services;
 
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
-import org.example.smartgarage.models.Role;
 import org.example.smartgarage.models.UserEntity;
-import org.example.smartgarage.models.enums.UserRole;
 import org.example.smartgarage.repositories.UserRepository;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.utils.filtering.UserEntitySpecification;
