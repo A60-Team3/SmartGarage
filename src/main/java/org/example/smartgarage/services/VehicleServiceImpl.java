@@ -72,7 +72,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void delete(long id, UserEntity user) {
+    public void delete(long id) {
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
         vehicleRepository.delete(vehicle);

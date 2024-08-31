@@ -18,5 +18,5 @@ public interface VehicleService {
 
     Vehicle update(long id, Vehicle vehicle, UserEntity user);
 
-    void delete(long id, UserEntity user);
+    void delete(long id);
 }

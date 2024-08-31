@@ -55,17 +55,7 @@ public class OrderTypeController {
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody OrderTypeInDTO orderTypeInDTO,
-                                    @AuthenticationPrincipal CustomUserDetails principal){
-
-        boolean hasRights = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
-
-        if (!hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
-        }
-
+    public ResponseEntity<?> create(@Valid @RequestBody OrderTypeInDTO orderTypeInDTO){
         try {
             ServiceType orderType = orderTypeMapper.toEntity(orderTypeInDTO);
             orderTypeService.create(orderType);
@@ -79,16 +69,7 @@ public class OrderTypeController {
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable long id,
-                                    @Valid @RequestBody OrderTypeInDTO orderTypeInDTO,
-                                    @AuthenticationPrincipal CustomUserDetails principal){
-
-        boolean hasRights = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
-
-        if (!hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
-        }
+                                    @Valid @RequestBody OrderTypeInDTO orderTypeInDTO){
 
         try{
             ServiceType orderType = orderTypeMapper.toEntity(orderTypeInDTO);
@@ -104,16 +85,7 @@ public class OrderTypeController {
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id,
-                                    @AuthenticationPrincipal CustomUserDetails principal){
-
-        boolean hasRights = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
-
-        if (!hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only owner can modify his info");
-        }
+    public ResponseEntity<?> delete(@PathVariable long id){
 
         try{
             orderTypeService.delete(id);

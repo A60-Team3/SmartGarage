@@ -29,6 +29,7 @@ public interface OrderMapper {
 
     @Mapping(target = "serviceType", source = "serviceType.serviceName")
     @Mapping(target = "price", source = "serviceType.servicePrice")
+    @Mapping(target = "licensePlate", source = "visitId.vehicle.licensePlate")
     OrderOutDTO toDTO(Service order);
 
     default Page<OrderOutDTO> ordersToOrderDTOs(Page<Service> orders) {

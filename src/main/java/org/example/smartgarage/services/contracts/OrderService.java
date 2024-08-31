@@ -12,11 +12,15 @@ public interface OrderService {
 
     Page<Service> getAll(int offset, int pageSize);
 
+    Page<Service> getAllByVisit(long userId, Visit visitId, int offset, int pageSize);
+
     Service getById(long id);
 
-    Service create(Service order, Visit visit);
+    Service getById(long userId, Visit visit, long id);
 
-    Service update(long id, Service order, Visit visit);
+    Service create(Service order, long userId, Visit visit);
 
-    void delete(long id, UserEntity user);
+    Service update(long id, Service order, long userId, Visit visit);
+
+    void delete(long userId, Visit visit, long id);
 }

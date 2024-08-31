@@ -5,6 +5,8 @@ public record OrderOutDTO(
 
         double price,
 
+        String licensePlate,
+
         String addedOn,
 
         String updatedOn
