@@ -6,10 +6,8 @@ import org.example.smartgarage.dtos.response.OrderOutDTO;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.mappers.OrderMapper;
-import org.example.smartgarage.models.Service;
-import org.example.smartgarage.models.UserEntity;
+import org.example.smartgarage.models.Order;
 import org.example.smartgarage.models.Visit;
-import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.OrderService;
 import org.example.smartgarage.services.contracts.OrderTypeService;
 import org.example.smartgarage.services.contracts.UserService;
@@ -19,8 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -49,7 +45,7 @@ public class OrderController {
                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
 
 
-        Page<Service> orders = orderService.getAll(offset, pageSize);
+        Page<Order> orders = orderService.getAll(offset, pageSize);
         Page<OrderOutDTO> orderOutDTOPage = orderMapper.ordersToOrderDTOs(orders);
         return ResponseEntity.ok(orderOutDTOPage);
     }
@@ -64,7 +60,7 @@ public class OrderController {
 
         try {
             Visit visit = visitService.findById(visitId);
-            Page<Service> orders = orderService.getAllByVisit(userId, visit, offset, pageSize);
+            Page<Order> orders = orderService.getAllByVisit(userId, visit, offset, pageSize);
             Page<OrderOutDTO> orderOutDTOPage = orderMapper.ordersToOrderDTOs(orders);
             return ResponseEntity.ok(orderOutDTOPage);
         } catch (EntityNotFoundException e) {
@@ -82,7 +78,7 @@ public class OrderController {
 
         try {
             Visit visit = visitService.findById(visitId);
-            Service order = orderService.getById(userId, visit,orderId);
+            Order order = orderService.getById(userId, visit,orderId);
             OrderOutDTO orderOutDTO = orderMapper.toDTO(order);
             return ResponseEntity.ok(orderOutDTO);
         } catch (EntityNotFoundException e) {
@@ -100,7 +96,7 @@ public class OrderController {
 
         try {
             Visit visit = visitService.findById(visitId);
-            Service order = orderMapper.toEntity(orderInDTO, orderTypeService);
+            Order order = orderMapper.toEntity(orderInDTO, orderTypeService);
             orderService.create(order, userId, visit);
             OrderOutDTO orderOutDTO = orderMapper.toDTO(order);
             return ResponseEntity.ok(orderOutDTO);
@@ -120,8 +116,8 @@ public class OrderController {
 
         try {
             Visit visit = visitService.findById(visitId);
-            Service order = orderMapper.toEntity(orderInDTO, orderTypeService);
-            Service updated = orderService.update(orderId, order, userId, visit);
+            Order order = orderMapper.toEntity(orderInDTO, orderTypeService);
+            Order updated = orderService.update(orderId, order, userId, visit);
             OrderOutDTO orderOutDTO = orderMapper.toDTO(updated);
             return ResponseEntity.ok(orderOutDTO);
         } catch (EntityNotFoundException e) {

@@ -33,7 +33,7 @@ public class Visit extends BaseEntity {
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "visitId")
-    private List<Service> services;
+    private List<Order> orders;
 
     @Column(name = "booked_on")
     @CreationTimestamp
@@ -89,12 +89,12 @@ public class Visit extends BaseEntity {
         this.vehicle = vehicle;
     }
 
-    public List<Service> getServices() {
-        return services;
+    public List<Order> getServices() {
+        return orders;
     }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setServices(List<Order> orders) {
+        this.orders = orders;
     }
 
     public LocalDateTime getBookedOn() {

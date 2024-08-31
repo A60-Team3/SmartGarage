@@ -1,7 +1,6 @@
 package org.example.smartgarage.dtos;
 
 import org.example.smartgarage.dtos.response.VehicleOutDTO;
-import org.example.smartgarage.models.Service;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -193,6 +193,12 @@ public class VisitController {
         return ResponseEntity.ok(visitMapper.toDto(visit));
     }
 
+    @PostMapping("/visits")
+    public ResponseEntity<?> createVisit( ){
+        return null;
+    }
+
+
 
 
     private static VisitFilterOptions getVisitFilterOptions(

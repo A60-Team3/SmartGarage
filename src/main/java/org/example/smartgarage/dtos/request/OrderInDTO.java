@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Positive;
 
 public record OrderInDTO(
 
-        @Positive(message = "Service type ID should be positive")
+        @Positive(message = "Order type ID should be positive")
         long serviceTypeId
 
 ) {

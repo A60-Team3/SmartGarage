@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
 @Component
-public class EmailReportEventListener {
+public class EmailReportEventListener{
     private final JavaMailSender mailSender;
 
     @Value("${email.sender.email}")
@@ -23,7 +23,6 @@ public class EmailReportEventListener {
 
     private ByteArrayOutputStream document;
     private UserEntity user;
-
 
     public EmailReportEventListener(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -33,7 +32,6 @@ public class EmailReportEventListener {
     public void onEmailReportGenerationSuccess(EmailReportEvent event) {
         document = event.pdfDocument();
         user = event.user();
-
 
         try {
             sendCredentialsEmail();

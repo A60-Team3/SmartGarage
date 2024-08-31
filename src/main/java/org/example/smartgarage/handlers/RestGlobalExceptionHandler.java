@@ -115,7 +115,15 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleDateTimeException(UsernameNotFoundException ex) {
         ApiErrorResponseDTO apiErrorResponseDTO =
-                new ApiErrorResponseDTO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(ex.getMessage()));
+                new ApiErrorResponseDTO(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(), List.of(ex.getMessage()));
         return new ResponseEntity<>(apiErrorResponseDTO, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(UserMismatchException.class)
+    public ResponseEntity<?> handleDateTimeException(UserMismatchException ex) {
+        ApiErrorResponseDTO apiErrorResponseDTO =
+                new ApiErrorResponseDTO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(ex.getMessage()));
+        return new ResponseEntity<>(apiErrorResponseDTO, HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "services")
-public class Service extends BaseEntity {
+public class Order extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "service_type_id")
@@ -28,7 +28,7 @@ public class Service extends BaseEntity {
     @JoinColumn(name = "visit_id")
     private Visit visitId;
 
-    public Service() {
+    public Order() {
     }
 
     public ServiceType getServiceType() {
@@ -67,9 +67,9 @@ public class Service extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Service service = (Service) o;
-        return Objects.equals(serviceType, service.serviceType)
-                && Objects.equals(visitId, service.visitId);
+        Order order = (Order) o;
+        return Objects.equals(serviceType, order.serviceType)
+                && Objects.equals(visitId, order.visitId);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.example.smartgarage.mappers;
 
-import jdk.jfr.Name;
 import org.example.smartgarage.dtos.VisitOutDto;
 import org.example.smartgarage.models.*;
 import org.mapstruct.InjectionStrategy;
@@ -39,9 +38,9 @@ public interface VisitMapper {
     }
 
     @Named("services")
-    default List<String> mapServiceToString(List<Service> services) {
-        return services.stream()
-                .map(Service::getServiceType)
+    default List<String> mapServiceToString(List<Order> orders) {
+        return orders.stream()
+                .map(Order::getServiceType)
                 .map(ServiceType::toString)
                 .toList();
     }
@@ -52,9 +51,9 @@ public interface VisitMapper {
     }
 
     @Named("totalCost")
-    default BigDecimal getVisitTotalCost(List<Service> services) {
-        return services.stream()
-                .map(Service::getServiceType)
+    default BigDecimal getVisitTotalCost(List<Order> orders) {
+        return orders.stream()
+                .map(Order::getServiceType)
                 .map(ServiceType::getServicePrice)
                 .reduce(BigDecimal.ZERO,BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);

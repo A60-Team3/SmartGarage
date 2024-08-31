@@ -2,7 +2,7 @@ package org.example.smartgarage.mappers;
 
 import org.example.smartgarage.dtos.request.OrderInDTO;
 import org.example.smartgarage.dtos.response.OrderOutDTO;
-import org.example.smartgarage.models.Service;
+import org.example.smartgarage.models.Order;
 import org.example.smartgarage.services.contracts.OrderTypeService;
 import org.mapstruct.Context;
 import org.mapstruct.InjectionStrategy;
@@ -24,15 +24,15 @@ public interface OrderMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "addedOn", ignore = true)
     @Mapping(target = "serviceType", expression = "java(orderTypeService.getById(orderInDTO.serviceTypeId()))")
-    Service toEntity(OrderInDTO orderInDTO,
-                     @Context OrderTypeService orderTypeService);
+    Order toEntity(OrderInDTO orderInDTO,
+                   @Context OrderTypeService orderTypeService);
 
     @Mapping(target = "serviceType", source = "serviceType.serviceName")
     @Mapping(target = "price", source = "serviceType.servicePrice")
     @Mapping(target = "licensePlate", source = "visitId.vehicle.licensePlate")
-    OrderOutDTO toDTO(Service order);
+    OrderOutDTO toDTO(Order order);
 
-    default Page<OrderOutDTO> ordersToOrderDTOs(Page<Service> orders) {
+    default Page<OrderOutDTO> ordersToOrderDTOs(Page<Order> orders) {
         List<OrderOutDTO> dtos = orders.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
