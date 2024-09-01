@@ -4,15 +4,18 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.example.smartgarage.models.enums.UniqueType;
 import org.example.smartgarage.repositories.contracts.UserRepository;
+import org.example.smartgarage.repositories.contracts.VehicleRepository;
 import org.example.smartgarage.validation.Unique;
 
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     private final UserRepository userRepository;
+    private final VehicleRepository vehicleRepository;
     private UniqueType uniqueType;
 
-    public UniqueValidator(UserRepository userRepository) {
+    public UniqueValidator(UserRepository userRepository, VehicleRepository vehicleRepository) {
         this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
@@ -30,6 +33,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
             case EMAIL -> userRepository.findByEmail(value).isEmpty();
             case PHONE -> userRepository.findByPhoneNumber(value).isEmpty();
             case USERNAME -> userRepository.findByUsername(value).isEmpty();
+            case VIN,REGISTRY -> vehicleRepository.findVehicleByLicensePlateOrVin(value, value) != null;
         };
     }
 }

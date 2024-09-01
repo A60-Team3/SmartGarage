@@ -87,7 +87,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toDto(user));
     }
 
-    @PreAuthorize("hasAnyRole('CLERK') || #userId == principal.getId()")
+    @PreAuthorize("hasAnyRole('CLERK') or #userId == principal.id")
     @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateDto dto,
                                         @PathVariable long userId,

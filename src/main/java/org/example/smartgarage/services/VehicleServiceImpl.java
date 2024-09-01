@@ -52,7 +52,8 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle update(long id, Vehicle vehicle, UserEntity user) {
-        Vehicle repoVehicle = vehicleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+        Vehicle repoVehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
         Vehicle existingVehicle = vehicleRepository.findVehicleByLicensePlateOrVin(vehicle.getLicensePlate(), vehicle.getVin());
         if (existingVehicle != null){
             if (existingVehicle.getId() != repoVehicle.getId()){

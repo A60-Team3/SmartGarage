@@ -9,8 +9,8 @@ import org.example.smartgarage.validation.Unique;
 
 public record EmployeeRegistrationDto(
         @NotBlank(message = "Username is mandatory")
-        @Unique(type = UniqueType.USERNAME, message = "Username already exists")
         @Size(min = 2, max = 20)
+        @Unique(type = UniqueType.USERNAME, message = "Username already exists")
         String username,
 
         @Size(min = 2, max = 32, message = "First name must be between 2 and 32 characters")
@@ -25,9 +25,9 @@ public record EmployeeRegistrationDto(
         String email,
 
         @NotBlank(message = "Phone number is mandatory")
-        @Unique(type = UniqueType.PHONE, message = "Phone number already exists")
         @Pattern(regexp = phoneRegex, message = "Phone number must consist of 10 digits")
         @Size(min = 10, max = 10, message = "Phone number must be 10 digits long")
+        @Unique(type = UniqueType.PHONE, message = "Phone number already exists")
         String phoneNumber,
 
         @NotBlank(message = "Password is mandatory")

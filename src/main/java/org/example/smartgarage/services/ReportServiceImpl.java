@@ -2,14 +2,12 @@ package org.example.smartgarage.services;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.example.smartgarage.dtos.VisitOutDto;
+import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.models.UserEntity;
-import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.ReportService;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @Service

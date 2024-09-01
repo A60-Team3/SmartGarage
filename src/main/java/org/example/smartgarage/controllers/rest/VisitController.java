@@ -2,11 +2,14 @@ package org.example.smartgarage.controllers.rest;
 
 import com.itextpdf.text.DocumentException;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.example.smartgarage.dtos.VisitOutDto;
+import jakarta.validation.Valid;
+import org.example.smartgarage.dtos.request.VisitInDto;
+import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.events.EmailReportEvent;
 import org.example.smartgarage.mappers.VisitMapper;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.services.contracts.VisitService;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,14 +78,14 @@ public class VisitController {
                                      @RequestParam boolean toPdf,
                                      @RequestParam(required = false) String exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException, DocumentException {
-        VisitFilterOptions visitFilterOptions = getVisitFilterOptions(
+        VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 null, customerName, null, clerkName,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 brandName, vehicleVin, vehicleRegistry,
                 bookedCondition, bookedOn, sortBy, sortOrder
         );
 
-        Page<VisitOutDto> visitsPage = getVisitOutDtos(
+        Page<VisitOutDto> visitsPage = createVisitOutDtos(
                 offset, pageSize, toPdf,
                 exchangeCurrency, principal.getId(), visitFilterOptions
         );
@@ -121,14 +125,14 @@ public class VisitController {
                                      @RequestParam boolean toPdf,
                                      @RequestParam(required = false) String exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException, DocumentException {
-        VisitFilterOptions visitFilterOptions = getVisitFilterOptions(
+        VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 userId, customerName, null, clerkName,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 brandName, vehicleVin, vehicleRegistry,
                 bookedCondition, bookedOn, sortBy, sortOrder
         );
 
-        Page<VisitOutDto> visitsPage = getVisitOutDtos(
+        Page<VisitOutDto> visitsPage = createVisitOutDtos(
                 offset, pageSize, toPdf,
                 exchangeCurrency, userId, visitFilterOptions
         );
@@ -170,7 +174,7 @@ public class VisitController {
                                      @RequestParam boolean toPdf,
                                      @RequestParam(required = false) String exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException, DocumentException {
-        VisitFilterOptions visitFilterOptions = getVisitFilterOptions(
+        VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 customerId, customerName, clerkId, clerkName,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 brandName, vehicleVin, vehicleRegistry,
@@ -178,7 +182,7 @@ public class VisitController {
         );
 
 
-        Page<VisitOutDto> visitsPage = getVisitOutDtos(
+        Page<VisitOutDto> visitsPage = createVisitOutDtos(
                 offset, pageSize, toPdf,
                 exchangeCurrency, principal.getId(), visitFilterOptions
         );
@@ -193,15 +197,36 @@ public class VisitController {
         return ResponseEntity.ok(visitMapper.toDto(visit));
     }
 
+    @PreAuthorize("hasRole('CLERK')")
     @PostMapping("/visits")
-    public ResponseEntity<?> createVisit( ){
-        return null;
+    public ResponseEntity<?> createVisit(@Valid VisitInDto dto,
+                                         @AuthenticationPrincipal CustomUserDetails loggedClerk){
+        Visit visit = visitMapper.toEntity(dto);
+        Visit savedVisit = visitService.create(visit, loggedClerk.getId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(visitMapper.toDto(savedVisit));
     }
 
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
+    @PutMapping("/visits/{visitId}")
+    public ResponseEntity<?> updateVisit(@RequestParam Status status,
+                                         @PathVariable long visitId) {
 
+        Visit updatedVisit = visitService.updateStatus(status, visitId);
 
+        return ResponseEntity.ok(visitMapper.toDto(updatedVisit));
+    }
 
-    private static VisitFilterOptions getVisitFilterOptions(
+    @PreAuthorize("hasAnyRole('CLERK')")
+    @DeleteMapping("/visits/{visitId}")
+    public ResponseEntity<?> deleteVisit(@PathVariable long visitId) {
+
+        visitService.deleteVisit(visitId);
+
+        return ResponseEntity.ok("Visit successfully deleted");
+    }
+
+    private static VisitFilterOptions createVisitFilterOptions(
             Long customerId, String customerName, Long clerkId, String clerkName,
             TimeOperator scheduleCondition, LocalDate scheduleDateFrom, LocalDate scheduleDateTo,
             String brandName, String vehicleVin, String vehicleRegistry,
@@ -212,9 +237,9 @@ public class VisitController {
                 brandName, vehicleVin, vehicleRegistry, bookedCondition, bookedOn, sortBy, sortOrder);
     }
 
-    private Page<VisitOutDto> getVisitOutDtos(int offset, int pageSize, boolean toPdf,
-                                              String exchangeCurrency, long userId,
-                                              VisitFilterOptions visitFilterOptions) throws IOException, DocumentException {
+    private Page<VisitOutDto> createVisitOutDtos(int offset, int pageSize, boolean toPdf,
+                                                 String exchangeCurrency, long userId,
+                                                 VisitFilterOptions visitFilterOptions) throws IOException, DocumentException {
         Pageable pageable = PageRequest.of(offset, pageSize);
 
         List<Visit> visits = visitService.findAll(visitFilterOptions);

@@ -1,9 +1,10 @@
 package org.example.smartgarage.services.contracts;
 
 import com.itextpdf.text.DocumentException;
-import org.example.smartgarage.dtos.VisitOutDto;
+import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 
 import java.io.ByteArrayOutputStream;
@@ -18,4 +19,10 @@ public interface VisitService {
     List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, String exchangeCurrency) throws IOException;
 
     ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal) throws DocumentException, IOException;
+
+    Visit create(Visit visit, Long clerkId);
+
+    Visit updateStatus(Status status, long visitId);
+
+    void deleteVisit(long visitId);
 }

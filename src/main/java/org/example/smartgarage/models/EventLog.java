@@ -57,8 +57,8 @@ public class EventLog  extends BaseEntity {
 
     @Override
     public String toString(){
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("dd-MMMM-y HH:mm:ss", Locale.ENGLISH);
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         String formattedDate = getTimestamp().format(date);
-        return String.format("[%s] %s%n", formattedDate, getDescription());
+        return String.format("[%s] %s", formattedDate, getDescription());
     }
 }

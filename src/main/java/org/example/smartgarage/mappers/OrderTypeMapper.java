@@ -5,6 +5,7 @@ import org.example.smartgarage.dtos.response.OrderTypeOutDTO;
 import org.example.smartgarage.models.ServiceType;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface OrderTypeMapper {
 
+    @Mapping(target = "id", ignore = true)
     ServiceType toEntity(OrderTypeInDTO orderTypeInDTO);
 
     OrderTypeOutDTO toDTO(ServiceType serviceType);

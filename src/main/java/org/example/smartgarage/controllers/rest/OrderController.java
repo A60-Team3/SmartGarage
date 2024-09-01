@@ -26,15 +26,14 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderTypeService orderTypeService;
-    private final UserService userService;
     private final VisitService visitService;
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderTypeService orderTypeService, UserService userService, VisitService visitService, OrderMapper orderMapper) {
+    public OrderController(OrderService orderService, OrderTypeService orderTypeService,
+                           VisitService visitService, OrderMapper orderMapper) {
         this.orderService = orderService;
         this.orderTypeService = orderTypeService;
-        this.userService = userService;
         this.visitService = visitService;
         this.orderMapper = orderMapper;
     }
