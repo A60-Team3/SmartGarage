@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -113,7 +114,7 @@ public class VisitController {
                                      @RequestParam(required = false) String brandName,
                                      @Parameter(description = "Pattern - String length 17")
                                      @RequestParam(required = false) String vehicleVin,
-                                     @Parameter(description = "Pattern - XX XXXX XX")
+                                     @Parameter(description = "Pattern - X(X)NNNNY(Y)")
                                      @RequestParam(required = false) String vehicleRegistry,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
@@ -181,7 +182,6 @@ public class VisitController {
                 bookedCondition, bookedOn, sortBy, sortOrder
         );
 
-
         Page<VisitOutDto> visitsPage = createVisitOutDtos(
                 offset, pageSize, toPdf,
                 exchangeCurrency, principal.getId(), visitFilterOptions
@@ -243,6 +243,10 @@ public class VisitController {
         Pageable pageable = PageRequest.of(offset, pageSize);
 
         List<Visit> visits = visitService.findAll(visitFilterOptions);
+
+        if (visits.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No entry satisfies the filter conditions");
+        }
 
         List<VisitOutDto> visitOutDtos = visits.stream().map(visitMapper::toDto).toList();
 

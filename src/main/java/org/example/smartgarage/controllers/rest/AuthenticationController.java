@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/garage")
@@ -39,7 +40,7 @@ public class AuthenticationController {
     @PreAuthorize("hasRole('CLERK')")
     @PostMapping("/users")
     public ResponseEntity<UserOutDto> registerNewCustomer(@Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
-                                                          HttpServletRequest request){
+                                                          HttpServletRequest request) {
         UserEntity customer = userMapper.toEntity(customerRegistrationDto);
         UserEntity savedCustomer = authenticationService.registerCustomer(customer, request);
         UserOutDto userOutDto = userMapper.toDto(savedCustomer);
@@ -49,11 +50,11 @@ public class AuthenticationController {
 
     @PreAuthorize("hasRole('HR')")
     @PostMapping("/clerks")
-    public ResponseEntity<?> registerNewEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto,
-                                                          HttpServletRequest request){
+    public ResponseEntity<UserOutDto> registerNewEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto,
+                                                 HttpServletRequest request) {
 
         if (!employeeRegistrationDto.password().equals(employeeRegistrationDto.passwordConfirm())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password confirmation should match password.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password confirmation should match password.");
         }
         UserEntity employee = userMapper.toEntity(employeeRegistrationDto);
         UserEntity savedEmployee = authenticationService.registerEmployee(employee, request);

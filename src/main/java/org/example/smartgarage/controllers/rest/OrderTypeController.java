@@ -34,7 +34,7 @@ public class OrderTypeController {
 
     @GetMapping
     public ResponseEntity<Page<OrderTypeOutDTO>> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
         Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize);
         Page<OrderTypeOutDTO> orderTypeOutDTOS = orderTypeMapper.orderTypesToOrderTypeDTOs(orderTypes);
@@ -42,56 +42,39 @@ public class OrderTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderTypeOutDTO> getById(@PathVariable long id){
+    public ResponseEntity<OrderTypeOutDTO> getById(@PathVariable long id) {
 
-        try {
-            ServiceType orderType = orderTypeService.getById(id);
-            OrderTypeOutDTO orderTypeOutDTO = orderTypeMapper.toDTO(orderType);
-            return ResponseEntity.ok(orderTypeOutDTO);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        ServiceType orderType = orderTypeService.getById(id);
+        OrderTypeOutDTO orderTypeOutDTO = orderTypeMapper.toDTO(orderType);
+        return ResponseEntity.ok(orderTypeOutDTO);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody OrderTypeInDTO orderTypeInDTO){
-        try {
-            ServiceType orderType = orderTypeMapper.toEntity(orderTypeInDTO);
-            orderTypeService.create(orderType);
-            OrderTypeOutDTO orderTypeOutDTO = orderTypeMapper.toDTO(orderType);
-            return ResponseEntity.ok(orderTypeOutDTO);
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
+    public ResponseEntity<?> create(@Valid @RequestBody OrderTypeInDTO orderTypeInDTO) {
+
+        ServiceType orderType = orderTypeMapper.toEntity(orderTypeInDTO);
+        orderTypeService.create(orderType);
+        OrderTypeOutDTO orderTypeOutDTO = orderTypeMapper.toDTO(orderType);
+        return ResponseEntity.ok(orderTypeOutDTO);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable long id,
-                                    @Valid @RequestBody OrderTypeInDTO orderTypeInDTO){
+                                    @Valid @RequestBody OrderTypeInDTO orderTypeInDTO) {
 
-        try{
-            ServiceType orderType = orderTypeMapper.toEntity(orderTypeInDTO);
-            ServiceType updated = orderTypeService.update(id, orderType);
-            OrderTypeOutDTO orderTypeOutDTO = orderTypeMapper.toDTO(updated);
-            return ResponseEntity.ok(orderTypeOutDTO);
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        ServiceType orderType = orderTypeMapper.toEntity(orderTypeInDTO);
+        ServiceType updated = orderTypeService.update(id, orderType);
+        OrderTypeOutDTO orderTypeOutDTO = orderTypeMapper.toDTO(updated);
+        return ResponseEntity.ok(orderTypeOutDTO);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id){
+    public ResponseEntity<?> delete(@PathVariable long id) {
 
-        try{
-            orderTypeService.delete(id);
-            return ResponseEntity.ok("Service deleted successfully");
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        orderTypeService.delete(id);
+        return ResponseEntity.ok("Service deleted successfully");
     }
 }

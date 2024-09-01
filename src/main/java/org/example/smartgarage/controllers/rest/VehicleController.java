@@ -56,28 +56,22 @@ public class VehicleController {
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable long id){
-        try {
+
             Vehicle vehicle = vehicleService.getById(id);
             VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(vehicle);
             return ResponseEntity.ok(vehicleOutDTO);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody VehicleInDTO vehicleInDTO,
                                     @AuthenticationPrincipal CustomUserDetails principal){
-        try {
+
             UserEntity user = userService.getById(principal.getId());
             Vehicle vehicle = vehicleMapper.toEntity(vehicleInDTO, vehicleBrandService, vehicleModelService, vehicleYearService, userService);
             vehicleService.create(vehicle, user);
             VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(vehicle);
             return ResponseEntity.ok(vehicleOutDTO);
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
@@ -85,28 +79,19 @@ public class VehicleController {
     public ResponseEntity<?> update(@PathVariable long id,
                                     @Valid @RequestBody VehicleInDTO vehicleInDTO,
                                     @AuthenticationPrincipal CustomUserDetails principal){
-        try {
+
             UserEntity user = userService.getById(principal.getId());
             Vehicle vehicle = vehicleMapper.toEntity(vehicleInDTO, vehicleBrandService, vehicleModelService, vehicleYearService, userService);
             Vehicle updated = vehicleService.update(id, vehicle, user);
             VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(updated);
             return ResponseEntity.ok(vehicleOutDTO);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable long id){
 
-        try {
             vehicleService.delete(id);
             return ResponseEntity.ok("Vehicle deleted successfully");
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 }

@@ -41,7 +41,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/service-history")
     public ResponseEntity<?> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
 
         Page<Order> orders = orderService.getAll(offset, pageSize);
@@ -52,58 +52,43 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/users/{userId}/visits/{visitId}/orders")
     public ResponseEntity<?> getAllByVisit(@PathVariable long userId,
-                                    @PathVariable long visitId,
-                                    @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+                                           @PathVariable long visitId,
+                                           @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
 
-        try {
+
             Visit visit = visitService.findById(visitId);
             Page<Order> orders = orderService.getAllByVisit(userId, visit, offset, pageSize);
             Page<OrderOutDTO> orderOutDTOPage = orderMapper.ordersToOrderDTOs(orders);
             return ResponseEntity.ok(orderOutDTOPage);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UserMismatchException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/users/{userId}/visits/{visitId}/orders/{orderId}")
     public ResponseEntity<?> getById(@PathVariable long userId,
                                      @PathVariable long visitId,
-                                     @PathVariable long orderId){
+                                     @PathVariable long orderId) {
 
-        try {
+
             Visit visit = visitService.findById(visitId);
-            Order order = orderService.getById(userId, visit,orderId);
+            Order order = orderService.getById(userId, visit, orderId);
             OrderOutDTO orderOutDTO = orderMapper.toDTO(order);
             return ResponseEntity.ok(orderOutDTO);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UserMismatchException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PostMapping("/users/{userId}/visits/{visitId}/orders")
     public ResponseEntity<?> create(@PathVariable long userId,
                                     @PathVariable long visitId,
-                                    @Valid @RequestBody OrderInDTO orderInDTO){
+                                    @Valid @RequestBody OrderInDTO orderInDTO) {
 
-        try {
+
             Visit visit = visitService.findById(visitId);
             Order order = orderMapper.toEntity(orderInDTO, orderTypeService);
             orderService.create(order, userId, visit);
             OrderOutDTO orderOutDTO = orderMapper.toDTO(order);
             return ResponseEntity.ok(orderOutDTO);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UserMismatchException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
@@ -111,35 +96,24 @@ public class OrderController {
     public ResponseEntity<?> update(@PathVariable long userId,
                                     @PathVariable long visitId,
                                     @PathVariable long orderId,
-                                    @Valid @RequestBody OrderInDTO orderInDTO){
+                                    @Valid @RequestBody OrderInDTO orderInDTO) {
 
-        try {
-            Visit visit = visitService.findById(visitId);
-            Order order = orderMapper.toEntity(orderInDTO, orderTypeService);
-            Order updated = orderService.update(orderId, order, userId, visit);
-            OrderOutDTO orderOutDTO = orderMapper.toDTO(updated);
-            return ResponseEntity.ok(orderOutDTO);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UserMismatchException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        Visit visit = visitService.findById(visitId);
+        Order order = orderMapper.toEntity(orderInDTO, orderTypeService);
+        Order updated = orderService.update(orderId, order, userId, visit);
+        OrderOutDTO orderOutDTO = orderMapper.toDTO(updated);
+        return ResponseEntity.ok(orderOutDTO);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @DeleteMapping("/users/{userId}/visits/{visitId}/orders/{orderId}")
     public ResponseEntity<?> delete(@PathVariable long userId,
                                     @PathVariable long visitId,
-                                    @PathVariable long orderId){
+                                    @PathVariable long orderId) {
 
-        try {
-            Visit visit = visitService.findById(visitId);
-            orderService.delete(userId, visit, orderId);
-            return ResponseEntity.ok("Order deleted successfully");
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UserMismatchException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+
+        Visit visit = visitService.findById(visitId);
+        orderService.delete(userId, visit, orderId);
+        return ResponseEntity.ok("Order deleted successfully");
     }
 }

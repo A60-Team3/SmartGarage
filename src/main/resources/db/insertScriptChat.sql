@@ -17,10 +17,10 @@ INSERT INTO service_types (service_name, service_price) VALUES
 -- Insert users (with bcrypt hashed passwords)
 -- Password: 'password123' (hashed using bcrypt)
 INSERT INTO users (first_name, last_name, email, username, password, phone_number) VALUES
-                                                                                       ('John', 'Doe', 'john.doe@example.com', 'johndoe', '$2a$10$wHsfhg1.uCZTvnPR3ZUp/O0wFn4/n/hQ8vV3gZ39sDwIOBqPSGZNy', '1234567890'),
-                                                                                       ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', '$2a$10$wHsfhg1.uCZTvnPR3ZUp/O0wFn4/n/hQ8vV3gZ39sDwIOBqPSGZNy', '0987654321'),
-                                                                                       ('Bob', 'Johnson', 'bob.johnson@example.com', 'bobjohnson', '$2a$10$wHsfhg1.uCZTvnPR3ZUp/O0wFn4/n/hQ8vV3gZ39sDwIOBqPSGZNy', '1122334455'),
-                                                                                       ('Alice', 'Williams', 'alice.williams@example.com', 'alicewilliams', '$2a$10$wHsfhg1.uCZTvnPR3ZUp/O0wFn4/n/hQ8vV3gZ39sDwIOBqPSGZNy', '5566778899');
+                                                                                       ('John', 'Doe', 'john.doe@example.com', 'johndoe', '$2a$12$gXSEE1nGENjnCmkj72URdOenrXGBOsCwR0nVewd32Zt3ybVN9FcOy', '1234567890'),
+                                                                                       ('Jane', 'Smith', 'jane.smith@example.com', 'janesmith', '$2a$12$g0nBSGbxv4xTnje2yL0PS.wsC25jyh4OHP5tDHh9Km5znUiA.87iC', '0987654321'),
+                                                                                       ('Bob', 'Johnson', 'bob.johnson@example.com', 'bobjohnson', '$2a$12$uYLrXYHB3S605R/jsF7cC.TMeUsZXKEbULP1Uau4VN/r9ravIMKUa', '1122334455'),
+                                                                                       ('Alice', 'Williams', 'alice.williams@example.com', 'alicewilliams', '$2a$12$oLqdBT8J/cxNruQPDU.OGe.GTbhFWgp/bLb6DlWEnsuycvS8y8.H.', '5566778899');
 
 -- Assign roles to users
 INSERT INTO users_roles (user_id, role_id) VALUES

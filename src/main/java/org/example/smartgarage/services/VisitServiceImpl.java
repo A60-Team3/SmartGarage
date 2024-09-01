@@ -2,8 +2,10 @@ package org.example.smartgarage.services;
 
 import com.itextpdf.text.DocumentException;
 import org.example.smartgarage.dtos.response.VisitOutDto;
+import org.example.smartgarage.exceptions.AuthenticationException;
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
+import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.models.EventLog;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
@@ -91,6 +93,10 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public Visit create(Visit visit, Long clerkId) {
+        if (!visit.getClient().equals(visit.getVehicle().getOwner())){
+            throw new UserMismatchException("The customer is not the owner of said vehicle");
+        }
+
         UserEntity clerk = userService.getById(clerkId);
         visit.setClerk(clerk);
         visit.setEventLogs(new ArrayList<>());

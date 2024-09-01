@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -89,15 +90,15 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('CLERK') or #userId == principal.id")
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateDto dto,
-                                        @PathVariable long userId,
-                                        @AuthenticationPrincipal CustomUserDetails principal) {
+    public ResponseEntity<UserOutDto> updateUser(@Valid @RequestBody UserUpdateDto dto,
+                                                 @PathVariable long userId,
+                                                 @AuthenticationPrincipal CustomUserDetails principal) {
         boolean hasRights = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(s -> s.equals("ROLE_CLERK"));
 
         if (principal.getId() != userId && !hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authorized action");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authorized action");
         }
 
         UserEntity updatedUserInfo = userMapper.toEntity(dto);
@@ -110,16 +111,16 @@ public class UserController {
     @PreAuthorize("hasAnyRole('CLERK')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable long userId,
-                                        @AuthenticationPrincipal CustomUserDetails principal) {
+                                                 @AuthenticationPrincipal CustomUserDetails principal) {
         boolean hasRights = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(s -> s.equals("ROLE_CLERK"));
 
         if (!hasRights) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only employees can delete");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only employees can delete");
         }
 
-       userService.deleteUser(userId);
+        userService.deleteUser(userId);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
