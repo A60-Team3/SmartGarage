@@ -1,8 +1,6 @@
 package org.example.smartgarage.services;
 
-import com.itextpdf.text.DocumentException;
 import org.example.smartgarage.dtos.response.VisitOutDto;
-import org.example.smartgarage.exceptions.AuthenticationException;
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.exceptions.UserMismatchException;
@@ -14,8 +12,6 @@ import org.example.smartgarage.repositories.contracts.VisitRepository;
 import org.example.smartgarage.services.contracts.*;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 import org.example.smartgarage.utils.filtering.VisitSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +19,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class VisitServiceImpl implements VisitService {
-    private static final Logger log = LoggerFactory.getLogger(VisitServiceImpl.class);
     private final VisitRepository visitRepository;
     private final CurrencyService currencyService;
     private final ReportService reportService;
@@ -87,7 +81,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity principal) throws DocumentException, IOException {
+    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity principal) throws IOException {
         return reportService.createPdf(visits, principal);
     }
 

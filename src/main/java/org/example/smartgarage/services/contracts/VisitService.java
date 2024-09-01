@@ -1,6 +1,5 @@
 package org.example.smartgarage.services.contracts;
 
-import com.itextpdf.text.DocumentException;
 import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
@@ -18,7 +17,7 @@ public interface VisitService {
 
     List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, String exchangeCurrency) throws IOException;
 
-    ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal) throws DocumentException, IOException;
+    ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal) throws IOException;
 
     Visit create(Visit visit, Long clerkId);
 

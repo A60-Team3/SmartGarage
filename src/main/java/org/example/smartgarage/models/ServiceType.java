@@ -33,7 +33,7 @@ public class ServiceType extends BaseEntity {
 
     @Override
     public String toString() {
-        return String.format("Service: %s, Cost: %s",serviceName, servicePrice);
+        return String.format("Service: %s, Cost: %s BGN",serviceName, servicePrice);
     }
 
     @Override

@@ -30,8 +30,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
 
     /*for pdf creation*/
-    implementation 'com.itextpdf:itextpdf:5.5.13.4'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+    implementation 'com.itextpdf:itext-core:8.0.5'
+    implementation 'com.itextpdf:bouncy-castle-adapter:8.0.5'
 
     /* mapping interface*/
     implementation 'org.mapstruct:mapstruct:1.6.0'

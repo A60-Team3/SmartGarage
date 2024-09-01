@@ -11,6 +11,7 @@ public class VisitOutDto implements Serializable {
     private String employeeName;
     private VehicleOutDTO vehicle;
     private List<String> services;
+    private String status;
     private List<String> history;
     private BigDecimal totalCost;
     private String currency = "BGN";
@@ -20,12 +21,13 @@ public class VisitOutDto implements Serializable {
     }
 
     public VisitOutDto(String bookedDate, String clientName, String employeeName, VehicleOutDTO vehicle,
-                       List<String> services, List<String> history, BigDecimal totalCost, String currency) {
+                       List<String> services, String status, List<String> history, BigDecimal totalCost, String currency) {
         this.bookedDate = bookedDate;
         this.clientName = clientName;
         this.employeeName = employeeName;
         this.vehicle = vehicle;
         this.services = services;
+        this.status = status;
         this.history = history;
         this.totalCost = totalCost;
         this.currency = currency;
@@ -101,5 +103,13 @@ public class VisitOutDto implements Serializable {
 
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

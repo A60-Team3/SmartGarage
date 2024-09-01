@@ -1,6 +1,5 @@
 package org.example.smartgarage.controllers.rest;
 
-import com.itextpdf.text.DocumentException;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.example.smartgarage.dtos.request.VisitInDto;
@@ -78,9 +77,9 @@ public class VisitController {
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam boolean toPdf,
                                      @RequestParam(required = false) String exchangeCurrency,
-                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException, DocumentException {
+                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
-                null, customerName, null, clerkName,
+                null, customerName, principal.getId(), clerkName,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 brandName, vehicleVin, vehicleRegistry,
                 bookedCondition, bookedOn, sortBy, sortOrder
@@ -125,7 +124,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam boolean toPdf,
                                      @RequestParam(required = false) String exchangeCurrency,
-                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException, DocumentException {
+                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 userId, customerName, null, clerkName,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
@@ -174,7 +173,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam boolean toPdf,
                                      @RequestParam(required = false) String exchangeCurrency,
-                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException, DocumentException {
+                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 customerId, customerName, clerkId, clerkName,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
@@ -239,7 +238,7 @@ public class VisitController {
 
     private Page<VisitOutDto> createVisitOutDtos(int offset, int pageSize, boolean toPdf,
                                                  String exchangeCurrency, long userId,
-                                                 VisitFilterOptions visitFilterOptions) throws IOException, DocumentException {
+                                                 VisitFilterOptions visitFilterOptions) throws IOException {
         Pageable pageable = PageRequest.of(offset, pageSize);
 
         List<Visit> visits = visitService.findAll(visitFilterOptions);

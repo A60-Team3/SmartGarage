@@ -1,13 +1,29 @@
 package org.example.smartgarage.services;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.EncryptionConstants;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.WriterProperties;
+import com.itextpdf.kernel.pdf.canvas.draw.DashedLine;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.properties.AreaBreakType;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
 import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.services.contracts.ReportService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -15,63 +31,136 @@ public class ReportServiceImpl implements ReportService {
     private final static String TITLE = "A60 Smart Garage Report";
     private final static String SUBJECT = "Your visits";
 
+    @Value("${pdf.encryption.master.password}")
+    private String MASTER_PASSWORD;
+    @Value("${pdf.application.logo.path}")
+    private String GARAGE_LOGO;
+
     @Override
-    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity user) throws DocumentException {
+    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity user) throws IOException {
         if (visits.isEmpty()) return new ByteArrayOutputStream();
 
-        Document document = new Document();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        PdfWriter.getInstance(document, byteArrayOutputStream);
+        PdfWriter pdfWriter = new PdfWriter(
+                byteArrayOutputStream,
+                new WriterProperties()
+                        .setStandardEncryption(
+                                user.getPhoneNumber().getBytes(),
+                                MASTER_PASSWORD.getBytes(),
+                                EncryptionConstants.ALLOW_PRINTING,
+                                EncryptionConstants.ENCRYPTION_AES_256)
+        );
 
-        document.addTitle(TITLE);
-        document.addSubject(SUBJECT);
-        document.addAuthor(user.getUsername());
-        Font font = new Font(Font.FontFamily.TIMES_ROMAN, 14f, Font.NORMAL, BaseColor.BLACK);
-        document.open();
+        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 
-        for (VisitOutDto visit : visits) {
+        pdfDocument.getDocumentInfo().setAuthor(String.format("%s %s", user.getFirstName(), user.getLastName()));
+        pdfDocument.getDocumentInfo().setTitle(TITLE);
+        pdfDocument.getDocumentInfo().setSubject(SUBJECT);
 
-            Paragraph booked = new Paragraph(String.format("Visit scheduled on: %s", visit.getBookedDate()), font);
-            booked.setAlignment(Element.ALIGN_JUSTIFIED);
+        PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+        Image logo = new Image(ImageDataFactory.create(GARAGE_LOGO));
+
+        Document document = new Document(pdfDocument, PageSize.A4);
+        document.setTextAlignment(TextAlignment.JUSTIFIED);
+        document.setFont(font);
+
+        for (int i = 0; i < visits.size(); i++) {
+            VisitOutDto visit = visits.get(i);
+
+            Paragraph header = new Paragraph()
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .setPadding(12f)
+                    .add(new Tab())
+                    .add(new Tab())
+                    .add(new Text("Smart Garage Inc").setBold()
+                            .setBackgroundColor(ColorConstants.BLACK)
+                            .setFontColor(ColorConstants.YELLOW)
+                            .setFontSize(36f))
+                    .add(logo.scale(0.25f, 0.25f));
+            document.add(header);
+
+            document.add(new LineSeparator(new DashedLine()));
+
+            Paragraph booked = new Paragraph()
+                    .add(new Tab())
+                    .add(new Text("Visit scheduled on: ")
+                            .setBold())
+                    .add(new Text(visit.getBookedDate())
+                            .setFontColor(ColorConstants.RED)
+                            .setItalic());
             document.add(booked);
 
-            Paragraph customer = new Paragraph(String.format("Visitor: %s", visit.getClientName()), font);
-            customer.setAlignment(Element.ALIGN_JUSTIFIED);
+            Paragraph status = new Paragraph()
+                    .add(new Tab())
+                    .add(new Text("Visit current status: ")
+                            .setBold())
+                    .add(new Text(visit.getStatus())
+                            .setFontColor(ColorConstants.RED)
+                            .setItalic());
+            document.add(status);
+
+            Paragraph customer = new Paragraph()
+                    .add(new Tab())
+                    .add(new Text("Visitor: ").setBold())
+                    .add(new Text(visit.getClientName()).setItalic());
             document.add(customer);
 
-            Paragraph clerk = new Paragraph(String.format("Served by: %s", visit.getEmployeeName()), font);
-            clerk.setAlignment(Element.ALIGN_JUSTIFIED);
+            Paragraph clerk = new Paragraph()
+                    .add(new Tab())
+                    .add(new Text("Served by: ").setBold())
+                    .add(new Text(visit.getEmployeeName()).setItalic());
             document.add(clerk);
 
-            Paragraph vehicle = createVehicleParagraph(visit, font);
-            vehicle.setAlignment(Element.ALIGN_JUSTIFIED);
+            Paragraph vehicle = createVehicleParagraph(visit);
             document.add(vehicle);
 
-            visit.getServices().forEach(s -> {
-                Paragraph service = new Paragraph(s, font);
-                service.setAlignment(Element.ALIGN_JUSTIFIED);
-                try {
-                    document.add(service);
-                } catch (DocumentException e) {
-                    throw new RuntimeException(e);
-                }
+            document.add(
+                    new Paragraph()
+                            .add(new Tab())
+                            .add(new Text("Services carried out:").setBold())
+            );
+
+            visit.getServices().forEach(service -> {
+                document.add(
+                        new Paragraph()
+                                .add(new Tab())
+                                .add(new Tab())
+                                .add(service)
+                );
             });
+
+            document.add(
+                    new Paragraph()
+                            .add(new Tab())
+                            .add("Visit history:").setBold()
+            );
 
             visit.getHistory().forEach(event -> {
-                Paragraph service = new Paragraph(event, font);
-                service.setAlignment(Element.ALIGN_JUSTIFIED);
-                try {
-                    document.add(service);
-                } catch (DocumentException e) {
-                    throw new RuntimeException(e);
-                }
+                document.add(
+                        new Paragraph()
+                                .add(new Tab())
+                                .add(new Tab())
+                                .add(event)
+                );
             });
 
-            Chunk totalCost = new Chunk(visit.getTotalCost().toString());
-            Chunk currency = new Chunk(visit.getCurrency());
-            Paragraph cost = new Paragraph(String.format("Visit costs total: %s %s", totalCost, currency), font);
-            cost.setAlignment(Element.ALIGN_JUSTIFIED);
-            document.add(cost);
+            document.add(
+                    new Paragraph()
+                            .add(new Tab())
+                            .add("Visit costs total: ").setBold()
+                            .add(new Text(visit.getTotalCost().toString()).setFontColor(ColorConstants.RED))
+                            .add(" ")
+                            .add(visit.getCurrency())
+                            .add(new Tab())
+                            .add(new Tab())
+                            .add(new Text(String.format("Conversion Rate: %.4f", visit.getExchangeRate())))
+            );
+
+            document.add(new LineSeparator(new DashedLine()));
+
+            if (i != visits.size() - 1) {
+                document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+            }
         }
 
         document.close();
@@ -79,19 +168,29 @@ public class ReportServiceImpl implements ReportService {
         return byteArrayOutputStream;
     }
 
-    private static Paragraph createVehicleParagraph(VisitOutDto visit, Font font) {
-        Phrase vehicleBrand = new Phrase(visit.getVehicle().brandName(), font);
-        Phrase vehicleModel = new Phrase(visit.getVehicle().modelName(), font);
-        Phrase vehicleYear = new Phrase(String.valueOf(visit.getVehicle().year()), font);
-        Phrase vehicleLicense = new Phrase(String.valueOf(visit.getVehicle().licensePlate()), font);
-        Phrase vehicleVin = new Phrase(String.valueOf(visit.getVehicle().vin()), font);
+    private static Paragraph createVehicleParagraph(VisitOutDto visit) {
+        Text vehicleBrandTitle = new Text("Brand: ").setBold();
+        Text vehicleBrand = new Text(visit.getVehicle().brandName() + " ");
+        Text vehicleModelTitle = new Text("Model: ").setBold();
+        Text vehicleModel = new Text(visit.getVehicle().modelName() + " ");
+        Text vehicleYearTitle = new Text("Produced: ").setBold();
+        Text vehicleYear = new Text(visit.getVehicle().year() + " ");
+        Text vehicleLicenseTitle = new Text("License plate: ").setBold();
+        Text vehicleLicense = new Text(visit.getVehicle().licensePlate() + " ");
+        Text vehicleVinTitle = new Text("VIN: ").setBold();
+        Text vehicleVin = new Text(visit.getVehicle().vin());
 
-        Paragraph vehicle = new Paragraph();
-        vehicle.add(vehicleBrand);
-        vehicle.add(vehicleModel);
-        vehicle.add(vehicleYear);
-        vehicle.add(vehicleLicense);
-        vehicle.add(vehicleVin);
-        return vehicle;
+        return new Paragraph()
+                .add(new Tab())
+                .add(vehicleBrandTitle)
+                .add(vehicleBrand)
+                .add(vehicleModelTitle)
+                .add(vehicleModel)
+                .add(vehicleYearTitle)
+                .add(vehicleYear)
+                .add(vehicleLicenseTitle)
+                .add(vehicleLicense)
+                .add(vehicleVinTitle)
+                .add(vehicleVin);
     }
 }

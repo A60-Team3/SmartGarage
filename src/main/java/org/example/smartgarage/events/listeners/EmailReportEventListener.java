@@ -7,12 +7,16 @@ import org.example.smartgarage.events.EmailReportEvent;
 import org.example.smartgarage.models.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class EmailReportEventListener{
@@ -41,12 +45,15 @@ public class EmailReportEventListener{
     }
 
     private void sendCredentialsEmail() throws MessagingException, UnsupportedEncodingException {
+        String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String subject = "Smart Garage Inc service report";
         String senderName = "A60 Team 3 Smart Garage App";
         String mailContent = "<p> Greetings, Mr./Mrs. " + String.format("%s %s", user.getFirstName(), user.getLastName()) + ", </p>" +
                 "<p>Thank you for choosing Smart Garage Inc for your 'precious' maintenance.</p>" +
                 "<br/><br/>" +
                 "<p> Find attached the report you requested</p>" +
+                "<p> It is encrypted. The password is your registered phone number.</p>" +
+                "<p> To view the report, you have to save it to your computer.</p>" +
                 "<br/><br/>" +
                 "<p> Thank you <br> Smart Garage Team</p>";
 
@@ -58,7 +65,7 @@ public class EmailReportEventListener{
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
         messageHelper.addAttachment(
-                "Visit report.pdf",
+                String.format("Visit_Report_%s.pdf", currentTime),
                 new ByteArrayDataSource(document.toByteArray(), "application/pdf")
         );
         mailSender.send(message);
