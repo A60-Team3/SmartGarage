@@ -7,18 +7,25 @@ import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.mappers.OrderMapper;
 import org.example.smartgarage.models.Order;
+import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.OrderService;
 import org.example.smartgarage.services.contracts.OrderTypeService;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.services.contracts.VisitService;
+import org.example.smartgarage.utils.filtering.OrderFilterOptions;
+import org.example.smartgarage.utils.filtering.TimeOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/garage")
@@ -26,14 +33,16 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderTypeService orderTypeService;
+    private final UserService userService;
     private final VisitService visitService;
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderTypeService orderTypeService,
+    public OrderController(OrderService orderService, OrderTypeService orderTypeService, UserService userService,
                            VisitService visitService, OrderMapper orderMapper) {
         this.orderService = orderService;
         this.orderTypeService = orderTypeService;
+        this.userService = userService;
         this.visitService = visitService;
         this.orderMapper = orderMapper;
     }
@@ -62,6 +71,26 @@ public class OrderController {
             Page<Order> orders = orderService.getAllByVisit(userId, visit, offset, pageSize);
             Page<OrderOutDTO> orderOutDTOPage = orderMapper.ordersToOrderDTOs(orders);
             return ResponseEntity.ok(orderOutDTOPage);
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC') or #userId == principal.id")
+    @GetMapping("/users/{userId}/orders")
+    public ResponseEntity<?> getAllByUser(@PathVariable long userId,
+                                          @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                          @RequestParam(required = false) String vehicle,
+                                          @RequestParam(required = false) TimeOperator condition,
+                                          @RequestParam(required = false) LocalDateTime date,
+                                          @RequestParam(required = false) String sortBy,
+                                          @RequestParam(required = false) String sortOrder,
+                                          @AuthenticationPrincipal CustomUserDetails principal) {
+
+
+        OrderFilterOptions orderFilterOptions = new OrderFilterOptions(vehicle, date, condition, sortBy, sortOrder);
+        UserEntity user = userService.getById(userId);
+        Page<Order> orders = orderService.getAllByUser(user, offset, pageSize, orderFilterOptions);
+        Page<OrderOutDTO> orderOutDTOPage = orderMapper.ordersToOrderDTOs(orders);
+        return ResponseEntity.ok(orderOutDTOPage);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")

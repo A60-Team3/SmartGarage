@@ -10,6 +10,7 @@ import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Vehicle;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.*;
+import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
 import org.mapstruct.control.MappingControl;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/garage/vehicles")
+@RequestMapping("/api/garage")
 public class VehicleController {
 
     private final VehicleService vehicleService;
@@ -44,17 +45,21 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
-    @GetMapping
+    @GetMapping("/vehicles")
     public ResponseEntity<?> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                    @RequestParam(required = false) String owner,
+                                    @RequestParam(required = false) String sortBy,
+                                    @RequestParam(required = false) String sortOrder){
 
-        Page<Vehicle> vehicles = vehicleService.getAll(offset, pageSize);
+        VehicleFilterOptions vehicleFilterOptions = new VehicleFilterOptions(owner, sortBy, sortOrder);
+        Page<Vehicle> vehicles = vehicleService.getAll(offset, pageSize, vehicleFilterOptions);
         Page<VehicleOutDTO> vehicleOutDTOPage= vehicleMapper.vehiclesToVehicleDTOs(vehicles);
         return ResponseEntity.ok(vehicleOutDTOPage);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
-    @GetMapping("/{id}")
+    @GetMapping("/vehicles/{id}")
     public ResponseEntity<?> getById(@PathVariable long id){
 
             Vehicle vehicle = vehicleService.getById(id);
@@ -75,7 +80,7 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
-    @PutMapping("/{id}")
+    @PutMapping("/vehicles/{id}")
     public ResponseEntity<?> update(@PathVariable long id,
                                     @Valid @RequestBody VehicleInDTO vehicleInDTO,
                                     @AuthenticationPrincipal CustomUserDetails principal){
@@ -88,7 +93,7 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/vehicles/{id}")
     public ResponseEntity<?> delete(@PathVariable long id){
 
             vehicleService.delete(id);

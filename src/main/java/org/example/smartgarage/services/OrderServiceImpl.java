@@ -5,14 +5,18 @@ import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.exceptions.VisitMismatchException;
 import org.example.smartgarage.models.EventLog;
 import org.example.smartgarage.models.Order;
+import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
 import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.repositories.contracts.OrderRepository;
 import org.example.smartgarage.services.contracts.HistoryService;
 import org.example.smartgarage.services.contracts.OrderService;
+import org.example.smartgarage.utils.filtering.OrderFilterOptions;
+import org.example.smartgarage.utils.filtering.OrderSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +52,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderRepository.findAllByVisitId(visit, PageRequest.of(offset, pageSize));
+    }
+
+    @Override
+    public Page<Order> getAllByUser(UserEntity user, int offset, int pageSize, OrderFilterOptions orderFilterOptions) {
+        OrderSpecification orderSpecification = new OrderSpecification(orderFilterOptions, user);
+        Pageable pageable = PageRequest.of(offset, pageSize);
+        return orderRepository.findAll(orderSpecification, pageable);
     }
 
     @Override

@@ -3,21 +3,20 @@ package org.example.smartgarage.controllers.rest;
 import jakarta.validation.Valid;
 import org.example.smartgarage.dtos.request.OrderTypeInDTO;
 import org.example.smartgarage.dtos.response.OrderTypeOutDTO;
-import org.example.smartgarage.exceptions.EntityDuplicateException;
-import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.mappers.OrderTypeMapper;
 import org.example.smartgarage.models.ServiceType;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.OrderTypeService;
+import org.example.smartgarage.utils.filtering.OrderTypeFilterOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/garage/services")
@@ -34,11 +33,29 @@ public class OrderTypeController {
 
     @GetMapping
     public ResponseEntity<Page<OrderTypeOutDTO>> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+                                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                        @RequestParam(required = false) String name,
+                                                        @RequestParam(required = false) BigDecimal price,
+                                                        @RequestParam(required = false) String sortBy,
+                                                        @RequestParam(required = false) String sortOrder,
+                                                        @AuthenticationPrincipal CustomUserDetails principal) {
+        boolean hasRights = principal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
 
-        Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize);
+        if (!hasRights) {
+            Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize);
+            Page<OrderTypeOutDTO> orderTypeOutDTOS = orderTypeMapper.orderTypesToOrderTypeDTOs(orderTypes);
+
+            return ResponseEntity.ok(orderTypeOutDTOS);
+        }
+
+        OrderTypeFilterOptions orderTypeFilterOptions = new OrderTypeFilterOptions(name, price, sortBy, sortOrder);
+        Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize, orderTypeFilterOptions);
         Page<OrderTypeOutDTO> orderTypeOutDTOS = orderTypeMapper.orderTypesToOrderTypeDTOs(orderTypes);
+
         return ResponseEntity.ok(orderTypeOutDTOS);
+
     }
 
     @GetMapping("/{id}")

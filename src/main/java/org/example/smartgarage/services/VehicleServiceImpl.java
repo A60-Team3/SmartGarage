@@ -8,8 +8,12 @@ import org.example.smartgarage.repositories.contracts.VehicleModelRepository;
 import org.example.smartgarage.repositories.contracts.VehicleRepository;
 import org.example.smartgarage.repositories.contracts.VehicleYearRepository;
 import org.example.smartgarage.services.contracts.VehicleService;
+import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
+import org.example.smartgarage.utils.filtering.VehicleSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +22,10 @@ import java.util.List;
 public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleRepository vehicleRepository;
-    private final VehicleBrandRepository vehicleBrandRepository;
-    private final VehicleModelRepository vehicleModelRepository;
-    private final VehicleYearRepository vehicleYearRepository;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, VehicleBrandRepository vehicleBrandRepository, VehicleModelRepository vehicleModelRepository, VehicleYearRepository vehicleYearRepository) {
+
+    public VehicleServiceImpl(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
-        this.vehicleBrandRepository = vehicleBrandRepository;
-        this.vehicleModelRepository = vehicleModelRepository;
-        this.vehicleYearRepository = vehicleYearRepository;
     }
 
     @Override
@@ -35,8 +34,11 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Page<Vehicle> getAll(int offset, int pageSize) {
-        return vehicleRepository.findAll(PageRequest.of(offset, pageSize));
+    public Page<Vehicle> getAll(int offset, int pageSize, VehicleFilterOptions vehicleFilterOptions) {
+        VehicleSpecification vehicleSpecification = new VehicleSpecification(vehicleFilterOptions);
+
+        Pageable pageable = PageRequest.of(offset, pageSize);
+        return vehicleRepository.findAll(vehicleSpecification, pageable);
     }
 
     @Override
@@ -71,7 +73,8 @@ public class VehicleServiceImpl implements VehicleService {
                 throw new EntityDuplicateException("Vehicle already exists");
             }
         }
-
+        vehicle.getModelName().getBrands().add(vehicle.getBrandName());
+        vehicle.getYearOfCreation().getModels().add(vehicle.getModelName());
         repoVehicle.setLicensePlate(vehicle.getLicensePlate());
         repoVehicle.setVin(vehicle.getVin());
         repoVehicle.setBrandName(vehicle.getBrandName());

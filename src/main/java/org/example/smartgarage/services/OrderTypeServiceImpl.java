@@ -5,9 +5,12 @@ import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.models.ServiceType;
 import org.example.smartgarage.repositories.contracts.OrderTypeRepository;
 import org.example.smartgarage.services.contracts.OrderTypeService;
+import org.example.smartgarage.utils.filtering.OrderTypeFilterOptions;
+import org.example.smartgarage.utils.filtering.OrderTypeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,6 +36,14 @@ public class OrderTypeServiceImpl implements OrderTypeService {
     @Override
     public Page<ServiceType> getAll(int offset, int pageSize) {
         return orderTypeRepository.findAll(PageRequest.of(offset, pageSize));
+    }
+
+    @Override
+    public Page<ServiceType> getAll(int offset, int pageSize, OrderTypeFilterOptions orderTypeFilterOptions) {
+        OrderTypeSpecification orderTypeSpecification = new OrderTypeSpecification(orderTypeFilterOptions);
+
+        Pageable pageable = PageRequest.of(offset, pageSize);
+        return orderTypeRepository.findAll(orderTypeSpecification, pageable);
     }
 
     @Override
