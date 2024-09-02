@@ -62,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserEntity registerCustomer(UserEntity user, HttpServletRequest request) {
+    public UserEntity registerCustomer(UserEntity user) {
         String rndCustomerPassword = UUID.randomUUID().toString();
 
         user.setUsername(user.getEmail());
@@ -77,18 +77,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         UserEntity savedCustomer = userService.saveUser(user);
 
-        eventPublisher.publishEvent(new CustomerRegistrationEvent(savedCustomer, rndCustomerPassword, applicationUrl(request)));
+        eventPublisher.publishEvent(new CustomerRegistrationEvent(savedCustomer, rndCustomerPassword));
 
         return savedCustomer;
     }
 
     @Override
-    public UserEntity registerEmployee(UserEntity employee, HttpServletRequest request) {
+    public UserEntity registerEmployee(UserEntity employee) {
         //TODO implement email validation email for employees (ValidationToken, tokenDeleteScheduler)
 
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
-        Role userRole = roleService.findByAuthority(UserRole.CLERK);
+        Role userRole;
+        if (roleService.findAll().isEmpty()) {
+            userRole = roleService.findByAuthority(UserRole.HR);
+        } else {
+            userRole = roleService.findByAuthority(UserRole.CLERK);
+        }
 
         Set<Role> roles = new HashSet<>();
         roles.add(userRole);
@@ -96,13 +101,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         employee.setRoles(roles);
 
         return userService.saveUser(employee);
-    }
-
-    private String applicationUrl(HttpServletRequest request) {
-        return "http://"
-                + request.getServerName()
-                + ":"
-                + request.getServerPort()
-                + request.getContextPath();
     }
 }

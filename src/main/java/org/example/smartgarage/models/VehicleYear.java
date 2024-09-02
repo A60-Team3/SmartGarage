@@ -1,7 +1,6 @@
 package org.example.smartgarage.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import org.example.smartgarage.models.baseEntity.BaseEntity;
 
 import java.util.HashSet;
@@ -14,10 +13,7 @@ public class VehicleYear extends BaseEntity {
     @Column(name = "year", nullable = false)
     private int year;
 
-    @ManyToMany
-    @JoinTable(name = "production_years_models",
-            joinColumns = @JoinColumn(name = "year_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "model_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "years")
     private Set<VehicleModel> models = new HashSet<>();
 
     public int getYear() {

@@ -28,7 +28,7 @@ public class CustomerRegistrationEventListener{
     public void onCustomerRegistrationSuccess(CustomerRegistrationEvent event) {
         password = event.password();
         user = event.user();
-        String url = event.appUrl() + "/login";
+        String url = "https://localhost:8080/garage/login";
 
         try {
             sendCredentialsEmail(url);

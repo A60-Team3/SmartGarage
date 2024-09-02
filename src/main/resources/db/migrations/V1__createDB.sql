@@ -65,13 +65,13 @@ CREATE TABLE vehicle_years
 CREATE TABLE vehicle_models
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    model_name VARCHAR(20) NOT NULL
+    model_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE vehicle_brands
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    brand_name VARCHAR(20) NOT NULL
+    brand_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE production_years_models

@@ -33,8 +33,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Value("${pdf.encryption.master.password}")
     private String MASTER_PASSWORD;
-    @Value("${pdf.application.logo.path}")
-    private String GARAGE_LOGO;
+    private static final String GARAGE_LOGO = "src/main/resources/static/img/garage_logo.jpg";
 
     @Override
     public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity user) throws IOException {

@@ -9,7 +9,7 @@ public interface AuthenticationService {
 
     TokenDto jwtLogin(LoginDTO loginDTO);
 
-    UserEntity registerCustomer(UserEntity customerRegistrationDto, HttpServletRequest request);
+    UserEntity registerCustomer(UserEntity customer);
 
-    UserEntity registerEmployee(UserEntity employeeRegistrationDto, HttpServletRequest request);
+    UserEntity registerEmployee(UserEntity employee);
 }

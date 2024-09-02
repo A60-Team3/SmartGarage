@@ -45,4 +45,9 @@ public class VehicleModelServiceImpl implements VehicleModelService {
 
         return vehicleModelRepository.saveAndFlush(vehicleModel);
     }
+
+    @Override
+    public void save(VehicleModel vehicleModel) {
+        vehicleModelRepository.saveAndFlush(vehicleModel);
+    }
 }

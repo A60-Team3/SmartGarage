@@ -68,7 +68,7 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
-    @PostMapping
+    @PostMapping("/vehicles")
     public ResponseEntity<?> create(@Valid @RequestBody VehicleInDTO vehicleInDTO,
                                     @AuthenticationPrincipal CustomUserDetails principal){
 

@@ -9,4 +9,6 @@ public interface VehicleModelService {
     VehicleModel getByName(String modelName);
 
     VehicleModel create(VehicleModel vehicleModel);
+
+    void save(VehicleModel vehicleModel);
 }

@@ -59,6 +59,18 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "owner")
     private Set<Vehicle> vehicles;
 
+    public UserEntity() {
+    }
+
+    public UserEntity(String firstName, String lastName, String email, String username, String password, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -1,9 +1,6 @@
 package org.example.smartgarage.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.example.smartgarage.models.baseEntity.BaseEntity;
 
 import java.util.Objects;
@@ -15,7 +12,7 @@ public class VehicleBrand extends BaseEntity {
     @Column(name = "brand_name", nullable = false)
     private String brandName;
 
-    @ManyToMany(mappedBy = "brands")
+    @OneToMany(mappedBy = "brand")
     private Set<VehicleModel> models;
 
     public String getBrandName() {

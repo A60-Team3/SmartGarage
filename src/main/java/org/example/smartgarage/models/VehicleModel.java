@@ -14,14 +14,17 @@ public class VehicleModel extends BaseEntity {
     @Column(name = "model_name", nullable = false)
     private String modelName;
 
-    @ManyToMany(mappedBy = "models")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "production_years_models",
+            joinColumns = @JoinColumn(name = "model_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "year_id", referencedColumnName = "id"))
     private Set<VehicleYear> years = new HashSet<>();
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(name = "models_brands",
             joinColumns = @JoinColumn(name = "model_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "brand_id", referencedColumnName = "id"))
-    private Set<VehicleBrand> brands = new HashSet<>();
+    private VehicleBrand brand;
 
     public String getModelName() {
         return modelName;
@@ -39,12 +42,12 @@ public class VehicleModel extends BaseEntity {
         this.years = years;
     }
 
-    public Set<VehicleBrand> getBrands() {
-        return brands;
+    public VehicleBrand getBrand() {
+        return brand;
     }
 
-    public void setBrands(Set<VehicleBrand> brands) {
-        this.brands = brands;
+    public void setBrand(VehicleBrand brand) {
+        this.brand = brand;
     }
 
     @Override
@@ -52,11 +55,13 @@ public class VehicleModel extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VehicleModel that = (VehicleModel) o;
-        return Objects.equals(modelName, that.modelName);
+        return Objects.equals(modelName, that.modelName) &&
+                years.containsAll(that.years) &&
+                Objects.equals(brand, that.brand);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(modelName);
+        return Objects.hash(modelName, years, brand);
     }
 }
