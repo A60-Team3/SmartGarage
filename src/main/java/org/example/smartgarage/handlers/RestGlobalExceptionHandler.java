@@ -126,4 +126,11 @@ public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiErrorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(VisitMismatchException.class)
+    public ResponseEntity<?> handleVisitMismatchException(VisitMismatchException ex) {
+        ApiErrorResponseDTO apiErrorResponseDTO =
+                new ApiErrorResponseDTO(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), List.of(ex.getMessage()));
+        return new ResponseEntity<>(apiErrorResponseDTO, HttpStatus.BAD_REQUEST);
+    }
+
 }

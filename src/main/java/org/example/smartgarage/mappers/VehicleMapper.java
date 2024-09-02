@@ -24,9 +24,9 @@ public interface VehicleMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "clerk", ignore = true)
     @Mapping(target = "addedOn", ignore = true)
-    @Mapping(target="brandName", expression="java(vehicleBrandService.getById(vehicleInDTO.brandId()))")
-    @Mapping(target="modelName", expression="java(vehicleModelService.getById(vehicleInDTO.modelId()))")
-    @Mapping(target="yearOfCreation", expression="java(vehicleYearService.getById(vehicleInDTO.yearId()))")
+    @Mapping(target="brandName", expression="java(vehicleBrandService.getByName(vehicleInDTO.brandName()))")
+    @Mapping(target="modelName", expression="java(vehicleModelService.getByName(vehicleInDTO.modelName()))")
+    @Mapping(target="yearOfCreation", expression="java(vehicleYearService.getByYear(vehicleInDTO.year()))")
     @Mapping(target="owner", expression="java(userService.getById(vehicleInDTO.ownerId()))")
     Vehicle toEntity(VehicleInDTO vehicleInDTO,
                      @Context VehicleBrandService vehicleBrandService,

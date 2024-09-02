@@ -3,6 +3,7 @@ package org.example.smartgarage.models;
 import jakarta.persistence.*;
 import org.example.smartgarage.models.baseEntity.BaseEntity;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,13 +15,13 @@ public class VehicleModel extends BaseEntity {
     private String modelName;
 
     @ManyToMany(mappedBy = "models")
-    private Set<VehicleYear> years;
+    private Set<VehicleYear> years = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "models_brands",
             joinColumns = @JoinColumn(name = "model_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "brand_id", referencedColumnName = "id"))
-    private Set<VehicleBrand> brands;
+    private Set<VehicleBrand> brands = new HashSet<>();
 
     public String getModelName() {
         return modelName;

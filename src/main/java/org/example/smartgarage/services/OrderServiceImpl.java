@@ -2,6 +2,7 @@ package org.example.smartgarage.services;
 
 import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.exceptions.UserMismatchException;
+import org.example.smartgarage.exceptions.VisitMismatchException;
 import org.example.smartgarage.models.EventLog;
 import org.example.smartgarage.models.Order;
 import org.example.smartgarage.models.Visit;
@@ -58,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getById(long userId, Visit visit, long id) {
         checkForVisit(userId, visit);
+        checkForOrder(id, visit);
 
         return orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found"));
@@ -81,6 +83,7 @@ public class OrderServiceImpl implements OrderService {
                         long userId,
                         Visit visit) {
         checkForVisit(userId, visit);
+        checkForOrder(id, visit);
 
         Order repoOrder = orderRepository.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("Order not found"));
@@ -97,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
     public void delete(long userId, Visit visit, long id) {
 
         checkForVisit(userId, visit);
-
+        checkForOrder(id, visit);
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found"));
 
@@ -110,6 +113,12 @@ public class OrderServiceImpl implements OrderService {
     private void checkForVisit(long userId, Visit visit) {
         if (visit.getClient().getId() != userId) {
             throw new UserMismatchException("Client has no such visit");
+        }
+    }
+
+    private void checkForOrder(long orderId, Visit visit) {
+        if (!visit.getServices().contains(getById(orderId))) {
+            throw new VisitMismatchException("Visit has no such order");
         }
     }
 
