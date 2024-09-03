@@ -79,13 +79,6 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleModelOutDTOS);
     }
 
-    /*@GetMapping("/brands/{brandId}/models/{modelId}/years")
-    public ResponseEntity<?> getYears(@RequestParam(value = "offset", defaultValue = "0") int offset,
-                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
-        Page<VehicleYear> vehicleYears = vehicleYearService.getAll(offset, pageSize);
-        return ResponseEntity.ok(vehicleYears);
-    }*/
-
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/vehicles")
     public ResponseEntity<?> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
