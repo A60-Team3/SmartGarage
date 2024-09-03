@@ -2,10 +2,16 @@ package org.example.smartgarage.services;
 
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
+import org.example.smartgarage.models.VehicleBrand;
 import org.example.smartgarage.models.VehicleModel;
 import org.example.smartgarage.repositories.contracts.VehicleModelRepository;
 import org.example.smartgarage.services.contracts.VehicleModelService;
+import org.example.smartgarage.utils.filtering.VehicleModelFilterOptions;
+import org.example.smartgarage.utils.filtering.VehicleModelSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,6 +38,13 @@ public class VehicleModelServiceImpl implements VehicleModelService {
                     newModel.setModelName(modelName);
                     return create(newModel);
                 });
+    }
+
+    @Override
+    public Page<VehicleModel> getByBrand(VehicleBrand brand, int offset, int pageSize, VehicleModelFilterOptions vehicleModelFilterOptions) {
+        VehicleModelSpecification vehicleModelSpecification = new VehicleModelSpecification(vehicleModelFilterOptions, brand);
+        Pageable pageable = PageRequest.of(offset, pageSize);
+        return vehicleModelRepository.findAll(vehicleModelSpecification, pageable);
     }
 
     @Override

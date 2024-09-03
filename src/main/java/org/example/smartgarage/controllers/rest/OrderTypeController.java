@@ -37,18 +37,7 @@ public class OrderTypeController {
                                                         @RequestParam(required = false) String name,
                                                         @RequestParam(required = false) BigDecimal price,
                                                         @RequestParam(required = false) String sortBy,
-                                                        @RequestParam(required = false) String sortOrder,
-                                                        @AuthenticationPrincipal CustomUserDetails principal) {
-        boolean hasRights = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(s -> s.equals("ROLE_CLERK") || s.equals("ROLE_MECHANIC"));
-
-        if (!hasRights) {
-            Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize);
-            Page<OrderTypeOutDTO> orderTypeOutDTOS = orderTypeMapper.orderTypesToOrderTypeDTOs(orderTypes);
-
-            return ResponseEntity.ok(orderTypeOutDTOS);
-        }
+                                                        @RequestParam(required = false) String sortOrder) {
 
         OrderTypeFilterOptions orderTypeFilterOptions = new OrderTypeFilterOptions(name, price, sortBy, sortOrder);
         Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize, orderTypeFilterOptions);

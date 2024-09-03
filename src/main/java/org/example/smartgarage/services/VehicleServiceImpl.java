@@ -73,7 +73,7 @@ public class VehicleServiceImpl implements VehicleService {
                 throw new EntityDuplicateException("Vehicle already exists");
             }
         }
-        vehicle.getModelName().getBrands().add(vehicle.getBrandName());
+        vehicle.getModelName().setBrand(vehicle.getBrandName());
         vehicle.getYearOfCreation().getModels().add(vehicle.getModelName());
         repoVehicle.setLicensePlate(vehicle.getLicensePlate());
         repoVehicle.setVin(vehicle.getVin());
