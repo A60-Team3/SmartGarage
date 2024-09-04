@@ -5,6 +5,9 @@ import org.example.smartgarage.models.VehicleModel;
 import org.example.smartgarage.utils.filtering.VehicleModelFilterOptions;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+import java.util.Set;
+
 public interface VehicleModelService {
 
     VehicleModel getById(long id);
@@ -16,4 +19,6 @@ public interface VehicleModelService {
     VehicleModel create(VehicleModel vehicleModel);
 
     void save(VehicleModel vehicleModel);
+
+    void saveAll(Set<VehicleModel> models);
 }

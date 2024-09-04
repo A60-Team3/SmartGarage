@@ -14,6 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class VehicleModelServiceImpl implements VehicleModelService {
 
@@ -63,4 +66,10 @@ public class VehicleModelServiceImpl implements VehicleModelService {
     public void save(VehicleModel vehicleModel) {
         vehicleModelRepository.saveAndFlush(vehicleModel);
     }
+
+    @Override
+    public void saveAll(Set<VehicleModel> models) {
+        vehicleModelRepository.saveAll(models);
+    }
+
 }

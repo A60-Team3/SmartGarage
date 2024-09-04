@@ -1,20 +1,25 @@
 package org.example.smartgarage.security;
 
+import org.example.smartgarage.security.jwt.JwtAuthenticationEntryPoint;
 import org.example.smartgarage.security.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -33,9 +38,11 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     };
 
     private final JwtFilter jwtFilter;
+    private final JwtAuthenticationEntryPoint jwtEntryPoint;
 
-    public SecurityConfiguration(JwtFilter jwtFilter) {
+    public SecurityConfiguration(JwtFilter jwtFilter, JwtAuthenticationEntryPoint jwtEntryPoint) {
         this.jwtFilter = jwtFilter;
+        this.jwtEntryPoint = jwtEntryPoint;
     }
 
     @Bean
@@ -54,21 +61,42 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain restFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/**")
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement(session ->
-//                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.
-                            requestMatchers(AUTH_WHITELIST)
-                            .permitAll()
+                    auth
                             .requestMatchers("/api/garage/login").permitAll()
+                            .requestMatchers(AUTH_WHITELIST).permitAll();
+                    auth.anyRequest().authenticated();
+                })
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain mvcFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf ->
+                        csrf.ignoringRequestMatchers("/api/**")
+                                .ignoringRequestMatchers(AUTH_WHITELIST))
+                .authorizeHttpRequests(auth -> {
+                    auth
+                            .requestMatchers(AUTH_WHITELIST).permitAll()
                             .requestMatchers("/garage/register", "/garage/login",
                                     "/", "/garage", "/garage/main").permitAll()
                             .requestMatchers("/resources/**", "/static/**", "/static/templates/**",
                                     "/css/**", "/images/**", "/js/**")
-                            .permitAll();//
+                            .permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(formLogin ->
@@ -77,7 +105,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                                 .failureUrl("/garage/login?error")
                                 .permitAll()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/garage/logout")
                         .addLogoutHandler(new SecurityContextLogoutHandler())

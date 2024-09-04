@@ -8,6 +8,7 @@ import org.example.smartgarage.events.EmailReportEvent;
 import org.example.smartgarage.mappers.VisitMapper;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.enums.CurrencyCode;
 import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.UserService;
@@ -76,7 +77,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam boolean toPdf,
-                                     @RequestParam(required = false) String exchangeCurrency,
+                                     @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 null, customerName, principal.getId(), clerkName,
@@ -93,7 +94,7 @@ public class VisitController {
         return ResponseEntity.ok(visitsPage);
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') && #userId == principal.getId()")
+    @PreAuthorize("hasRole('CUSTOMER') or #userId == principal.getId()")
     @GetMapping("/users/{userId}/visits")
     public ResponseEntity<?> findAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                      @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
@@ -123,7 +124,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam boolean toPdf,
-                                     @RequestParam(required = false) String exchangeCurrency,
+                                     @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 userId, customerName, null, clerkName,
@@ -172,7 +173,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam boolean toPdf,
-                                     @RequestParam(required = false) String exchangeCurrency,
+                                     @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 customerId, customerName, clerkId, clerkName,
@@ -237,7 +238,7 @@ public class VisitController {
     }
 
     private Page<VisitOutDto> createVisitOutDtos(int offset, int pageSize, boolean toPdf,
-                                                 String exchangeCurrency, long userId,
+                                                 CurrencyCode exchangeCurrency, long userId,
                                                  VisitFilterOptions visitFilterOptions) throws IOException {
         Pageable pageable = PageRequest.of(offset, pageSize);
 

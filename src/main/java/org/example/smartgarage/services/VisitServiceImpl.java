@@ -7,6 +7,7 @@ import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.models.EventLog;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.enums.CurrencyCode;
 import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.repositories.contracts.VisitRepository;
 import org.example.smartgarage.services.contracts.*;
@@ -67,7 +68,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, String exchangeCurrency) throws IOException {
+    public List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency) throws IOException {
         if (exchangeCurrency == null) return visitOutDtos;
 
         double exchangeRate = currencyService.getConversionRate(exchangeCurrency);
@@ -76,7 +77,7 @@ public class VisitServiceImpl implements VisitService {
             dto.setExchangeRate(exchangeRate);
             dto.setTotalCost(dto.getTotalCost().multiply(BigDecimal.valueOf(exchangeRate))
                     .setScale(2, RoundingMode.HALF_UP));
-            dto.setCurrency(exchangeCurrency.toUpperCase());
+            dto.setCurrency(exchangeCurrency.getDescription());
         }).toList();
     }
 

@@ -26,7 +26,6 @@ public record EmployeeRegistrationDto(
 
         @NotBlank(message = "Phone number is mandatory")
         @Pattern(regexp = phoneRegex, message = "Phone number must consist of 10 digits")
-        @Size(min = 10, max = 10, message = "Phone number must be 10 digits long")
         @Unique(type = UniqueType.PHONE, message = "Phone number already exists")
         String phoneNumber,
 

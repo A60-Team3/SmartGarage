@@ -9,7 +9,7 @@
 ## Database
 ### A crude implementation of [Flyway](https://flywaydb.org/) database version control. Only used for database creation.
 ### Database seeding is carried out automatically on first start of the application through a DataLoader class. 
-#### Vehicle model, brands and years are taken from [OpenDataSoft Free API](https://public.opendatasoft.com/explore/dataset/all-vehicles-model/information/) - approximately 24000 entries
+#### Vehicle model, brands and years are taken from [OpenDataSoft Free API](https://public.opendatasoft.com/explore/dataset/all-vehicles-model/information/) - approximately 24000 entries. It takes some time to load all.
 #### Only 2 employees are loaded - HR and a CLERK. 
 #### Only HR can register a CLERK. Only a CLERK can register CUSTOMER.
 ### Rest Flow:
@@ -22,4 +22,4 @@
     7. Create ORDER(s) - POST http://localhost:8080/api/garage/users/{userId}/visits/{visitId}/orders"
 ## Read the [Custom Enviroment Variables](https://github.com/A60-Team3/SmartGarage/blob/main/.env.local) file and follow the instructions.
 ## API documentation
-### Swagger project [URL](http://localhost:8080/swagger-ui/swagger-ui/index.html#/) `accessible when the program is running`
+### Swagger project [URL](http://localhost:8080/swagger-ui/index.html) `accessible when the program is running`

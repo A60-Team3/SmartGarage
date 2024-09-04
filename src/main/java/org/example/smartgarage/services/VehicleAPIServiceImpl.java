@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jakarta.transaction.Transactional;
+import org.example.smartgarage.dtos.request.VehicleApiResponse;
 import org.example.smartgarage.dtos.request.VehiclesRequestDto;
 import org.example.smartgarage.exceptions.VehicleRequestException;
 import org.example.smartgarage.models.Vehicle;
@@ -17,66 +18,115 @@ import org.example.smartgarage.services.contracts.VehicleBrandService;
 import org.example.smartgarage.services.contracts.VehicleModelService;
 import org.example.smartgarage.services.contracts.VehicleYearService;
 import org.springframework.aot.hint.TypeReference;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.ParameterizedType;
 import java.net.*;
-import java.util.List;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class VehicleAPIServiceImpl implements VehicleAPIService {
 
-    private final static String API_URL = "https://public.opendatasoft.com/api/explore/v2.1/" +
-            "catalog/datasets/all-vehicles-model/" +
-            "exports/json?select=make%2C%20model%2C%20year&limit=-1&timezone=UTC&use_labels=true&epsg=4326";
+    private final static String API_BASE_URL = "https://public.opendatasoft.com/api/explore/" +
+            "v2.1/catalog/datasets/all-vehicles-model/exports/json";
 
     private final VehicleBrandService vehicleBrandService;
     private final VehicleModelService vehicleModelService;
     private final VehicleYearService vehicleYearService;
+    private final ObjectMapper mapper;
 
 
     public VehicleAPIServiceImpl(VehicleBrandService vehicleBrandService,
                                  VehicleModelService vehicleModelService,
-                                 VehicleYearService vehicleYearService) {
+                                 VehicleYearService vehicleYearService, ObjectMapper mapper) {
         this.vehicleBrandService = vehicleBrandService;
         this.vehicleModelService = vehicleModelService;
         this.vehicleYearService = vehicleYearService;
 
+        this.mapper = mapper;
     }
 
     @Override
-    public void populateVehiclePropertiesDB() throws URISyntaxException, IOException {
-        URL url = new URL(API_URL);
+    public void populateVehiclePropertiesDB() throws IOException {
+        List<VehiclesRequestDto> vehicles = getVehicles();
 
-        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-        request.connect();
+        saveVehiclesToDatabase(vehicles);
 
-        JsonElement root = JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
-        if (root.isJsonArray()){
-            JsonArray jsonArray = root.getAsJsonArray();
-            for (JsonElement jsonElement : jsonArray) {
-                JsonObject object = jsonElement.getAsJsonObject();
 
-                String make = object.get("make").getAsString();
-                VehicleBrand brandName = vehicleBrandService.getByName(make);
+//        URL url = new URL(API_URL);
+//
+//        HttpURLConnection request = (HttpURLConnection) url.openConnection();
+//        request.connect();
+//
+//        JsonElement root = JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
+//        if (root.isJsonArray()) {
+//            JsonArray jsonArray = root.getAsJsonArray();
+//            for (JsonElement jsonElement : jsonArray) {
+//                JsonObject object = jsonElement.getAsJsonObject();
+//
+//                String make = object.get("make").getAsString();
+//                VehicleBrand brandName = vehicleBrandService.getByName(make);
+//
+//                int year = object.get("year").getAsInt();
+//                VehicleYear productionYear = vehicleYearService.getByYear(year);
+//
+//                String model = object.get("model").getAsString();
+//                VehicleModel vehicleModel = vehicleModelService.getByName(model);
+//                vehicleModel.setBrand(brandName);
+//                vehicleModel.getYears().add(productionYear);
+//
+//                vehicleModelService.save(vehicleModel);
+//            }
+//        }
+    }
 
-                int year = object.get("year").getAsInt();
-                VehicleYear productionYear = vehicleYearService.getByYear(year);
+    private void saveVehiclesToDatabase(List<VehiclesRequestDto> vehicles) {
+        int batchSize = 1000;
+        Set<VehicleModel> models = new HashSet<>();
 
-                String model = object.get("model").getAsString();
-                VehicleModel vehicleModel = vehicleModelService.getByName(model);
-                vehicleModel.setBrand(brandName);
-                vehicleModel.getYears().add(productionYear);
+        for (VehiclesRequestDto vehicle : vehicles) {
 
-                vehicleModelService.save(vehicleModel);
+            VehicleBrand brand = vehicleBrandService.getByName(vehicle.make());
+            VehicleYear year = vehicleYearService.getByYear(Integer.parseInt(vehicle.year()));
+            VehicleModel model = vehicleModelService.getByName(vehicle.model());
+            model.setBrand(brand);
+            model.getYears().add(year);
+
+            models.add(model);
+
+            if (models.size() == batchSize) {
+                vehicleModelService.saveAll(models);
+                models.clear();
             }
         }
 
+        if (!models.isEmpty()) {
+            vehicleModelService.saveAll(models);
+        }
+    }
+
+    private List<VehiclesRequestDto> getVehicles() {
+        RestClient carApiClient = RestClient.create();
+
+        URI uri = UriComponentsBuilder.fromHttpUrl(API_BASE_URL)
+                .queryParam("select", "make,model,year")
+                .queryParam("limit", "-1")
+                .build().encode().toUri();
 
 
+        return carApiClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
+        });
     }
 }

@@ -1,9 +1,7 @@
 package org.example.smartgarage.services;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.example.smartgarage.dtos.request.LoginDTO;
 import org.example.smartgarage.dtos.response.TokenDto;
-import org.example.smartgarage.dtos.response.UserOutDto;
 import org.example.smartgarage.events.CustomerRegistrationEvent;
 import org.example.smartgarage.exceptions.AuthenticationException;
 import org.example.smartgarage.models.Role;
@@ -14,17 +12,15 @@ import org.example.smartgarage.security.jwt.JwtProvider;
 import org.example.smartgarage.services.contracts.AuthenticationService;
 import org.example.smartgarage.services.contracts.RoleService;
 import org.example.smartgarage.services.contracts.UserService;
+import org.example.smartgarage.utils.RandomPasswordGenerator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -63,7 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserEntity registerCustomer(UserEntity user) {
-        String rndCustomerPassword = UUID.randomUUID().toString();
+        String rndCustomerPassword = RandomPasswordGenerator.generateRandomPassword(12);
 
         user.setUsername(user.getEmail());
         user.setPassword(passwordEncoder.encode(rndCustomerPassword));
@@ -89,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
         Role userRole;
-        if (roleService.findAll().isEmpty()) {
+        if (userService.findAll().isEmpty()) {
             userRole = roleService.findByAuthority(UserRole.HR);
         } else {
             userRole = roleService.findByAuthority(UserRole.CLERK);

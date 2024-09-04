@@ -20,7 +20,7 @@ public record UserUpdateDto(
         String username,
 
         @NotBlank
-        @Size(min = 6, message = "Password must be at least 6 characters long")
+        @Size(min = 8, message = "Password must be at least 8 characters long")
         @Pattern(regexp = passwordRegex, message = "Password should contain a capital letter, digit, and special symbol")
         String password,
 
@@ -30,7 +30,6 @@ public record UserUpdateDto(
 
         @NotBlank
         @Pattern(regexp = phoneRegex, message = "Phone number should be valid")
-        @Size(min = 10, max = 10, message = "Phone number must be 10 digits long")
         String phoneNumber,
 
         MultipartFile profilePic

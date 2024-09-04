@@ -3,6 +3,7 @@ package org.example.smartgarage.services.contracts;
 import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.enums.CurrencyCode;
 import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 
@@ -15,7 +16,7 @@ public interface VisitService {
 
     Visit findById(long visitId);
 
-    List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, String exchangeCurrency) throws IOException;
+    List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency) throws IOException;
 
     ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal) throws IOException;
 

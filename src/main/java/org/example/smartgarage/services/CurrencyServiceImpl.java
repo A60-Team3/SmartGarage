@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.example.smartgarage.exceptions.ConversionRequestException;
+import org.example.smartgarage.models.enums.CurrencyCode;
 import org.example.smartgarage.services.contracts.CurrencyService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.net.URL;
 
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
-    private static final String BASE_CURRENCY = "BGN";
+    private static final String BASE_CURRENCY = CurrencyCode.BGN.toString();
 
     @Value("${exchange.rate.api.key}")
     private String exchangeRateApiKey;
@@ -24,9 +25,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     private String exchangeRateApiUrl;
 
     @Override
-    public double getConversionRate(String exchangeCurrency) throws IOException {
+    public double getConversionRate(CurrencyCode exchangeCurrency) throws IOException {
         // Setting URL
-        String url_str = getFullApiURL(exchangeCurrency);
+        String url_str = getFullApiURL(exchangeCurrency.toString());
 
         // Making Request
         URL url = new URL(url_str);
@@ -54,7 +55,7 @@ public class CurrencyServiceImpl implements CurrencyService {
                 + "/pair/"
                 + BASE_CURRENCY
                 + "/"
-                + exchangeCurrency.toUpperCase();
+                + exchangeCurrency;
     }
 }
 

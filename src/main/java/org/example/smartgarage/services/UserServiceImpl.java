@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,7 +43,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserEntity> getAll(int offset, int pageSize, UserFilterOptions userFilterOptions) {
+    public List<UserEntity> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Page<UserEntity> findAll(int offset, int pageSize, UserFilterOptions userFilterOptions) {
 
         UserEntitySpecification specification = new UserEntitySpecification(userFilterOptions);
 

@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.example.smartgarage.dtos.request.UserUpdateDto;
 import org.example.smartgarage.dtos.response.UserOutDto;
-import org.example.smartgarage.exceptions.CustomAuthenticationException;
 import org.example.smartgarage.mappers.UserMapper;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.enums.UserRole;
@@ -24,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/garage/users")
@@ -38,7 +36,7 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-
+    @PreAuthorize("!hasRole('CUSTOMER')")
     @GetMapping()
     public ResponseEntity<List<UserOutDto>> getAllUsers(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
@@ -75,7 +73,7 @@ public class UserController {
                         phoneNumber, brandName, vehicleVin, vehicleRegistry, sortBy, sortOrder
                 );
 
-        Page<UserEntity> users = userService.getAll(offset, pageSize, userFilterOptions);
+        Page<UserEntity> users = userService.findAll(offset, pageSize, userFilterOptions);
         List<UserOutDto> dtos = users.stream().map(userMapper::toDto).toList();
 
         return ResponseEntity.ok(dtos);
@@ -88,7 +86,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toDto(user));
     }
 
-    @PreAuthorize("hasAnyRole('CLERK') or #userId == principal.id")
+    @PreAuthorize("hasRole('CLERK') or #userId == principal.id")
     @PutMapping("/{userId}")
     public ResponseEntity<UserOutDto> updateUser(@Valid @RequestBody UserUpdateDto dto,
                                                  @PathVariable long userId,
@@ -108,7 +106,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toDto(updatedUser));
     }
 
-    @PreAuthorize("hasAnyRole('CLERK')")
+    @PreAuthorize("hasRole('CLERK')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable long userId,
                                                  @AuthenticationPrincipal CustomUserDetails principal) {

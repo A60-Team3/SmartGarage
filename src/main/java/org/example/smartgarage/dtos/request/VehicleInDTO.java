@@ -13,18 +13,16 @@ public record VehicleInDTO(
         @Size(min = 17, max = 17, message = "VIN length must be exactly 17 chars")
         String vin,
 
-        //@Positive(message = "Brand ID should be positive")
         @NotNull(message = "Brand name should not be empty!")
         @Size(min = 2, max = 50, message = "Brand name should be between 2 and 50 symbols!")
         String brandName,
 
-        //@Positive(message = "Model ID should be positive")
         @NotNull(message = "Model name should not be empty!")
         @Size(min = 2, max = 50, message = "Model name should be between 2 and 50 symbols!")
         String modelName,
 
         @Positive(message = "Year should be positive")
-        @Min(value = 1886, message = "Year cannot be lower than 1886!")
+        @Min(value = 1886, message = "You think there were cars before 1886? Not in this universe.")
         int year,
 
         @Positive(message = "Owner ID should be positive")

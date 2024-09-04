@@ -4,7 +4,7 @@ import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
 import org.springframework.data.domain.Page;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -15,7 +15,9 @@ public interface UserService {
 
     UserEntity getById(long id);
 
-    Page<UserEntity> getAll(int offset, int pageSize, UserFilterOptions userFilterOptions);
+    List<UserEntity> findAll();
+
+    Page<UserEntity> findAll(int offset, int pageSize, UserFilterOptions userFilterOptions);
 
     UserEntity update(long userId, UserEntity updatedUserInfo);
 
