@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head::head('About')}"></head>
+
+<body>
+    <!-- Spinner Start -->
+    <div th:replace="~{/fragments/spinner}"></div>
+    <!-- Spinner End -->
+
+    <!-- Topbar Start -->
+    <div th:replace="~{/fragments/topbar}"></div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <nav th:replace="~{/fragments/navbar}"></nav>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div th:replace="~{/fragments/pageHead}"></div>
+    <!-- Page Header End -->
+
+    <!-- Service Start -->
+    <div th:replace="~{/fragments/partServices}"></div>
+    <!-- Service End -->
+
+    <!-- About Start -->
+    <div th:replace="~{/fragments/partAbout}"></div>
+    <!-- About End -->
+
+    <!-- Fact Start -->
+    <div th:replace="~{/fragments/partFacts}"></div>
+    <!-- Fact End -->
+
+    <!-- Team Start -->
+    <div th:replace="~{/fragments/partTeam}"></div>
+    <!-- Team End -->
+
+    <!-- Footer Start -->
+    <div th:replace="~{/fragments/footer}"></div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <div th:replace="~{/fragments/toTop}"></div>
+
+    <div th:replace="~{/fragments/scripts}"></div>
+</body>
+
+</html>
