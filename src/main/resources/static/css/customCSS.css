@@ -1,16 +1,38 @@
-.fa-fade-custom{
+.fa-fade-custom {
     --fa-animation-duration: 5s;
     --fa-fade-opacity: 0.3
 }
 
+.garage-top-bar{
+    position: relative;
+    z-index: 20;
+}
+
+/* Black void behind the garage door */
+.black-void {
+    background: url("../img/car shop insides.webp") no-repeat center center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
 /* Garage door background */
-.form-check {
+.garage-door-form {
     background: url('../img/metal-garage-door-4096x4096.jpg') no-repeat center center;
     background-size: cover;
     position: relative;
-    height: 600px; /* Adjust as per your design */
     width: 100%;
-    overflow: hidden;
+    height: 100%;
+    padding: 20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 /* Animation for the garage door rolling up */
@@ -41,28 +63,53 @@
     }
     100% {
         opacity: 0;
-        transform: scale(2); /* Adjust for more dramatic sucking effect */
+        transform: scale(3); /* Adjust for more dramatic sucking effect */
     }
 }
 
 /* When the form rolls up */
-.form-check.rolling-up {
-    animation: rollUp 2s forwards; /* 2 seconds to roll up */
+.garage-door-form.rolling-up {
+    animation: rollUp 3s forwards; /* 2 seconds to roll up */
 }
 
 /* When the form rolls down */
-.form-check.rolling-down {
-    animation: rollDown 2s forwards;
+.garage-door-form.rolling-down {
+    animation: rollDown 3s forwards;
 }
 
-/* Black void behind the garage door */
-.black-void {
-    background-color: black;
-    height: 300px;
-    display: none;
-}
 
 /* Suck you inside when login is successful */
 .suck-inside {
-    animation: suckInside 2s forwards;
+    animation: suckInside 3s forwards;
+}
+
+/* Center the form in the middle of the screen */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    position: relative;
+}
+
+/* Error message */
+.error-message {
+    position: relative;
+    text-align: center;
+    color: red;
+    margin-top: 20px;
+    z-index: 2;
+}
+
+.password-reset{
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+    z-index: 3;
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+    width: 200px;
+    padding: 10px;
+    margin: 5px 0;
 }

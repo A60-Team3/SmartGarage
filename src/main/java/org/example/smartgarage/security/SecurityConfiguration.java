@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -28,13 +27,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableMethodSecurity
 public class SecurityConfiguration implements WebMvcConfigurer {
 
-    private static final String[] AUTH_WHITELIST = {
+    private static final String[] SWAGGER_WHITELIST = {
             // -- swagger ui
             "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**",
             "/swagger-resources", "/swagger-resources/**",
             "/configuration/ui", "/configuration/security",
             "/swagger-ui/**", "/swagger-ui.html",
             "/webjars/**"
+    };
+
+    private static final String[] MVC_WHITELIST = {
+            "/garage/login", "/", "/garage", "/garage/home",
+            "/garage/reviews","/garage/team", "/garage/services",
+            "/garage/contacts", "/garage/booking", "/garage/about"
     };
 
     private final JwtFilter jwtFilter;
@@ -44,6 +49,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         this.jwtFilter = jwtFilter;
         this.jwtEntryPoint = jwtEntryPoint;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,7 +76,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> {
                     auth
                             .requestMatchers("/api/garage/login").permitAll()
-                            .requestMatchers(AUTH_WHITELIST).permitAll();
+                            .requestMatchers(SWAGGER_WHITELIST).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
@@ -88,29 +94,28 @@ public class SecurityConfiguration implements WebMvcConfigurer {
         http
                 .csrf(csrf ->
                         csrf.ignoringRequestMatchers("/api/**")
-                                .ignoringRequestMatchers(AUTH_WHITELIST))
+                                .ignoringRequestMatchers(SWAGGER_WHITELIST))
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers(AUTH_WHITELIST)
-                            .permitAll()
-                            .requestMatchers("/garage/login", "/", "/garage", "/garage/index")
-                            .permitAll()
+                            .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                            .requestMatchers(MVC_WHITELIST).permitAll()
                             .requestMatchers("/resources/**", "/static/**", "/static/templates/**",
                                     "/css/**", "/img/**", "/js/**", "/lib/**", "/scss/**")
                             .permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(formLogin ->
-                        formLogin.loginPage("/garage/login")
-                                .defaultSuccessUrl("/garage/index?success", true)
-                                .failureUrl("/garage/login?error")
-                                .permitAll()
+                                formLogin.loginPage("/garage/login")
+//                                .defaultSuccessUrl("/garage/index?success", true)
+//                                .failureUrl("/garage/login?error")
+                                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/garage/logout")
                         .addLogoutHandler(new SecurityContextLogoutHandler())
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/garage/index?logout")
+                        .logoutSuccessUrl("/garage/home?logout")
+                        .permitAll()
                 );
 
         return http.build();

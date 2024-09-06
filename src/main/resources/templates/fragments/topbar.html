@@ -1,34 +1,32 @@
-<div th:fragment="topbar">
-    <div class="container-fluid bg-light p-0">
-        <div class="row gx-0 d-none d-lg-flex">
-            <div class="col-lg-7 px-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
-                    <small th:text="#{smart.garage.address}">666 Dragon's Landing, Ankh-Morpork, Discworld</small>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center py-3">
-                    <small class="far fa-clock text-primary me-2"></small>
-                    <small>Mon - Fri : 09.00 AM - 07.00 PM</small>
-                </div>
+<div th:fragment="topbar" class="container-fluid bg-light p-0 garage-top-bar">
+    <div class="row gx-0 d-none d-lg-flex">
+        <div class="col-lg-7 px-5 text-start">
+            <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                <small class="fa fa-map-marker-alt text-primary me-2"></small>
+                <small th:text="#{smart.garage.address}">666 Dragon's Landing, Ankh-Morpork, Discworld</small>
             </div>
-            <div class="col-lg-5 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-                    <small class="fa fa-phone-alt ztext-primary me-2"></small>
-                    <small th:text="#{smart.garage.phone-number}">+069 696 1342</small>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn btn-sm-square bg-white text-primary me-1" href=""
-                       th:href="#{smart.garage.facebook}">
-                        <i class="fab fa-facebook-f fa-fade fa-fade-custom"></i></a>
-                    <a class="btn btn-sm-square bg-white text-primary me-1" href="" th:href="#{smart.garage.x}"><i
-                            class="fab fa-x-twitter fa-fade fa-fade-custom"></i></a>
-                    <a class="btn btn-sm-square bg-white text-primary me-1" href=""
-                       th:href="#{smart.garage.linked-in}">
-                        <i class="fab fa-linkedin-in fa-fade fa-fade-custom"></i></a>
-                    <a class="btn btn-sm-square bg-white text-primary me-0" href=""
-                       th:href="#{smart.garage.instagram}">
-                        <i class="fab fa-instagram fa-fade fa-fade-custom"></i></a>
-                </div>
+            <div class="h-100 d-inline-flex align-items-center py-3">
+                <small class="far fa-clock text-primary me-2"></small>
+                <small>Mon - Fri : 09.00 AM - 07.00 PM</small>
+            </div>
+        </div>
+        <div class="col-lg-5 px-5 text-end">
+            <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+                <small class="fa fa-phone-alt ztext-primary me-2"></small>
+                <small th:text="#{smart.garage.phone-number}">+069 696 1342</small>
+            </div>
+            <div class="h-100 d-inline-flex align-items-center">
+                <a class="btn btn-sm-square bg-white text-primary me-1" href=""
+                   th:href="#{smart.garage.facebook}">
+                    <i class="fab fa-facebook-f fa-fade fa-fade-custom"></i></a>
+                <a class="btn btn-sm-square bg-white text-primary me-1" href="" th:href="#{smart.garage.x}"><i
+                        class="fab fa-x-twitter fa-fade fa-fade-custom"></i></a>
+                <a class="btn btn-sm-square bg-white text-primary me-1" href=""
+                   th:href="#{smart.garage.linked-in}">
+                    <i class="fab fa-linkedin-in fa-fade fa-fade-custom"></i></a>
+                <a class="btn btn-sm-square bg-white text-primary me-0" href=""
+                   th:href="#{smart.garage.instagram}">
+                    <i class="fab fa-instagram fa-fade fa-fade-custom"></i></a>
             </div>
         </div>
     </div>

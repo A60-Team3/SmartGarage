@@ -3,43 +3,52 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{/fragments/head.html::head('Login')}"></head>
 <body>
-    <!-- Spinner Start -->
-    <div th:replace="~{/fragments/spinner}"></div>
-    <!-- Spinner End -->
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
 
-    <!-- Topbar Start -->
-    <div th:replace="~{/fragments/topbar}"></div>
-    <!-- Topbar End -->
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
 
-    <!-- Navbar Start -->
-    <nav th:replace="~{/fragments/navbar}"></nav>
-    <!-- Navbar End -->
-
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+<div class="login-container">
     <div class="black-void"></div>
-    <form class="form-check garage-door-form" action="#" th:action="@{/garage/login}" th:method="post">
-        <label th:text="#{user.label.username}">Username</label>
-        <br/>
-        <input type="text" id="username" name="username" placeholder="Username" autofocus="autofocus"/>
+    <div class="garage-door-form">
+        <form class="form-check" action="#" th:action="@{/garage/login}" th:method="post">
+            <label class="text-dark" th:text="#{user.label.username}">Username</label>
+            <br/>
+            <input type="text" id="username" name="username" placeholder="Username" autofocus="autofocus"/>
+            <br/><br/>
+
+            <label class="text-dark" th:text="#{user.label.password}">Password</label>
+            <br/>
+            <input type="password" id="password" name="password" placeholder="Password"/>
+            <br/><br/>
+
+            <input type="submit" value="Login"/>
+        </form>
+        <h5 class="error-message" th:if="${param.error}" th:text="#{user.label.login-error}">Login Error
+        </h5>
+
         <br/><br/>
+        <div class="password-reset">
+            <h4>Forgot your password?
+                <a th:href="@{/garage/xxx}" th:text="#{user.label.forgotten-password}">Reset password</a>
+            </h4>
+        </div>
+    </div>
+</div>
 
-        <label th:text="#{user.label.password}">Password</label>
-        <br/>
-        <input type="password" id="password" name="password" placeholder="Password"/>
-        <br/><br/>
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
 
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
 
-        <input type="submit" value="Login"/>
-
-        <p id="error-message" style="display: none; color:red">Invalid username or password</p>
-    </form>
-
-    <!-- Footer Start -->
-    <div th:replace="~{/fragments/footer}"></div>
-    <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <div th:replace="~{/fragments/toTop}"></div>
-
-    <div th:replace="~{/fragments/scripts}"></div>
+<div th:replace="~{/fragments/scripts}"></div>
 </body>
 </html>

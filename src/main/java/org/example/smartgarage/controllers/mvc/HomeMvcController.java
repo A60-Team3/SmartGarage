@@ -10,16 +10,16 @@ public class HomeMvcController {
 
     @GetMapping
     public String getHomePage(){
-        return "redirect:/garage/index";
+        return "redirect:/garage/home";
     }
 
     @GetMapping("/garage")
     public String redirectHomePage(){
-        return "redirect:/garage/index";
+        return "redirect:/garage/home";
     }
 
     @GetMapping("/garage/")
     public String redirectAlsoToHomePage(){
-        return "redirect:/garage/index";
+        return "redirect:/garage/home";
     }
 }
