@@ -64,5 +64,7 @@ public class DataLoader implements CommandLineRunner {
             ResourceDatabasePopulator populator = new ResourceDatabasePopulator(resource);
             populator.execute(dataSource);
         }
+
+        System.out.println("Initialization complete");
     }
 }

@@ -91,17 +91,18 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                                 .ignoringRequestMatchers(AUTH_WHITELIST))
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers(AUTH_WHITELIST).permitAll()
-                            .requestMatchers("/garage/register", "/garage/login",
-                                    "/", "/garage", "/garage/main").permitAll()
+                            .requestMatchers(AUTH_WHITELIST)
+                            .permitAll()
+                            .requestMatchers("/garage/login", "/", "/garage", "/garage/index")
+                            .permitAll()
                             .requestMatchers("/resources/**", "/static/**", "/static/templates/**",
-                                    "/css/**", "/images/**", "/js/**")
+                                    "/css/**", "/img/**", "/js/**", "/lib/**", "/scss/**")
                             .permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(formLogin ->
                         formLogin.loginPage("/garage/login")
-                                .defaultSuccessUrl("/garage/main?success", true)
+                                .defaultSuccessUrl("/garage/index?success", true)
                                 .failureUrl("/garage/login?error")
                                 .permitAll()
                 )
@@ -109,7 +110,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .logoutUrl("/garage/logout")
                         .addLogoutHandler(new SecurityContextLogoutHandler())
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/garage/main?logout")
+                        .logoutSuccessUrl("/garage/index?logout")
                 );
 
         return http.build();
@@ -117,7 +118,9 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**", "/images/**", "/js/**")
-                .addResourceLocations("classpath:/static/css/", "classpath:/static/images/", "classpath:/static/js/");
+        registry.addResourceHandler("/css/**", "/img/**", "/js/**", "/lib/**", "/scss/**")
+                .addResourceLocations("classpath:/static/css/",
+                        "classpath:/static/img/", "classpath:/static/js/",
+                        "classpath:/static/lib/", "classpath:/static/scss/");
     }
 }

@@ -1,0 +1,68 @@
+.fa-fade-custom{
+    --fa-animation-duration: 5s;
+    --fa-fade-opacity: 0.3
+}
+
+/* Garage door background */
+.form-check {
+    background: url('../img/metal-garage-door-4096x4096.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+    height: 600px; /* Adjust as per your design */
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Animation for the garage door rolling up */
+@keyframes rollUp {
+    0% {
+        transform: translateY(0%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+/* Animation for rolling the door back down */
+@keyframes rollDown {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+/* Animation for sucking effect (zoom into black void) */
+@keyframes suckInside {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(2); /* Adjust for more dramatic sucking effect */
+    }
+}
+
+/* When the form rolls up */
+.form-check.rolling-up {
+    animation: rollUp 2s forwards; /* 2 seconds to roll up */
+}
+
+/* When the form rolls down */
+.form-check.rolling-down {
+    animation: rollDown 2s forwards;
+}
+
+/* Black void behind the garage door */
+.black-void {
+    background-color: black;
+    height: 300px;
+    display: none;
+}
+
+/* Suck you inside when login is successful */
+.suck-inside {
+    animation: suckInside 2s forwards;
+}
