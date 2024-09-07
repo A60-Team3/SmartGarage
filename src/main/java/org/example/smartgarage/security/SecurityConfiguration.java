@@ -37,9 +37,10 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     };
 
     private static final String[] MVC_WHITELIST = {
-            "/garage/login", "/", "/garage", "/garage/home",
-            "/garage/reviews","/garage/team", "/garage/services",
-            "/garage/contacts", "/garage/booking", "/garage/about"
+            "/garage/login", "/", "/garage", "/garage/", "/garage/home",
+            "/garage/reviews", "/garage/team", "/garage/services",
+            "/garage/contacts", "/garage/booking", "/garage/about",
+            "/garage/password", "/garage/password/**"
     };
 
     private final JwtFilter jwtFilter;
@@ -104,11 +105,11 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                             .permitAll();
                     auth.anyRequest().authenticated();
                 })
-                .formLogin(formLogin ->
-                                formLogin.loginPage("/garage/login")
-//                                .defaultSuccessUrl("/garage/index?success", true)
-//                                .failureUrl("/garage/login?error")
-                                        .permitAll()
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/garage/login")
+                        .defaultSuccessUrl("/garage/home?success", true)
+                        .failureUrl("/garage/login?error")
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/garage/logout")

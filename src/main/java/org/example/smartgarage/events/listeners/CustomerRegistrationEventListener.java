@@ -20,6 +20,7 @@ public class CustomerRegistrationEventListener{
     private String password;
     @Value("${email.sender.email}")
     private String senderEmail;
+
     public CustomerRegistrationEventListener(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
@@ -28,7 +29,7 @@ public class CustomerRegistrationEventListener{
     public void onCustomerRegistrationSuccess(CustomerRegistrationEvent event) {
         password = event.password();
         user = event.user();
-        String url = "https://localhost:8080/garage/login";
+        String url = event.url() + "/garage/login";
 
         try {
             sendCredentialsEmail(url);

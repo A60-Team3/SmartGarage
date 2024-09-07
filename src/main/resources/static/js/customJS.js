@@ -67,6 +67,7 @@ function logout() {
 
 // special garage door login
 
+
 document.querySelector('.garage-door-form').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission
 
@@ -74,9 +75,13 @@ document.querySelector('.garage-door-form').addEventListener('submit', function 
     const password = document.getElementById('password').value;
 
     const form = document.querySelector('.garage-door-form');
+    const formToHide = document.querySelector('.door-form');
+    const passwordReset = document.querySelector('.password-reset');
     const blackVoid = document.querySelector('.black-void');
+    const messages = document.querySelector('.login-messages');
 
     form.classList.remove('rolling-up', 'rolling-down');
+    messages.style.display = "none";
 
     // Create the request payload
     const payload = new URLSearchParams();
@@ -93,38 +98,45 @@ document.querySelector('.garage-door-form').addEventListener('submit', function 
         body: payload
     })
         .then(response => {
-            if (response.ok) {
-                // Successful login
-                form.classList.add('rolling-up');
 
-                // Once the door is fully open, apply the sucking effect
-                setTimeout(() => {
-                    blackVoid.classList.add('suck-inside');
-
-                    // Redirect after sucking effect is done
-                    setTimeout(() => {
-                        window.location.href = '/garage/home?success'; // Change this to your redirect page
-                    }, 2000);
-
-                }, 3000); // Wait for door to fully roll up
-            } else {
-                // Failed login
-                form.classList.add('rolling-up');
-
-                setTimeout(() => {
-                    form.classList.remove('rolling-up');
-                    document.getElementById('username').value = '';
-                    document.getElementById('password').value = '';
-                    form.classList.add('rolling-down');
-
-                    setTimeout(() => {
-                        window.location.href = '/garage/login?error=true';
-                    }, 3000); // Time to roll door down
-                }, 3000); // Wait for door to roll up
+            if (!response.ok) {
+                // The response status is not OK, throw an error to handle in the catch block
+                throw new Error('Login failed with status: ' + response.status);
             }
-        })
-        .catch(error => {
-            console.error('Error during login:', error);
-            window.location.href = '/garage/login?error=true';
+
+            const url = response.url;
+            passwordReset.style.display = "none";
+            formToHide.style.display = "none";
+            form.classList.add('rolling-up');
+            if (url.endsWith("error")) {
+                failLogin(form, url, formToHide, passwordReset)
+            } else {
+                successLogin(form, blackVoid, url, formToHide, passwordReset)
+            }
         });
 });
+
+function failLogin(form, url, formToHide, passwordReset) {
+    setTimeout(() => {
+        form.classList.remove('rolling-up');
+        // document.getElementById('username').value = '';
+        // document.getElementById('password').value = '';
+        form.classList.add('rolling-down');
+        setTimeout(() => {
+            window.location.href = url;
+        }, 3000); // Time to roll door down
+    }, 3000); // Wait for door to roll up
+}
+
+function successLogin(form, blackVoid, url, formToHide, passwordReset) {
+    // Once the door is fully open, apply the sucking effect
+    setTimeout(() => {
+        blackVoid.classList.add('suck-inside');
+
+        // Redirect after sucking effect is done
+        setTimeout(() => {
+            window.location.href = url; // Change this to your redirect page
+        }, 2000);
+
+    }, 3000); // Wait for door to fully roll up
+}

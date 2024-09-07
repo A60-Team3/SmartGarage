@@ -24,7 +24,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 writer.write("{\"error\": \"Unauthorized\", \"message\": \"Please log in to access this resource.\"}");
             }
         } else {
-            response.sendRedirect("/login");
+            response.sendRedirect("api/garage/login");
         }
     }
 }

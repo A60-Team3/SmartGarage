@@ -51,8 +51,8 @@ public class DataLoader implements CommandLineRunner {
         }
 
         if (userRepository.findAll().isEmpty()) {
-            authenticationService.registerEmployee(new UserEntity("John", "Doeson", "john.doe@example.com", "john_doe", "password123", "0000000000"));
-            authenticationService.registerEmployee(new UserEntity("Jane", "Smith", "jane.smith@example.com", "jane_smith", "password123", "0000000001"));
+            authenticationService.registerEmployee(new UserEntity("John", "Doeson", "john.doe@example.com", "john_doe", "password123", "0000000000"), null);
+            authenticationService.registerEmployee(new UserEntity("Jane", "Smith", "jane.smith@example.com", "jane_smith", "password123", "0000000001"), null);
         }
 
         if (vehicleBrandRepository.count() == 0 &&

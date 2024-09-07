@@ -1,12 +1,17 @@
 package org.example.smartgarage.services;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.example.smartgarage.events.PasswordResetRequestEvent;
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.repositories.contracts.UserRepository;
 import org.example.smartgarage.services.contracts.UserService;
+import org.example.smartgarage.services.contracts.VerificationTokenService;
+import org.example.smartgarage.utils.RandomPasswordGenerator;
 import org.example.smartgarage.utils.filtering.UserEntitySpecification;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +26,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -112,5 +118,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User", userId));
 
         userRepository.delete(user);
+    }
+
+    @Override
+    public UserEntity findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber).orElse(null);
     }
 }

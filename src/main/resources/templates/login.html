@@ -14,33 +14,59 @@
 <!-- Navbar Start -->
 <nav th:replace="~{/fragments/navbar}"></nav>
 <!-- Navbar End -->
+
+<!--Login Form Start-->
 <div class="login-container">
     <div class="black-void"></div>
     <div class="garage-door-form">
-        <form class="form-check" action="#" th:action="@{/garage/login}" th:method="post">
-            <label class="text-dark" th:text="#{user.label.username}">Username</label>
-            <br/>
+        <form class="door-form" action="#" th:action="@{/garage/login}" th:method="post">
+            <label for="username" class="text-dark" th:text="#{user.label.username}">Username</label>
             <input type="text" id="username" name="username" placeholder="Username" autofocus="autofocus"/>
-            <br/><br/>
-
-            <label class="text-dark" th:text="#{user.label.password}">Password</label>
-            <br/>
+            <label for="password" class="text-dark" th:text="#{user.label.password}">Password</label>
             <input type="password" id="password" name="password" placeholder="Password"/>
-            <br/><br/>
-
             <input type="submit" value="Login"/>
         </form>
-        <h5 class="error-message" th:if="${param.error}" th:text="#{user.label.login-error}">Login Error
-        </h5>
-
-        <br/><br/>
+        <div class="login-messages">
+            <h5 class="error-message" th:if="${param.error}" th:text="#{user.label.login-error}">Login Error </h5>
+            <h5 class="error-message" th:if="${param.user}" th:text="#{user.label.reset-error-user}">Login Error </h5>
+            <h5 class="alert-success" th:if="${param.email}" th:text="#{user.label.reset-email-send}">Login Error </h5>
+            <h5 class="alert-success" th:if="${param.reset}" th:text="#{user.label.reset-complete}">Login Error </h5>
+        </div>
         <div class="password-reset">
             <h4>Forgot your password?
-                <a th:href="@{/garage/xxx}" th:text="#{user.label.forgotten-password}">Reset password</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#phoneModal"
+                   th:text="#{user.label.password-forgotten}">Click here</a>
             </h4>
         </div>
     </div>
 </div>
+<!--Login Form End-->
+
+<!--Reset Password Modal Start-->
+<div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="phoneModalLabel">Enter Your Phone Number</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="phone-form" action="/garage/password" method="post">
+                    <label for="phone-number">Phone Number:</label>
+                    <input type="tel" id="phone-number" pattern="^\d{10}$"
+                           name="phoneNumber" class="form-control"
+                           placeholder="Enter your phone number" required>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Confirm">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Reset Password Modal End-->
 
 <!-- Footer Start -->
 <div th:replace="~{/fragments/footer}"></div>

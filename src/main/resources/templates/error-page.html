@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
+<head th:replace="~{/fragments/head.html::head('Home')}"></head>
+
+<body>
+    <!-- Spinner Start -->
+    <div th:replace="~{/fragments/spinner}"></div>
+    <!-- Spinner End -->
+
+    <!-- Topbar Start -->
+    <div th:replace="~{/fragments/topbar}"></div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <nav th:replace="~{/fragments/navbar}"></nav>
+    <!-- Navbar End -->
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="col-md-6 text-center p-5 bg-light rounded shadow">
+            <h1 class="text-danger" th:text="${statusCode}">HTTP Status Code</h1>
+            <h3 class="text-dark" th:text="${error}">Error placeholder</h3>
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    <div th:replace="~{/fragments/footer}"></div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <div th:replace="~{/fragments/toTop}"></div>
+
+    <div th:replace="~{/fragments/scripts}"></div>
+</body>
+</html>

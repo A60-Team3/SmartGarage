@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.example.smartgarage.models.enums.UniqueType;
+import org.example.smartgarage.validation.Unique;
 import org.springframework.web.multipart.MultipartFile;
 
 public record UserUpdateDto(
@@ -17,6 +19,7 @@ public record UserUpdateDto(
 
         @NotBlank
         @Size(min = 2, max = 20)
+        @Unique(type = UniqueType.USERNAME, message = "Username already exists")
         String username,
 
         @NotBlank
@@ -24,12 +27,17 @@ public record UserUpdateDto(
         @Pattern(regexp = passwordRegex, message = "Password should contain a capital letter, digit, and special symbol")
         String password,
 
+        @NotBlank(message = "This field is mandatory")
+        String passwordConfirm,
+
         @NotBlank
         @Email(regexp = emailRegex, message = "Email should be valid")
+        @Unique(type = UniqueType.EMAIL, message = "Email already exists")
         String email,
 
         @NotBlank
         @Pattern(regexp = phoneRegex, message = "Phone number should be valid")
+        @Unique(type = UniqueType.PHONE, message = "Phone number already exists")
         String phoneNumber,
 
         MultipartFile profilePic

@@ -1,5 +1,6 @@
 package org.example.smartgarage.services.contracts;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
 import org.springframework.data.domain.Page;
@@ -22,4 +23,6 @@ public interface UserService {
     UserEntity update(long userId, UserEntity updatedUserInfo);
 
     void deleteUser(long userId);
+
+    UserEntity findByPhoneNumber(String phoneNumber);
 }

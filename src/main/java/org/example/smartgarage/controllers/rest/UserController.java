@@ -99,6 +99,10 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authorized action");
         }
 
+        if (dto.password().equals(dto.passwordConfirm())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password fields must match");
+        }
+
         UserEntity updatedUserInfo = userMapper.toEntity(dto);
 
         UserEntity updatedUser = userService.update(userId, updatedUserInfo);

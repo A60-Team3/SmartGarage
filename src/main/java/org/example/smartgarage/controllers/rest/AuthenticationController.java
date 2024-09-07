@@ -39,9 +39,10 @@ public class AuthenticationController {
 
     @PreAuthorize("hasRole('CLERK')")
     @PostMapping("/users")
-    public ResponseEntity<UserOutDto> registerCustomer(@Valid @RequestBody CustomerRegistrationDto customerRegistrationDto) {
+    public ResponseEntity<UserOutDto> registerCustomer(@Valid @RequestBody CustomerRegistrationDto customerRegistrationDto,
+                                                       HttpServletRequest request) {
         UserEntity customer = userMapper.toEntity(customerRegistrationDto);
-        UserEntity savedCustomer = authenticationService.registerCustomer(customer);
+        UserEntity savedCustomer = authenticationService.registerCustomer(customer, request);
         UserOutDto userOutDto = userMapper.toDto(savedCustomer);
 
         return new ResponseEntity<>(userOutDto, HttpStatus.CREATED);
@@ -49,13 +50,14 @@ public class AuthenticationController {
 
     @PreAuthorize("hasRole('HR')")
     @PostMapping("/clerks")
-    public ResponseEntity<UserOutDto> registerEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto) {
+    public ResponseEntity<UserOutDto> registerEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto,
+                                                       HttpServletRequest request) {
 
         if (!employeeRegistrationDto.password().equals(employeeRegistrationDto.passwordConfirm())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password confirmation should match password.");
         }
         UserEntity employee = userMapper.toEntity(employeeRegistrationDto);
-        UserEntity savedEmployee = authenticationService.registerEmployee(employee);
+        UserEntity savedEmployee = authenticationService.registerEmployee(employee,request);
         UserOutDto userOutDto = userMapper.toDto(savedEmployee);
 
         return new ResponseEntity<>(userOutDto, HttpStatus.CREATED);

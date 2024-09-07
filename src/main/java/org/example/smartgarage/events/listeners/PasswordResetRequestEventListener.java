@@ -2,8 +2,7 @@ package org.example.smartgarage.events.listeners;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.util.ByteArrayDataSource;
-import org.example.smartgarage.events.EmailReportEvent;
+import org.example.smartgarage.events.PasswordResetRequestEvent;
 import org.example.smartgarage.models.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
@@ -11,61 +10,53 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Component
-public class EmailReportEventListener{
-    private final JavaMailSender mailSender;
+public class PasswordResetRequestEventListener {
 
+    private final JavaMailSender mailSender;
+    private UserEntity user;
     @Value("${email.sender.email}")
     private String senderEmail;
 
-    private ByteArrayOutputStream document;
-    private UserEntity user;
-
-    public EmailReportEventListener(JavaMailSender mailSender) {
+    public PasswordResetRequestEventListener(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
     @EventListener
-    public void onEmailReportGenerationSuccess(EmailReportEvent event) {
-        document = event.pdfDocument();
+    public void sendResetPasswordEmail(PasswordResetRequestEvent event) {
         user = event.user();
 
+        String resetUrl = event.url() + "/garage/password/" + user.getId() + "?token=" + event.token();
+        String loginUrl = event.url() + "/garage/login";
+
         try {
-            sendCredentialsEmail();
+            sendEmail(resetUrl, loginUrl);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void sendCredentialsEmail() throws MessagingException, UnsupportedEncodingException {
-        String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-        String subject = "Smart Garage Inc service report";
+    private void sendEmail(String resetUrl, String loginUrl) throws MessagingException, UnsupportedEncodingException {
+        String subject = "Forgotten password reset request";
         String senderName = "A60 Team 3 Smart Garage App";
         String mailContent = "<p> Greetings, Mr./Mrs. " + String.format("%s %s", user.getFirstName(), user.getLastName()) + ", </p>" +
-                "<p>Thank you for choosing Smart Garage Inc for your 'precious' maintenance.</p>" +
+                "<p>We received request to reset the password of your account with us!</p>" +
+                "<p>Please, follow the link below to complete your request.</p>" +
+                "<a href=\"" + resetUrl + "\">Reset password</a>" +
+                "<p> Thank you <br> A60 Team 3 Smart Garage App" +
                 "<br/><br/>" +
-                "<p> Find attached the report you requested</p>" +
-                "<p> It is encrypted. The password is your registered phone number.</p>" +
-                "<p> To view the report, you have to save it to your computer.</p>" +
                 "<br/><br/>" +
-                "<p> Thank you <br> Smart Garage Team</p>";
-
-
+                "<p style=\"color: red\">If you are not the one to send this request, consider changing your password.</p>" +
+                "<p>You can login from here: <a href=\"" + loginUrl + "\">Login now</a></p>";
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
         messageHelper.setFrom(senderEmail, senderName);
         messageHelper.setTo(user.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
-        messageHelper.addAttachment(
-                String.format("Visit_Report_%s.pdf", currentTime),
-                new ByteArrayDataSource(document.toByteArray(), "application/pdf")
-        );
+
         mailSender.send(message);
     }
 }

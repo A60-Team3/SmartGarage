@@ -9,6 +9,7 @@ public class RandomPasswordGenerator {
     private static final String SPECIAL_CHARS = "!@#$%^&*()_+{}[]";
 
     private static final String ALL_CHARS = UPPER + LOWER + DIGITS + SPECIAL_CHARS;
+    private static final String URL_VALID = UPPER + LOWER + DIGITS;
 
     private static SecureRandom random = new SecureRandom();
 
@@ -22,6 +23,20 @@ public class RandomPasswordGenerator {
 
         for (int i = 4; i < length; i++) {
             password.append(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
+        }
+
+        return shuffleString(password.toString());
+    }
+
+    public static String generatePasswordResetToken(int length) {
+        StringBuilder password = new StringBuilder(length);
+
+        password.append(UPPER.charAt(random.nextInt(UPPER.length())));
+        password.append(LOWER.charAt(random.nextInt(LOWER.length())));
+        password.append(DIGITS.charAt(random.nextInt(DIGITS.length())));
+
+        for (int i = 3; i < length; i++) {
+            password.append(URL_VALID.charAt(random.nextInt(URL_VALID.length())));
         }
 
         return shuffleString(password.toString());
