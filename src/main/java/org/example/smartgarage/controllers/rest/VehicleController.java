@@ -87,7 +87,7 @@ public class VehicleController {
                                     @RequestParam(required = false) String sortBy,
                                     @RequestParam(required = false) String sortOrder) {
 
-        VehicleFilterOptions vehicleFilterOptions = new VehicleFilterOptions(owner, sortBy, sortOrder);
+        VehicleFilterOptions vehicleFilterOptions = new VehicleFilterOptions(owner, null, null, null, sortBy, sortOrder);
         Page<Vehicle> vehicles = vehicleService.getAll(offset, pageSize, vehicleFilterOptions);
         Page<VehicleOutDTO> vehicleOutDTOPage = vehicleMapper.vehiclesToVehicleDTOs(vehicles);
         return ResponseEntity.ok(vehicleOutDTOPage);
@@ -100,6 +100,26 @@ public class VehicleController {
         Vehicle vehicle = vehicleService.getById(id);
         VehicleOutDTO vehicleOutDTO = vehicleMapper.toDTO(vehicle);
         return ResponseEntity.ok(vehicleOutDTO);
+    }
+
+    @GetMapping("/vehicles/vin")
+    public ResponseEntity<?> findVehicle(@RequestParam(required = false) String licensePlate,
+                                         @RequestParam(required = false) String vin,
+                                         @RequestParam(required = false) String brandName) {
+
+        VehicleFilterOptions vehicleFilterOptions =
+                new VehicleFilterOptions(
+                        null,
+                        (brandName.isBlank() ? null : brandName),
+                        (vin.isBlank() ? null : vin),
+                        (licensePlate.isBlank() ? null : licensePlate),
+                        null, null);
+
+        List<Vehicle> result = vehicleService.findFiltered(vehicleFilterOptions);
+
+        List<VehicleOutDTO> output = result.stream().map(vehicleMapper::toDTO).toList();
+
+        return ResponseEntity.ok(output);
     }
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")

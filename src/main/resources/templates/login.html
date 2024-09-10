@@ -27,10 +27,10 @@
             <input type="submit" value="Login"/>
         </form>
         <div class="login-messages">
-            <h5 class="error-message" th:if="${param.error}" th:text="#{user.label.login-error}">Login Error </h5>
+<!--            <h5 class="error-message" th:if="${param.error}" th:text="#{user.label.login-error}">Login Error </h5>-->
             <h5 class="error-message" th:if="${param.user}" th:text="#{user.label.reset-error-user}">Login Error </h5>
-            <h5 class="alert-success" th:if="${param.email}" th:text="#{user.label.reset-email-send}">Login Error </h5>
-            <h5 class="alert-success" th:if="${param.reset}" th:text="#{user.label.reset-complete}">Login Error </h5>
+            <h5 class="success-message" th:if="${param.email}" th:text="#{user.label.reset-email-send}">Login Error </h5>
+            <h5 class="success-message" th:if="${param.reset}" th:text="#{user.label.reset-complete}">Login Error </h5>
         </div>
         <div class="password-reset">
             <h4>Forgot your password?
@@ -76,5 +76,6 @@
 <div th:replace="~{/fragments/toTop}"></div>
 
 <div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/loginScript.js"></script>
 </body>
 </html>

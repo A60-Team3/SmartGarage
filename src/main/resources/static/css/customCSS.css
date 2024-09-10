@@ -143,6 +143,14 @@
     z-index: 2;
 }
 
+.success-message{
+    color:#0f5132;
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+    z-index: 2;
+}
+
 .password-reset{
     position: relative;
     text-align: center;

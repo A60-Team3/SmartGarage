@@ -1,6 +1,7 @@
 package org.example.smartgarage.dtos.response;
 
 public record VehicleOutDTO(
+        long id,
 
         String licensePlate,
 

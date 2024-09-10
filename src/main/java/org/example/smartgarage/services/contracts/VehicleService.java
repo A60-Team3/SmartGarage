@@ -11,6 +11,8 @@ public interface VehicleService {
 
     List<Vehicle> getAll();
 
+    List<Vehicle> findFiltered(VehicleFilterOptions filterOptions);
+
     Page<Vehicle> getAll(int offset, int pageSize, VehicleFilterOptions vehicleFilterOptions);
 
     Vehicle getById(long id);

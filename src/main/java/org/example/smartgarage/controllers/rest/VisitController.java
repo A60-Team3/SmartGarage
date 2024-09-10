@@ -57,6 +57,10 @@ public class VisitController {
                                      @RequestParam(required = false) String customerName,
                                      @Parameter(description = "Partial or full last name")
                                      @RequestParam(required = false) String clerkName,
+                                     @Parameter(description = "Vehicle id")
+                                     @RequestParam(required = false) Long vehicleId,
+                                     @Parameter(description = "List of order ids")
+                                     @RequestParam(required = false) List<Long> orders,
                                      @RequestParam(required = false) TimeOperator scheduleCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -64,11 +68,6 @@ public class VisitController {
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                      @RequestParam(required = false) LocalDate scheduleDateTo,
-                                     @RequestParam(required = false) String brandName,
-                                     @Parameter(description = "Pattern - String length 17")
-                                     @RequestParam(required = false) String vehicleVin,
-                                     @Parameter(description = "Pattern - XX XXXX XX")
-                                     @RequestParam(required = false) String vehicleRegistry,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -76,13 +75,12 @@ public class VisitController {
                                      @Parameter(description = "Options - all field names")
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
-                                     @RequestParam boolean toPdf,
+                                     @RequestParam(required = false) boolean toPdf,
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 null, customerName, principal.getId(), clerkName,
-                scheduleCondition, scheduleDateFrom, scheduleDateTo,
-                brandName, vehicleVin, vehicleRegistry,
+                vehicleId, orders, scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 bookedCondition, bookedOn, sortBy, sortOrder
         );
 
@@ -104,6 +102,10 @@ public class VisitController {
                                      @RequestParam(required = false) String customerName,
                                      @Parameter(description = "Partial or full last name")
                                      @RequestParam(required = false) String clerkName,
+                                     @Parameter(description = "Vehicle id")
+                                     @RequestParam(required = false) Long vehicleId,
+                                     @Parameter(description = "List of order ids")
+                                     @RequestParam(required = false) List<Long> orders,
                                      @RequestParam(required = false) TimeOperator scheduleCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -111,11 +113,6 @@ public class VisitController {
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                      @RequestParam(required = false) LocalDate scheduleDateTo,
-                                     @RequestParam(required = false) String brandName,
-                                     @Parameter(description = "Pattern - String length 17")
-                                     @RequestParam(required = false) String vehicleVin,
-                                     @Parameter(description = "Pattern - X(X)NNNNY(Y)")
-                                     @RequestParam(required = false) String vehicleRegistry,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -123,13 +120,12 @@ public class VisitController {
                                      @Parameter(description = "Options - all field names")
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
-                                     @RequestParam boolean toPdf,
+                                     @RequestParam(required = false) boolean toPdf,
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 userId, customerName, null, clerkName,
-                scheduleCondition, scheduleDateFrom, scheduleDateTo,
-                brandName, vehicleVin, vehicleRegistry,
+                vehicleId, orders, scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 bookedCondition, bookedOn, sortBy, sortOrder
         );
 
@@ -153,6 +149,10 @@ public class VisitController {
                                      @RequestParam(required = false) Long clerkId,
                                      @Parameter(description = "Partial or full last name")
                                      @RequestParam(required = false) String clerkName,
+                                     @Parameter(description = "Vehicle id")
+                                     @RequestParam(required = false) Long vehicleId,
+                                     @Parameter(description = "List of order ids")
+                                     @RequestParam(required = false) List<Long> orders,
                                      @RequestParam(required = false) TimeOperator scheduleCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -160,11 +160,6 @@ public class VisitController {
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                      @RequestParam(required = false) LocalDate scheduleDateTo,
-                                     @RequestParam(required = false) String brandName,
-                                     @Parameter(description = "Pattern - String length 17")
-                                     @RequestParam(required = false) String vehicleVin,
-                                     @Parameter(description = "Pattern - XX XXXX XX")
-                                     @RequestParam(required = false) String vehicleRegistry,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -172,13 +167,12 @@ public class VisitController {
                                      @Parameter(description = "Options - all field names")
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
-                                     @RequestParam boolean toPdf,
+                                     @RequestParam(required = false) boolean toPdf,
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
-                customerId, customerName, clerkId, clerkName,
+                customerId, customerName, clerkId, clerkName, vehicleId, orders,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
-                brandName, vehicleVin, vehicleRegistry,
                 bookedCondition, bookedOn, sortBy, sortOrder
         );
 
@@ -200,7 +194,7 @@ public class VisitController {
     @PreAuthorize("hasRole('CLERK')")
     @PostMapping("/visits")
     public ResponseEntity<?> createVisit(@Valid VisitInDto dto,
-                                         @AuthenticationPrincipal CustomUserDetails loggedClerk){
+                                         @AuthenticationPrincipal CustomUserDetails loggedClerk) {
         Visit visit = visitMapper.toEntity(dto);
         Visit savedVisit = visitService.create(visit, loggedClerk.getId());
 
@@ -209,10 +203,11 @@ public class VisitController {
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @PutMapping("/visits/{visitId}")
-    public ResponseEntity<?> updateVisit(@RequestParam Status status,
+    public ResponseEntity<?> updateVisit(@RequestParam(required = false) Status status,
+                                         @RequestParam(required = false) LocalDate bookedDate,
                                          @PathVariable long visitId) {
 
-        Visit updatedVisit = visitService.updateStatus(status, visitId);
+        Visit updatedVisit = visitService.updateVisit(status, visitId, bookedDate);
 
         return ResponseEntity.ok(visitMapper.toDto(updatedVisit));
     }
@@ -228,13 +223,14 @@ public class VisitController {
 
     private static VisitFilterOptions createVisitFilterOptions(
             Long customerId, String customerName, Long clerkId, String clerkName,
+            Long vehicleId, List<Long> orders,
             TimeOperator scheduleCondition, LocalDate scheduleDateFrom, LocalDate scheduleDateTo,
-            String brandName, String vehicleVin, String vehicleRegistry,
             TimeOperator bookedCondition, LocalDateTime bookedOn,
             String sortBy, String sortOrder) {
         return new VisitFilterOptions(customerId, customerName,
-                clerkId, clerkName, scheduleCondition, scheduleDateFrom, scheduleDateTo,
-                brandName, vehicleVin, vehicleRegistry, bookedCondition, bookedOn, sortBy, sortOrder);
+                clerkId, clerkName, vehicleId, orders,
+                scheduleCondition, scheduleDateFrom, scheduleDateTo,
+                bookedCondition, bookedOn, sortBy, sortOrder);
     }
 
     private Page<VisitOutDto> createVisitOutDtos(int offset, int pageSize, boolean toPdf,

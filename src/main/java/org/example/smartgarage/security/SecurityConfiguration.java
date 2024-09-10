@@ -43,6 +43,11 @@ public class SecurityConfiguration implements WebMvcConfigurer {
             "/garage/password", "/garage/password/**"
     };
 
+    private static final String[] RESOURCE_WHITELIST = {
+            "/resources/**", "/static/**", "/static/templates/**",
+            "/css/**", "/img/**", "/js/**", "/lib/**", "/scss/**"
+    };
+
     private final JwtFilter jwtFilter;
     private final JwtAuthenticationEntryPoint jwtEntryPoint;
 
@@ -77,7 +82,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> {
                     auth
                             .requestMatchers("/api/garage/login").permitAll()
-                            .requestMatchers(SWAGGER_WHITELIST).permitAll();
+                            .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                            .requestMatchers("/api/garage/clerks/visits").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
@@ -100,9 +106,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                     auth
                             .requestMatchers(SWAGGER_WHITELIST).permitAll()
                             .requestMatchers(MVC_WHITELIST).permitAll()
-                            .requestMatchers("/resources/**", "/static/**", "/static/templates/**",
-                                    "/css/**", "/img/**", "/js/**", "/lib/**", "/scss/**")
-                            .permitAll();
+                            .requestMatchers(RESOURCE_WHITELIST).permitAll()
+                            .requestMatchers("/api/garage/clerks/visits").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(formLogin -> formLogin

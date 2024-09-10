@@ -13,13 +13,13 @@ import org.example.smartgarage.repositories.contracts.VisitRepository;
 import org.example.smartgarage.services.contracts.*;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 import org.example.smartgarage.utils.filtering.VisitSpecification;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,21 +44,7 @@ public class VisitServiceImpl implements VisitService {
     public List<Visit> findAll(VisitFilterOptions visitFilterOptions) {
         VisitSpecification visitSpecification = new VisitSpecification(visitFilterOptions);
 
-        Sort.Direction direction;
-        if (visitFilterOptions.getSortOrder().isPresent()) {
-            direction = Sort.Direction.fromString(visitFilterOptions.getSortOrder().get());
-        } else {
-            direction = Sort.Direction.ASC;
-        }
-
-        String sortBy;
-        if (visitFilterOptions.getSortBy().isPresent()) {
-            sortBy = visitFilterOptions.getSortBy().get();
-        } else {
-            sortBy = "scheduleDate";
-        }
-
-        return visitRepository.findAll(visitSpecification, Sort.by(direction, sortBy));
+        return visitRepository.findAll(visitSpecification);
     }
 
     @Override
@@ -107,13 +93,17 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public Visit updateStatus(Status status, long visitId) {
+    public Visit updateVisit(Status status, long visitId, LocalDate bookedDate) {
 
         Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new EntityNotFoundException("Visit", visitId));
 
         if (visit.getStatus().equals(status)) {
             throw new EntityDuplicateException(String.format("Visit status already at [%s]", status));
+        }
+
+        if (bookedDate != null) {
+            visit.setScheduleDate(bookedDate);
         }
 
         visit.setStatus(status);

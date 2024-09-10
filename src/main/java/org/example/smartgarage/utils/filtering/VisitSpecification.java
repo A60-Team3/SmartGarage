@@ -1,11 +1,9 @@
 package org.example.smartgarage.utils.filtering;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.Order;
 import org.example.smartgarage.exceptions.InvalidFilterArgumentException;
-import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 
@@ -49,22 +47,14 @@ public class VisitSpecification implements Specification<Visit> {
                             .like(root.join("clerk").get("lastName"), "%" + value + "%")));
         });
 
-        visitFilterOptions.getBrandName().ifPresent(value -> {
+        visitFilterOptions.getVehicleId().ifPresent(value -> {
             predicates.add(criteriaBuilder
-                    .like(root.join("vehicle")
-                                    .join("brandName")
-                                    .get("brandName"),
-                            "%" + value + "%"));
+                    .equal(root.join("vehicle").get("id"), value));
         });
 
-        visitFilterOptions.getVehicleVin().ifPresent(value -> {
+        visitFilterOptions.getOrders().ifPresent(value -> {
             predicates.add(criteriaBuilder
-                    .like(root.join("vehicle").get("vin"), "%" + value + "%"));
-        });
-
-        visitFilterOptions.getVehicleRegistry().ifPresent(value -> {
-            predicates.add(criteriaBuilder
-                    .like(root.join("vehicle").get("licensePlate"), "%" + value + "%"));
+                    .in(root.join("orders").get("id")).value(value));
         });
 
         visitFilterOptions.getBookedOn().ifPresent(value -> {
@@ -115,6 +105,65 @@ public class VisitSpecification implements Specification<Visit> {
                     };
             predicates.add(predicate);
         });
+
+        if (visitFilterOptions.getSortBy().isPresent()) {
+            String sortBy = visitFilterOptions.getSortBy().get();
+            String sortOrder = visitFilterOptions.getSortOrder().orElse("asc");
+            Join<Vehicle, Vehicle> vehicleJoin = root.join("vehicle", JoinType.LEFT);
+            Join<Vehicle, UserEntity> clerkJoin = root.join("clerk", JoinType.LEFT);
+            Join<Vehicle, UserEntity> clientJoin = root.join("client", JoinType.LEFT);
+
+            Order order;
+            switch (sortBy) {
+                case "clerk":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(clerkJoin.get("lastName"))
+                            : criteriaBuilder.asc(clerkJoin.get("lastName"));
+                    break;
+                case "client":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(clientJoin.get("lastName"))
+                            : criteriaBuilder.asc(clientJoin.get("lastName"));
+                    break;
+                case "brandName":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(vehicleJoin.join("brandName").get("brandName"))
+                            : criteriaBuilder.asc(vehicleJoin.join("brandName").get("brandName"));
+                    break;
+                case "modelName":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(vehicleJoin.join("modelName").get("modelName"))
+                            : criteriaBuilder.asc(vehicleJoin.join("modelName").get("modelName"));
+                    break;
+                case "yearOfCreation":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(vehicleJoin.join("year").get("year"))
+                            : criteriaBuilder.asc(vehicleJoin.join("year").get("year"));
+                    break;
+                case "licensePlate":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(vehicleJoin.join("licensePlate"))
+                            : criteriaBuilder.asc(vehicleJoin.join("licensePlate"));
+                    break;
+                case "vin":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(vehicleJoin.join("vin"))
+                            : criteriaBuilder.asc(vehicleJoin.join("vin"));
+                    break;
+                case "updatedOn":
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(root.get("updatedOn"))
+                            : criteriaBuilder.asc(root.get("updatedOn"));
+                    break;
+                default:
+                    order = sortOrder.equalsIgnoreCase("desc")
+                            ? criteriaBuilder.desc(root.get("scheduleDate"))
+                            : criteriaBuilder.asc(root.get("scheduleDate"));
+                    break;
+            }
+
+            query.orderBy(order);
+        }
 
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

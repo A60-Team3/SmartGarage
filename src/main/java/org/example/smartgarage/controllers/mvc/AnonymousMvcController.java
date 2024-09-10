@@ -40,6 +40,6 @@ public class AnonymousMvcController {
 
     @GetMapping("/reviews")
     public String getReviews(){
-        return "testimonial";
+        return "reviews";
     }
 }

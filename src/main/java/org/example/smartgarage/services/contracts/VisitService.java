@@ -9,6 +9,7 @@ import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface VisitService {
@@ -22,7 +23,7 @@ public interface VisitService {
 
     Visit create(Visit visit, Long clerkId);
 
-    Visit updateStatus(Status status, long visitId);
+    Visit updateVisit(Status status, long visitId, LocalDate bookedDate);
 
     void deleteVisit(long visitId);
 }

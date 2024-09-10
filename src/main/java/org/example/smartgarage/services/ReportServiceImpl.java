@@ -124,7 +124,7 @@ public class ReportServiceImpl implements ReportService {
                         new Paragraph()
                                 .add(new Tab())
                                 .add(new Tab())
-                                .add(service)
+                                .add(service.toString())
                 );
             });
 

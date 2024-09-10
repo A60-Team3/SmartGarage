@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 
 public class CreationHelper {
 
@@ -113,6 +114,7 @@ public class CreationHelper {
         visit.setVehicle(createMockVehicle());
         visit.setBookedOn(LocalDateTime.now());
         visit.setUpdatedOn(LocalDateTime.now());
+        visit.setServices(List.of(createMockOrder()));
 
         return visit;
     }

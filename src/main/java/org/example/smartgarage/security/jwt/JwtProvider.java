@@ -17,7 +17,7 @@ import java.util.Set;
 public class JwtProvider {
 
     private static final SecretKey key = Jwts.SIG.HS512.key().build();
-    public static final int TOKEN_VALIDITY_HOURS = 1;
+    public static final int TOKEN_VALIDITY_HOURS = 2;
 
     public String generateToken(UserDetails userDetails) {
         Date issueDate = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));

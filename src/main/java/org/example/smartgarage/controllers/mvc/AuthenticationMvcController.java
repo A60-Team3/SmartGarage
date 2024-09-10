@@ -5,10 +5,13 @@ import jakarta.validation.Valid;
 import org.example.smartgarage.dtos.request.PasswordResetDto;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.VerificationToken;
+import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.AuthenticationService;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.services.contracts.VerificationTokenService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +36,10 @@ public class AuthenticationMvcController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage() {
+    public String getLoginPage(@AuthenticationPrincipal CustomUserDetails loggedUser) {
+        if (loggedUser != null) {
+            return "redirect:/garage/home?logged=true";
+        }
         return "login";
     }
 

@@ -3,17 +3,13 @@ package org.example.smartgarage.services;
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.models.*;
-import org.example.smartgarage.repositories.contracts.VehicleBrandRepository;
-import org.example.smartgarage.repositories.contracts.VehicleModelRepository;
 import org.example.smartgarage.repositories.contracts.VehicleRepository;
-import org.example.smartgarage.repositories.contracts.VehicleYearRepository;
 import org.example.smartgarage.services.contracts.VehicleService;
 import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
 import org.example.smartgarage.utils.filtering.VehicleSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +27,13 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public List<Vehicle> getAll() {
         return vehicleRepository.findAll();
+    }
+
+    @Override
+    public List<Vehicle> findFiltered(VehicleFilterOptions filterOptions) {
+        VehicleSpecification specification = new VehicleSpecification(filterOptions);
+
+        return vehicleRepository.findAll(specification);
     }
 
     @Override

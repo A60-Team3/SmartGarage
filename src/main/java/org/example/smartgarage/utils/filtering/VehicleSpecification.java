@@ -29,6 +29,12 @@ public class VehicleSpecification implements Specification<Vehicle> {
 
         vehicleFilterOptions.getOwner().ifPresent(value ->
                 predicates.add(criteriaBuilder.equal(root.join("owner").get("phoneNumber"), value)));
+        vehicleFilterOptions.getBrandName().ifPresent(value ->
+                predicates.add(criteriaBuilder.equal(root.join("brandName").get("brandName"), value)));
+        vehicleFilterOptions.getVehicleVin().ifPresent(value ->
+                predicates.add(criteriaBuilder.like(root.get("vin"), "%"+value+"%")));
+        vehicleFilterOptions.getVehicleRegistry().ifPresent(value ->
+                predicates.add(criteriaBuilder.like(root.get("licensePlate"), "%"+value+"%")));
 
         if (vehicleFilterOptions.getSortBy().isPresent()) {
             String sortBy = vehicleFilterOptions.getSortBy().get();

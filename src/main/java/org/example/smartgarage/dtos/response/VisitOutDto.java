@@ -1,16 +1,19 @@
 package org.example.smartgarage.dtos.response;
 
+import org.example.smartgarage.models.ServiceType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class VisitOutDto implements Serializable {
+public class VisitOutDto {
 
+    private long id;
     private String bookedDate;
     private String clientName;
     private String employeeName;
     private VehicleOutDTO vehicle;
-    private List<String> services;
+    private List<ServiceType> services;
     private String status;
     private List<String> history;
     private BigDecimal totalCost;
@@ -21,7 +24,7 @@ public class VisitOutDto implements Serializable {
     }
 
     public VisitOutDto(String bookedDate, String clientName, String employeeName, VehicleOutDTO vehicle,
-                       List<String> services, String status, List<String> history, BigDecimal totalCost, String currency) {
+                       List<ServiceType> services, String status, List<String> history, BigDecimal totalCost, String currency) {
         this.bookedDate = bookedDate;
         this.clientName = clientName;
         this.employeeName = employeeName;
@@ -65,11 +68,11 @@ public class VisitOutDto implements Serializable {
         this.vehicle = vehicle;
     }
 
-    public List<String> getServices() {
+    public List<ServiceType> getServices() {
         return services;
     }
 
-    public void setServices(List<String> services) {
+    public void setServices(List<ServiceType> services) {
         this.services = services;
     }
 
@@ -111,5 +114,13 @@ public class VisitOutDto implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

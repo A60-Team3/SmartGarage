@@ -47,6 +47,7 @@ public abstract class VisitMapper {
     @Mapping(target = "history", source = "eventLogs", qualifiedByName = "history")
     @Mapping(target = "totalCost", source = "services", qualifiedByName = "totalCost")
     @Mapping(target = "services", source = "services", qualifiedByName = "services")
+    @Mapping(target = "id", source = "visit.id")
     public abstract VisitOutDto toDto(Visit visit);
 
     @Named("customerFullName")
@@ -60,10 +61,9 @@ public abstract class VisitMapper {
     }
 
     @Named("services")
-    public List<String> mapServiceToString(List<Order> orders) {
+    public List<ServiceType> mapServiceToString(List<Order> orders) {
         return orders.stream()
                 .map(Order::getServiceType)
-                .map(ServiceType::toString)
                 .toList();
     }
 

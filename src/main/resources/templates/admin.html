@@ -2,9 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{/fragments/head.html::head('Contacts')}"></head>
+<head th:replace="~{/fragments/head.html::head('Admin')}"></head>
 
 <body>
+
 <!-- Spinner Start -->
 <div th:replace="~{/fragments/spinner}"></div>
 <!-- Spinner End -->
@@ -17,14 +18,6 @@
 <nav th:replace="~{/fragments/navbar}"></nav>
 <!-- Navbar End -->
 
-<!-- Page Header Start -->
-<div th:replace="~{/fragments/pageHead}"></div>
-<!-- Page Header End -->
-
-<!-- Contact Start -->
-<div th:replace="~{/fragments/partContacts}"></div>
-<!-- Contact End -->
-
 <!-- Footer Start -->
 <div th:replace="~{/fragments/footer}"></div>
 <!-- Footer End -->
@@ -33,7 +26,5 @@
 <div th:replace="~{/fragments/toTop}"></div>
 
 <div th:replace="~{/fragments/scripts}"></div>
-
 </body>
-
 </html>
