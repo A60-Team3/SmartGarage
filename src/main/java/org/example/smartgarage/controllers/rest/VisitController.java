@@ -77,7 +77,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam(required = false) boolean toPdf,
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
-                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
+                                     @AuthenticationPrincipal CustomUserDetails principal) {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 null, customerName, principal.getId(), clerkName,
                 vehicleId, orders, scheduleCondition, scheduleDateFrom, scheduleDateTo,
@@ -122,7 +122,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam(required = false) boolean toPdf,
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
-                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
+                                     @AuthenticationPrincipal CustomUserDetails principal) {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 userId, customerName, null, clerkName,
                 vehicleId, orders, scheduleCondition, scheduleDateFrom, scheduleDateTo,
@@ -169,7 +169,7 @@ public class VisitController {
                                      @RequestParam(required = false) String sortOrder,
                                      @RequestParam(required = false) boolean toPdf,
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
-                                     @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
+                                     @AuthenticationPrincipal CustomUserDetails principal) {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
                 customerId, customerName, clerkId, clerkName, vehicleId, orders,
                 scheduleCondition, scheduleDateFrom, scheduleDateTo,
@@ -201,7 +201,7 @@ public class VisitController {
         return ResponseEntity.status(HttpStatus.CREATED).body(visitMapper.toDto(savedVisit));
     }
 
-    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC', 'HR')")
     @PutMapping("/visits/{visitId}")
     public ResponseEntity<?> updateVisit(@RequestParam(required = false) Status status,
                                          @RequestParam(required = false) LocalDate bookedDate,
@@ -235,7 +235,7 @@ public class VisitController {
 
     private Page<VisitOutDto> createVisitOutDtos(int offset, int pageSize, boolean toPdf,
                                                  CurrencyCode exchangeCurrency, long userId,
-                                                 VisitFilterOptions visitFilterOptions) throws IOException {
+                                                 VisitFilterOptions visitFilterOptions){
         Pageable pageable = PageRequest.of(offset, pageSize);
 
         List<Visit> visits = visitService.findAll(visitFilterOptions);

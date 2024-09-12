@@ -17,9 +17,9 @@ public interface VisitService {
 
     Visit findById(long visitId);
 
-    List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency) throws IOException;
+    List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency);
 
-    ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal) throws IOException;
+    ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal);
 
     Visit create(Visit visit, Long clerkId);
 

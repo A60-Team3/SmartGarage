@@ -25,4 +25,6 @@ public interface UserService {
     void deleteUser(long userId);
 
     UserEntity findByPhoneNumber(String phoneNumber);
+
+    UserEntity findByEmail(String email);
 }

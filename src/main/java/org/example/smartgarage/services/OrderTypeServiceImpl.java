@@ -52,7 +52,7 @@ public class OrderTypeServiceImpl implements OrderTypeService {
     }
 
     @Override
-    public ServiceType getByName(String serviceName) {
+    public ServiceType findByName(String serviceName) {
         return orderTypeRepository.findByServiceName(serviceName);
     }
 

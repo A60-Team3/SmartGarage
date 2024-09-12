@@ -124,4 +124,9 @@ public class UserServiceImpl implements UserService {
     public UserEntity findByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber).orElse(null);
     }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
 }

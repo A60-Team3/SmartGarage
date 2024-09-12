@@ -16,7 +16,7 @@ public interface OrderTypeService {
 
     ServiceType getById(long id);
 
-    ServiceType getByName(String serviceName);
+    ServiceType findByName(String serviceName);
 
     ServiceType getByPrice(BigDecimal price);
 

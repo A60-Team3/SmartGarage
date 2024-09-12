@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -41,6 +41,12 @@ public class VehicleModelServiceImpl implements VehicleModelService {
                     newModel.setModelName(modelName);
                     return create(newModel);
                 });
+    }
+
+    @Override
+    public Optional<VehicleModel> findForQuotation(String modelName, String carBrand, int carYear){
+        return vehicleModelRepository
+                .findByModelNameAndBrandBrandNameAndYearsYear(modelName, carBrand, carYear);
     }
 
     @Override

@@ -39,6 +39,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     private static final String[] MVC_WHITELIST = {
             "/garage/login", "/", "/garage", "/garage/", "/garage/home",
             "/garage/reviews", "/garage/team", "/garage/services",
+            "/garage/404", "/garage/quotation",
             "/garage/contacts", "/garage/booking", "/garage/about",
             "/garage/password", "/garage/password/**"
     };

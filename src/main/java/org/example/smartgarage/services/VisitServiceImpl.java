@@ -1,9 +1,7 @@
 package org.example.smartgarage.services;
 
 import org.example.smartgarage.dtos.response.VisitOutDto;
-import org.example.smartgarage.exceptions.EntityDuplicateException;
-import org.example.smartgarage.exceptions.EntityNotFoundException;
-import org.example.smartgarage.exceptions.UserMismatchException;
+import org.example.smartgarage.exceptions.*;
 import org.example.smartgarage.models.EventLog;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Visit;
@@ -26,12 +24,12 @@ import java.util.List;
 @Service
 public class VisitServiceImpl implements VisitService {
     private final VisitRepository visitRepository;
-    private final CurrencyService currencyService;
+    private final CurrencyServiceImpl currencyService;
     private final ReportService reportService;
     private final UserService userService;
     private final HistoryService historyService;
 
-    public VisitServiceImpl(VisitRepository visitRepository, CurrencyService currencyService,
+    public VisitServiceImpl(VisitRepository visitRepository, CurrencyServiceImpl currencyService,
                             ReportService reportService, UserService userService, HistoryService historyService) {
         this.visitRepository = visitRepository;
         this.currencyService = currencyService;
@@ -54,27 +52,37 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency) throws IOException {
+    public List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency) {
         if (exchangeCurrency == null) return visitOutDtos;
 
-        double exchangeRate = currencyService.getConversionRate(exchangeCurrency);
+        double exchangeRate;
+        try {
+            exchangeRate = currencyService.getConversionRate(exchangeCurrency);
+        } catch (IOException e) {
+            throw new ConversionRequestException(e.getMessage());
+        }
 
         return visitOutDtos.stream().peek(dto -> {
             dto.setExchangeRate(exchangeRate);
-            dto.setTotalCost(dto.getTotalCost().multiply(BigDecimal.valueOf(exchangeRate))
-                    .setScale(2, RoundingMode.HALF_UP));
+            dto.setTotalCost(
+                    dto.getTotalCost()
+                            .multiply(BigDecimal.valueOf(exchangeRate)));
             dto.setCurrency(exchangeCurrency.getDescription());
         }).toList();
     }
 
     @Override
-    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity principal) throws IOException {
-        return reportService.createPdf(visits, principal);
+    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity principal) {
+        try {
+            return reportService.createVisitReport(visits, principal);
+        } catch (IOException e) {
+            throw new ReportCreationException(e.getMessage());
+        }
     }
 
     @Override
     public Visit create(Visit visit, Long clerkId) {
-        if (!visit.getClient().equals(visit.getVehicle().getOwner())){
+        if (!visit.getClient().equals(visit.getVehicle().getOwner())) {
             throw new UserMismatchException("The customer is not the owner of said vehicle");
         }
 
@@ -87,7 +95,7 @@ public class VisitServiceImpl implements VisitService {
 
         savedVisit
                 .getEventLogs()
-                .add(logEvent(savedVisit,"Visit created"));
+                .add(logEvent(savedVisit, "Visit created"));
 
         return savedVisit;
     }

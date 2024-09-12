@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head('Home')}"></head>
+
+<body>
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!--Quote Form Start-->
+<div class="container my-5">
+    <div class="row">
+        <h2 class="text-center mb-4">Request a Quotation</h2>
+
+        <!-- Quotation Form -->
+        <form th:action="@{/garage/quotation}" th:object="${quotationDto}" method="post">
+            <div class="row">
+                <!--User Info-->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control"
+                               id="firstName" th:field="*{firstName}" placeholder="Enter your first name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control"
+                               id="lastName" th:field="*{lastName}" placeholder="Enter your last name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control"
+                               id="email" th:field="*{email}" placeholder="Enter your email" required>
+                        <small class="error-message" th:errors="*{email}">Email error placeholder</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="desiredDate" class="form-label">Desired Date</label>
+                        <input type="date" class="form-control" id="desiredDate"
+                               th:field="*{desiredDate}" required>
+                        <small class="error-message" th:errors="*{desiredDate}">Date error placeholder</small>
+                    </div>
+
+                    <div sec:authorize="isAuthenticated()" class="mb-3">
+                        <label for="desiredCurrency" class="form-label">Desired Currency</label>
+                        <select class="form-control" th:field="*{desiredCurrency}"
+                                id="desiredCurrency">
+                            <option th:each="currency : ${availableCurrencies}"
+                                    th:value="${currency.name}" th:selected="${currency.name == 'BGN'}"
+                                    th:text="${currency.description}">
+                                Select Service
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Car Info-->
+                <div class="col-md-6">
+                    <!-- Car Brand -->
+                    <div class="mb-3">
+                        <label for="carBrand" class="form-label">Car Brand</label>
+                        <input type="text" class="form-control" id="carBrand"
+                               th:field="*{carBrand}" placeholder="Enter car brand" required>
+                        <small class="error-message" th:errors="*{carBrand}">Car Brand error placeholder</small>
+                    </div>
+
+                    <!-- Car Model -->
+                    <div class="mb-3">
+                        <label for="carModel" class="form-label">Car Model</label>
+                        <input type="text" class="form-control" id="carModel"
+                               th:field="*{carModel}" placeholder="Enter car model" required>
+                        <small class="error-message" th:errors="*{carModel}">Car Model error placeholder</small>
+                    </div>
+
+                    <!-- Car Year -->
+                    <div class="mb-3">
+                        <label for="carYear" class="form-label">Car Year</label>
+                        <input type="number" min="1886" max="2026" class="form-control" id="carYear"
+                               th:field="*{carYear}" placeholder="Enter car year" required>
+                        <small class="error-message" th:errors="*{carYear}">Year error placeholder</small>
+                    </div>
+                    <!-- Required Services -->
+                    <div class="mb-3">
+                        <label for="requiredServices" class="form-label">Required Services</label>
+                        <div id="services-container">
+                            <div class="service-entry mb-2">
+                                <select class="form-control" th:field="*{requiredServices}"
+                                        id="requiredServices">
+                                    <option th:if="${currentUser == null}"
+                                            th:each="service : ${availableServices}"
+                                            th:value="${service.serviceName}" th:text="${service.serviceName}">
+                                        Select Service
+                                    </option>
+                                    <option th:unless="${currentUser == null}"
+                                            th:each="service : ${availableServices}"
+                                            th:value="${service.serviceName}" th:text="${service.toString()}">
+                                        Select Service
+                                    </option>
+                                </select>
+                                <small class="error-message" th:errors="*{requiredServices}">Service error
+                                    placeholder</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addService()">Add Another Service
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <input type="submit" class="btn btn-primary" value="Submit Request">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--Quote Form End-->
+
+<!-- Modal success message Start -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                A quotation has been successfully sent to your email.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal success message end-->
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script th:src="@{/js/quotation-custom.js}"></script>
+</body>
+</html>

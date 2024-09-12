@@ -8,38 +8,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/garage")
 public class AnonymousMvcController {
 
+
     @GetMapping("/home")
-    public String getHomePage(){
+    public String getHomePage() {
         return "index";
     }
 
     @GetMapping("/about")
-    public String getGarageInfo(){
+    public String getGarageInfo() {
         return "about";
     }
 
     @GetMapping("/booking")
-    public String getBooking(){
+    public String getBooking() {
         return "booking";
     }
 
+    @GetMapping("/pages")
+    public String getPages() {
+        return "pages";
+    }
+
+    @GetMapping("/404")
+    public String gerErrorPage() {
+        return "404";
+    }
+
     @GetMapping("/contacts")
-    public String getContacts(){
+    public String getContacts() {
         return "contact";
     }
 
     @GetMapping("/services")
-    public String getServices(){
+    public String getServices() {
         return "services";
     }
 
     @GetMapping("/team")
-    public String getEmployees(){
+    public String getEmployees() {
         return "team";
     }
 
     @GetMapping("/reviews")
-    public String getReviews(){
+    public String getReviews() {
         return "reviews";
     }
 }
