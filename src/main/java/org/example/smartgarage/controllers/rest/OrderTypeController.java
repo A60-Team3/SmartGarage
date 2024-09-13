@@ -35,11 +35,12 @@ public class OrderTypeController {
     public ResponseEntity<Page<OrderTypeOutDTO>> getAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                                         @RequestParam(required = false) String name,
-                                                        @RequestParam(required = false) BigDecimal price,
+                                                        @RequestParam(required = false) BigDecimal minPrice,
+                                                        @RequestParam(required = false) BigDecimal maxPrice,
                                                         @RequestParam(required = false) String sortBy,
                                                         @RequestParam(required = false) String sortOrder) {
 
-        OrderTypeFilterOptions orderTypeFilterOptions = new OrderTypeFilterOptions(name, price, sortBy, sortOrder);
+        OrderTypeFilterOptions orderTypeFilterOptions = new OrderTypeFilterOptions(name, minPrice, maxPrice, sortBy, sortOrder);
         Page<ServiceType> orderTypes = orderTypeService.getAll(offset, pageSize, orderTypeFilterOptions);
         Page<OrderTypeOutDTO> orderTypeOutDTOS = orderTypeMapper.orderTypesToOrderTypeDTOs(orderTypes);
 

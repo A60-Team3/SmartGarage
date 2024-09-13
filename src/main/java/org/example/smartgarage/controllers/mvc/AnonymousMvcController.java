@@ -39,11 +39,11 @@ public class AnonymousMvcController {
         return "contact";
     }
 
-    @GetMapping("/services")
+    /*@GetMapping("/services")
     public String getServices() {
         return "services";
     }
-
+*/
     @GetMapping("/team")
     public String getEmployees() {
         return "team";

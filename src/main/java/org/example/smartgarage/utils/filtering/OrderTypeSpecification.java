@@ -5,8 +5,10 @@ import org.example.smartgarage.models.ServiceType;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OrderTypeSpecification implements Specification<ServiceType> {
 
@@ -26,8 +28,16 @@ public class OrderTypeSpecification implements Specification<ServiceType> {
         orderTypeFilterOptions.getName().ifPresent(value ->
                 predicates.add(criteriaBuilder.like(root.get("serviceName"), "%" + value + "%")));
 
-        orderTypeFilterOptions.getPrice().ifPresent(value ->
-                predicates.add(criteriaBuilder.equal(root.get("servicePrice"), value)));
+        Optional<BigDecimal> minPrice = orderTypeFilterOptions.getMinPrice();
+        Optional<BigDecimal> maxPrice = orderTypeFilterOptions.getMaxPrice();
+
+        if (minPrice.isPresent() && maxPrice.isPresent()) {
+            predicates.add(criteriaBuilder.between(root.get("servicePrice"), minPrice.get(), maxPrice.get()));
+        } else if (minPrice.isPresent()) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("servicePrice"), minPrice.get()));
+        } else if (maxPrice.isPresent()) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("servicePrice"), maxPrice.get()));
+        }
 
         if(orderTypeFilterOptions.getSortBy().isPresent()){
             String sortBy = orderTypeFilterOptions.getSortBy().get();
