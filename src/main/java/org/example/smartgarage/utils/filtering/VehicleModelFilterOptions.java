@@ -24,4 +24,18 @@ public class VehicleModelFilterOptions {
     public Optional<String> getSortOrder() {
         return sortOrder;
     }
+
+    public void removeInvalid() {
+        if (name.isPresent() && name.get().trim().isEmpty()) {
+            name = Optional.empty();
+        }
+
+        if (year.isPresent() && year.get().toString().isEmpty()) {
+            year = Optional.empty();
+        }
+
+        if (sortOrder.isPresent() && sortOrder.get().trim().isEmpty()) {
+            sortOrder = Optional.empty();
+        }
+    }
 }

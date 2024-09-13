@@ -114,7 +114,7 @@ public class CreationHelper {
         visit.setVehicle(createMockVehicle());
         visit.setBookedOn(LocalDateTime.now());
         visit.setUpdatedOn(LocalDateTime.now());
-        visit.setServices(List.of(createMockOrder()));
+        //visit.setServices(List.of(createMockOrder()));
 
         return visit;
     }

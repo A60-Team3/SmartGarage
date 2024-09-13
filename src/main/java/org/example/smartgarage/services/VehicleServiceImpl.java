@@ -59,7 +59,8 @@ public class VehicleServiceImpl implements VehicleService {
         }
         vehicle.setClerk(user);
         vehicle.getModelName().setBrand(vehicle.getBrandName());
-        vehicle.getYearOfCreation().getModels().add(vehicle.getModelName());
+        //vehicle.getYearOfCreation().getModels().add(vehicle.getModelName());
+        vehicle.getModelName().getYears().add(vehicle.getYearOfCreation());
 
         vehicleRepository.save(vehicle);
         return vehicleRepository.findVehicleByLicensePlate(vehicle.getLicensePlate());

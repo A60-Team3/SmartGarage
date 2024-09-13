@@ -37,3 +37,20 @@
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>
+
+<a th:fragment="pagingBrands(pageNum, label, tooltip)" class="page-link"
+   th:href="@{'__${requestURI}__' + '?' + ${(vehicleBrandFilterOptions.name != null && !vehicleBrandFilterOptions.name.isEmpty()) ? 'name=' + vehicleBrandFilterOptions.name + '&' : ''}
+                        + ${(vehicleBrandFilterOptions.sortOrder != null && !vehicleBrandFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + vehicleBrandFilterOptions.sortOrder + '&' : ''}
+                        + 'pageIndex=' + ${pageNum}}"
+   th:title="${tooltip}" rel="tooltip">
+    [[${label}]]
+</a>
+
+<a th:fragment="pagingModels(pageNum, label, tooltip)" class="page-link"
+   th:href="@{'__${requestURI}__' + '?' + ${(vehicleModelFilterOptions.name != null && !vehicleModelFilterOptions.name.isEmpty()) ? 'name=' + vehicleModelFilterOptions.name + '&' : ''}
+                        + ${(vehicleModelFilterOptions.year != null && !vehicleModelFilterOptions.year.isEmpty()) ? 'sortOrder=' + vehicleModelFilterOptions.year + '&' : ''}
+                        + ${(vehicleModelFilterOptions.sortOrder != null && !vehicleModelFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + vehicleModelFilterOptions.sortOrder + '&' : ''}
+                        + 'pageIndex=' + ${pageNum}}"
+   th:title="${tooltip}" rel="tooltip">
+    [[${label}]]
+</a>

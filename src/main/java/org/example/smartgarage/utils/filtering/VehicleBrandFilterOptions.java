@@ -18,4 +18,14 @@ public class VehicleBrandFilterOptions {
     public Optional<String> getSortOrder() {
         return sortOrder;
     }
+
+    public void removeInvalid() {
+        if (name.isPresent() && name.get().trim().isEmpty()) {
+            name = Optional.empty();
+        }
+
+        if (sortOrder.isPresent() && sortOrder.get().trim().isEmpty()) {
+            sortOrder = Optional.empty();
+        }
+    }
 }
