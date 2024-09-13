@@ -50,10 +50,13 @@ public class VisitMvcController {
 
         filterOptions.removeInvalid();
 
-        Page<Visit> visits = visitService.findAll(filterOptions, pageIndex, pageSize);
+        Page<Visit> visits = visitService.findAll(filterOptions, pageIndex - 1, pageSize);
         List<VisitOutDto> visitOutDtos = visits.stream().map(visitMapper::toDto).toList();
 
         model.addAttribute("visits", visitOutDtos);
+        model.addAttribute("totalPages",visits.getTotalPages());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("currentPage", visits.getNumber() + 1);
 
 
         return "visits";
