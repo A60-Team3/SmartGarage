@@ -17,7 +17,7 @@ public class VisitFilterOptions {
     private Optional<LocalDate> scheduleDateFrom;
     private Optional<LocalDate> scheduleDateTo;
     private Optional<TimeOperator> bookedCondition;
-    private Optional<LocalDateTime> bookedOn;
+    private Optional<LocalDate> bookedOn;
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
@@ -25,7 +25,7 @@ public class VisitFilterOptions {
     public VisitFilterOptions(Long customerId, String customerName,
                               Long clerkId, String clerkName, Long vehicleId, List<Long> orders, TimeOperator scheduleCondition,
                               LocalDate scheduleDateFrom, LocalDate scheduleDateTo,
-                              TimeOperator bookedCondition, LocalDateTime bookedOn,
+                              TimeOperator bookedCondition, LocalDate bookedOn,
                               String sortBy, String sortOrder) {
         this.customerId = Optional.ofNullable(customerId);
         this.customerName = Optional.ofNullable(customerName);
@@ -74,7 +74,7 @@ public class VisitFilterOptions {
         return bookedCondition;
     }
 
-    public Optional<LocalDateTime> getBookedOn() {
+    public Optional<LocalDate> getBookedOn() {
         return bookedOn;
     }
 
@@ -134,7 +134,7 @@ public class VisitFilterOptions {
         this.bookedCondition = bookedCondition;
     }
 
-    public void setBookedOn(Optional<LocalDateTime> bookedOn) {
+    public void setBookedOn(Optional<LocalDate> bookedOn) {
         this.bookedOn = bookedOn;
     }
 
@@ -167,6 +167,4 @@ public class VisitFilterOptions {
             orders = Optional.empty();
         }
     }
-
-
 }

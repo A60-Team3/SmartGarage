@@ -1,3 +1,14 @@
+$(document).ready(function() {
+    const scheduleOption = document.getElementById('scheduleOption');
+    const scheduleEndContainer = document.getElementById('scheduleEndContainer');
+
+    if (scheduleOption.value === 'BETWEEN') {
+        scheduleEndContainer.style.display = 'block';
+    } else {
+        scheduleEndContainer.style.display = 'none';
+    }
+});
+
 function toggleScheduleEnd() {
     const scheduleOption = document.getElementById('scheduleOption');
     const scheduleEndContainer = document.getElementById('scheduleEndContainer');

@@ -54,7 +54,7 @@ public class VisitSpecification implements Specification<Visit> {
 
         visitFilterOptions.getOrders().ifPresent(value -> {
             predicates.add(criteriaBuilder
-                    .in(root.join("orders").get("id")).value(value));
+                    .in(root.join("orders").join("serviceType").get("id")).value(value));
         });
 
         visitFilterOptions.getBookedOn().ifPresent(value -> {
@@ -142,13 +142,13 @@ public class VisitSpecification implements Specification<Visit> {
                     break;
                 case "licensePlate":
                     order = sortOrder.equalsIgnoreCase("desc")
-                            ? criteriaBuilder.desc(vehicleJoin.join("licensePlate"))
-                            : criteriaBuilder.asc(vehicleJoin.join("licensePlate"));
+                            ? criteriaBuilder.desc(vehicleJoin.get("licensePlate"))
+                            : criteriaBuilder.asc(vehicleJoin.get("licensePlate"));
                     break;
                 case "vin":
                     order = sortOrder.equalsIgnoreCase("desc")
-                            ? criteriaBuilder.desc(vehicleJoin.join("vin"))
-                            : criteriaBuilder.asc(vehicleJoin.join("vin"));
+                            ? criteriaBuilder.desc(vehicleJoin.get("vin"))
+                            : criteriaBuilder.asc(vehicleJoin.get("vin"));
                     break;
                 case "updatedOn":
                     order = sortOrder.equalsIgnoreCase("desc")
@@ -162,6 +162,12 @@ public class VisitSpecification implements Specification<Visit> {
                     break;
             }
 
+            query.orderBy(order);
+        } else {
+            String sortOrder = visitFilterOptions.getSortOrder().orElse("desc");
+            Order order = sortOrder.equalsIgnoreCase("desc")
+                    ? criteriaBuilder.desc(root.get("scheduleDate"))
+                    : criteriaBuilder.asc(root.get("scheduleDate"));
             query.orderBy(order);
         }
 

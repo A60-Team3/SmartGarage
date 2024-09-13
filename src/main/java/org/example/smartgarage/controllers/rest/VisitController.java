@@ -70,8 +70,8 @@ public class VisitController {
                                      @RequestParam(required = false) LocalDate scheduleDateTo,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                     @RequestParam(required = false) LocalDateTime bookedOn,
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                     @RequestParam(required = false) LocalDate bookedOn,
                                      @Parameter(description = "Options - all field names")
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
@@ -115,8 +115,8 @@ public class VisitController {
                                      @RequestParam(required = false) LocalDate scheduleDateTo,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                     @RequestParam(required = false) LocalDateTime bookedOn,
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                     @RequestParam(required = false) LocalDate bookedOn,
                                      @Parameter(description = "Options - all field names")
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
@@ -162,8 +162,8 @@ public class VisitController {
                                      @RequestParam(required = false) LocalDate scheduleDateTo,
                                      @RequestParam(required = false) TimeOperator bookedCondition,
                                      @Parameter(description = "Pattern - YYYY-MM-DD HH:mm:ss")
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                     @RequestParam(required = false) LocalDateTime bookedOn,
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                     @RequestParam(required = false) LocalDate bookedOn,
                                      @Parameter(description = "Options - all field names")
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortOrder,
@@ -225,7 +225,7 @@ public class VisitController {
             Long customerId, String customerName, Long clerkId, String clerkName,
             Long vehicleId, List<Long> orders,
             TimeOperator scheduleCondition, LocalDate scheduleDateFrom, LocalDate scheduleDateTo,
-            TimeOperator bookedCondition, LocalDateTime bookedOn,
+            TimeOperator bookedCondition, LocalDate bookedOn,
             String sortBy, String sortOrder) {
         return new VisitFilterOptions(customerId, customerName,
                 clerkId, clerkName, vehicleId, orders,

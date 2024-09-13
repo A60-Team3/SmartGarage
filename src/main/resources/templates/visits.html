@@ -80,11 +80,18 @@
                         <div class="col-md-6">
                             <label for="scheduleFrom" class="form-label">Booked Date Start</label>
                             <input class="form-control" type="date" id="scheduleFrom"
-                                   th:field="*{scheduleDateFrom}"/>
+                                   th:value="${visitFilterOptions.scheduleDateFrom.isPresent()
+                                   ? #temporals.format(visitFilterOptions.scheduleDateFrom.get(), 'yyyy-MM-dd')
+                                   : ''}"
+                                   th:name="scheduleDateFrom"/>
                         </div>
                         <div class="col-md-6" id="scheduleEndContainer" style="display: none">
                             <label for="scheduleTo" class="form-label">Booked Date End</label>
-                            <input class="form-control" type="date" id="scheduleTo" th:field="*{scheduleDateTo}"/>
+                            <input class="form-control" type="date" id="scheduleTo"
+                                   th:value="${visitFilterOptions.scheduleDateTo.isPresent()
+                                   ? #temporals.format(visitFilterOptions.scheduleDateTo.get(), 'yyyy-MM-dd')
+                                   : ''}"
+                                   th:name="scheduleDateTo"/>
                         </div>
                     </div>
                 </div>
@@ -99,7 +106,11 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <input class="form-control" type="date" id="bookedDate" th:field="*{bookedOn}"/>
+                    <input class="form-control" type="date" id="bookedDate"
+                           th:value="${visitFilterOptions.bookedOn.isPresent()
+                                   ? #temporals.format(visitFilterOptions.bookedOn.get(), 'yyyy-MM-dd')
+                                   : ''}"
+                           th:name="bookedOn"/>
                 </div>
                 <div class="col-md-6">
                     <select class="form-select" id="sortBy" th:field="*{sortBy}">
@@ -161,6 +172,8 @@
         </tr>
         </tbody>
     </table>
+
+    <nav th:replace="~{/fragments/pagination::pagination(pagingVisit)}"></nav>
 </div>
 <!--Display Visit End-->
 
