@@ -34,7 +34,7 @@ public class UserMvcController {
         return "clerk";
     }
 
-    @PreAuthorize("hasRole('HR')")
+    @PreAuthorize("hasAnyRole('MECHANIC','HR')")
     @GetMapping("/mechanic")
     public ModelAndView getMechanicPage(Model model) {
         return new ModelAndView("mechanic");

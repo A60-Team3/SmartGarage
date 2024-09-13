@@ -87,7 +87,7 @@
                     <!-- Car Year -->
                     <div class="mb-3">
                         <label for="carYear" class="form-label">Car Year</label>
-                        <input type="number" min="1886" max="2026" class="form-control" id="carYear"
+                        <input type="number" min="1886" max="2026" th:placeholder="1886" class="form-control" id="carYear"
                                th:field="*{carYear}" placeholder="Enter car year" required>
                         <small class="error-message" th:errors="*{carYear}">Year error placeholder</small>
                     </div>
@@ -98,12 +98,12 @@
                             <div class="service-entry mb-2">
                                 <select class="form-control" th:field="*{requiredServices}"
                                         id="requiredServices">
-                                    <option th:if="${currentUser == null}"
+                                    <option sec:authorize="isAnonymous()"
                                             th:each="service : ${availableServices}"
                                             th:value="${service.serviceName}" th:text="${service.serviceName}">
                                         Select Service
                                     </option>
-                                    <option th:unless="${currentUser == null}"
+                                    <option sec:authorize="isAuthenticated()"
                                             th:each="service : ${availableServices}"
                                             th:value="${service.serviceName}" th:text="${service.toString()}">
                                         Select Service

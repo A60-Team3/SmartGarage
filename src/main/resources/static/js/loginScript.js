@@ -95,10 +95,10 @@ function loginUser(username, password) {
 
             localStorage.setItem('jwtToken', jwtToken);
 
-            alert('Login successful, JWT token stored.');
+            console.log('Login successful, JWT token stored.');
         },
         error: function () {
-            alert('Failed to log in. Please check your credentials.');
+            console.log('Failed to log in. Please check your credentials.');
         }
     });
 }

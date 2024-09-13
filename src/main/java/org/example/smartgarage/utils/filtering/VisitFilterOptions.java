@@ -7,19 +7,19 @@ import java.util.Optional;
 
 public class VisitFilterOptions {
 
-    private final Optional<Long> customerId;
-    private final Optional<String> customerName;
-    private final Optional<Long> clerkId;
-    private final Optional<String> clerkName;
-    private final Optional<Long> vehicleId;
-    private final Optional<List<Long>> orders;
-    private final Optional<TimeOperator> scheduleCondition;
-    private final Optional<LocalDate> scheduleDateFrom;
-    private final Optional<LocalDate> scheduleDateTo;
-    private final Optional<TimeOperator> bookedCondition;
-    private final Optional<LocalDateTime> bookedOn;
-    private final Optional<String> sortBy;
-    private final Optional<String> sortOrder;
+    private Optional<Long> customerId;
+    private Optional<String> customerName;
+    private Optional<Long> clerkId;
+    private Optional<String> clerkName;
+    private Optional<Long> vehicleId;
+    private Optional<List<Long>> orders;
+    private Optional<TimeOperator> scheduleCondition;
+    private Optional<LocalDate> scheduleDateFrom;
+    private Optional<LocalDate> scheduleDateTo;
+    private Optional<TimeOperator> bookedCondition;
+    private Optional<LocalDateTime> bookedOn;
+    private Optional<String> sortBy;
+    private Optional<String> sortOrder;
 
 
     public VisitFilterOptions(Long customerId, String customerName,
@@ -93,4 +93,80 @@ public class VisitFilterOptions {
     public Optional<List<Long>> getOrders() {
         return orders;
     }
+
+    public void setCustomerId(Optional<Long> customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setCustomerName(Optional<String> customerName) {
+        this.customerName = customerName;
+    }
+
+    public void setClerkId(Optional<Long> clerkId) {
+        this.clerkId = clerkId;
+    }
+
+    public void setClerkName(Optional<String> clerkName) {
+        this.clerkName = clerkName;
+    }
+
+    public void setVehicleId(Optional<Long> vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public void setOrders(Optional<List<Long>> orders) {
+        this.orders = orders;
+    }
+
+    public void setScheduleCondition(Optional<TimeOperator> scheduleCondition) {
+        this.scheduleCondition = scheduleCondition;
+    }
+
+    public void setScheduleDateFrom(Optional<LocalDate> scheduleDateFrom) {
+        this.scheduleDateFrom = scheduleDateFrom;
+    }
+
+    public void setScheduleDateTo(Optional<LocalDate> scheduleDateTo) {
+        this.scheduleDateTo = scheduleDateTo;
+    }
+
+    public void setBookedCondition(Optional<TimeOperator> bookedCondition) {
+        this.bookedCondition = bookedCondition;
+    }
+
+    public void setBookedOn(Optional<LocalDateTime> bookedOn) {
+        this.bookedOn = bookedOn;
+    }
+
+    public void setSortBy(Optional<String> sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public void setSortOrder(Optional<String> sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public void removeInvalid() {
+        if (customerName.isPresent() && customerName.get().trim().isEmpty() ){
+            customerName = Optional.empty();
+        }
+
+        if (clerkName.isPresent() && clerkName.get().trim().isEmpty() ){
+            clerkName = Optional.empty();
+        }
+
+        if (sortBy.isPresent() && sortBy.get().trim().isEmpty() ){
+            sortBy = Optional.empty();
+        }
+
+        if (sortOrder.isPresent() && sortOrder.get().trim().isEmpty() ){
+            sortOrder = Optional.empty();
+        }
+
+        if (orders.isPresent() && orders.get().isEmpty() ){
+            orders = Optional.empty();
+        }
+    }
+
+
 }

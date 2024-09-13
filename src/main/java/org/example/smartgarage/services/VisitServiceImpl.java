@@ -11,12 +11,13 @@ import org.example.smartgarage.repositories.contracts.VisitRepository;
 import org.example.smartgarage.services.contracts.*;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 import org.example.smartgarage.utils.filtering.VisitSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,13 @@ public class VisitServiceImpl implements VisitService {
         VisitSpecification visitSpecification = new VisitSpecification(visitFilterOptions);
 
         return visitRepository.findAll(visitSpecification);
+    }
+
+    @Override
+    public Page<Visit> findAll(VisitFilterOptions visitFilterOptions, int pageIndex, int pageSize) {
+        VisitSpecification visitSpecification = new VisitSpecification(visitFilterOptions);
+
+        return visitRepository.findAll(visitSpecification, PageRequest.of(pageIndex, pageSize));
     }
 
     @Override

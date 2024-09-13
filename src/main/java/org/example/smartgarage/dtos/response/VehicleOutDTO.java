@@ -19,4 +19,8 @@ public record VehicleOutDTO(
 
         String updatedOn
 ) {
+    @Override
+    public String toString() {
+        return String.format("%s || %s || %d", brandName, modelName, year);
+    }
 }

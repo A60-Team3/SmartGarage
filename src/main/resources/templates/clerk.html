@@ -18,6 +18,36 @@
 <nav th:replace="~{/fragments/navbar}"></nav>
 <!-- Navbar End -->
 
+<!-- Content Start -->
+<div class="container my-5">
+    <div class="row text-center">
+        <!-- First Image with Link -->
+        <div class="col-md-4">
+            <a th:href="@{/garage/visits}">
+                <img th:src="${'/img/image_visits.webp'}" class="img-fluid img-thumbnail" alt="Car entering a Car Shop" >
+            </a>
+            <h5 class="mt-3">Visits</h5>
+        </div>
+
+        <!-- Second Image with Link -->
+        <div class="col-md-4">
+            <a href="/garage/view2">
+                <img src="/path/to/your-image2.jpg" class="img-fluid img-thumbnail" alt="View 2" style="width: 100%; height: auto; max-height: 250px;">
+            </a>
+            <h5 class="mt-3">View 2</h5>
+        </div>
+
+        <!-- Third Image with Link -->
+        <div class="col-md-4">
+            <a href="/garage/view3">
+                <img src="/path/to/your-image3.jpg" class="img-fluid img-thumbnail" alt="View 3" style="width: 100%; height: auto; max-height: 250px;">
+            </a>
+            <h5 class="mt-3">View 3</h5>
+        </div>
+    </div>
+</div>
+<!-- Content End -->
+
 <!-- Footer Start -->
 <div th:replace="~{/fragments/footer}"></div>
 <!-- Footer End -->

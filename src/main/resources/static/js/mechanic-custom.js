@@ -9,7 +9,7 @@ $(document).ready(function () {
         const brand = $('#brand').val();
 
         if (!jwtToken) {
-            alert('User is not logged in.');
+            console.log('User is not logged in.');
             return;
         }
 
@@ -39,7 +39,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert('Failed to search vehicles');
+                console.log('Failed to search vehicles');
             }
         });
     });
@@ -80,7 +80,7 @@ $(document).ready(function () {
                 });
             },
             error: function () {
-                alert('Failed to fetch visits');
+                console.log('Failed to fetch visits');
             }
         });
     };
