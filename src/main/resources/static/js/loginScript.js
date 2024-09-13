@@ -75,7 +75,7 @@ function successLogin(form, blackVoid, url) {
 
         // Redirect after sucking effect is done
         setTimeout(() => {
-            window.location.href = url; // Change this to your redirect page
+            window.location.href = url;
         }, 2000);
 
     }, 3000); // Wait for door to fully roll up

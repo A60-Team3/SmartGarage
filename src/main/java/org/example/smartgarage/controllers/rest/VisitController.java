@@ -212,13 +212,37 @@ public class VisitController {
         return ResponseEntity.ok(visitMapper.toDto(updatedVisit));
     }
 
-    @PreAuthorize("hasAnyRole('CLERK')")
+    @PreAuthorize("hasRole('CLERK')")
     @DeleteMapping("/visits/{visitId}")
     public ResponseEntity<?> deleteVisit(@PathVariable long visitId) {
 
         visitService.deleteVisit(visitId);
 
         return ResponseEntity.ok("Visit successfully deleted");
+    }
+
+    @GetMapping("/findPageForVisit")
+    public ResponseEntity<Integer> getPageForVisit(
+            @RequestParam("visitId") Long visitId,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            VisitFilterOptions filterOptions) {
+
+        // Use your service to get all visits with current filtering and sorting
+        List<Visit> allFilteredVisits = visitService.findAll(filterOptions);
+
+        // Find the index of the updated visit
+        int visitIndex = -1;
+        for (int i = 0; i < allFilteredVisits.size(); i++) {
+            if (allFilteredVisits.get(i).getId() == visitId) {
+                visitIndex = i;
+                break;
+            }
+        }
+
+        // Calculate the page number
+        int pageNumber = visitIndex / pageSize;
+
+        return ResponseEntity.ok(pageNumber);
     }
 
     private static VisitFilterOptions createVisitFilterOptions(

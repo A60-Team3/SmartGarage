@@ -119,10 +119,16 @@ public class VisitServiceImpl implements VisitService {
         }
 
         if (bookedDate != null) {
+            List<Visit> visitsForSpecificDate = visitRepository.findAllByScheduleDate(bookedDate);
+            if (visitsForSpecificDate.size() > 5) {
+                throw new VisitMismatchException("Chosen date already fully booked. Choose another.");
+            }
             visit.setScheduleDate(bookedDate);
         }
 
-        visit.setStatus(status);
+        if (status != null) {
+            visit.setStatus(status);
+        }
 
         Visit savedVisit = visitRepository.saveAndFlush(visit);
 
@@ -137,6 +143,19 @@ public class VisitServiceImpl implements VisitService {
                 .orElseThrow(() -> new EntityNotFoundException("Visit", visitId));
 
         visitRepository.delete(visitToDelete);
+    }
+
+    @Override
+    public int calculateVisitPage(long visitId, VisitFilterOptions filterOptions, int pageSize) {
+        List<Visit> all = findAll(filterOptions);
+        int visitIndex = -1;
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getId() == visitId) {
+                visitIndex = i;
+                break;
+            }
+        }
+        return (visitIndex / pageSize) + 1;
     }
 
     private EventLog logEvent(Visit visit, String event) {

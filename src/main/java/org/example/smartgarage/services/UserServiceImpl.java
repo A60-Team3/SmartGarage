@@ -55,25 +55,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserEntity> findAll(int offset, int pageSize, UserFilterOptions userFilterOptions) {
-
         UserEntitySpecification specification = new UserEntitySpecification(userFilterOptions);
 
-        Sort.Direction direction;
-        if (userFilterOptions.getSortOrder().isPresent()) {
-            direction = Sort.Direction.fromString(userFilterOptions.getSortOrder().get());
-        } else {
-            direction = Sort.Direction.ASC;
-        }
-        String sortBy;
-        if (userFilterOptions.getSortBy().isPresent()) {
-            sortBy = userFilterOptions.getSortBy().get();
-        } else {
-            sortBy = "username";
-        }
-
-        Pageable pageable = PageRequest.of(offset, pageSize, Sort.by(direction, sortBy));
-
-        return userRepository.findAll(specification, pageable);
+        return userRepository.findAll(specification, PageRequest.of(offset, pageSize));
     }
 
     @Override

@@ -28,4 +28,6 @@ public interface VisitService {
     Visit updateVisit(Status status, long visitId, LocalDate bookedDate);
 
     void deleteVisit(long visitId);
+
+    int calculateVisitPage(long visitId, VisitFilterOptions filterOptions, int pageSize);
 }

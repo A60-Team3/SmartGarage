@@ -26,12 +26,16 @@
         <h5 class="fw-bold ms-2">Filter Options</h5>
     </div>
     <div id="filter-form-container" style="display: none">
-        <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${visitFilterOptions}">
+        <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${userFilterOptions}">
             <div class="row g-3">
+                <input type="text" placeholder="Last Name" th:field="*{lastName}"/>
+                <input type="text" placeholder="Email" th:field="*{email}"/>
+                <input type="text" placeholder="Username" th:field="*{username}"/>
+                <input type="text" placeholder="Phone Number" th:field="*{phoneNumber}"/>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" id="clientId" placeholder="Client Id"
-                           th:value="*{customerId.orElse('')}"
-                           th:name="customerId"/>
+                    <input class="form-control" type="text" placeholder="First Name"
+                           th:value="*{customerName.orElse('')}"
+                           th:name="customerName"/>
                 </div>
                 <div class="col-md-6">
                     <input class="form-control" type="text" id="clientName"
@@ -140,116 +144,6 @@
     </div>
 </div>
 <!-- Filter End -->
-
-<!--Display Visits Start-->
-<div id="visits-table" class="container mt-4">
-    <table class="table table-borderless table-hover table-striped text-center text-nowrap">
-        <thead>
-        <tr>
-            <th>Appointment Date</th>
-            <th>Client Name</th>
-            <th>Clerk Name</th>
-            <th>Vehicle License Plate</th>
-            <th>Vehicle Info - Brand || Model || Year</th>
-            <th>Booked Services</th>
-            <th>Visit Status</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:id="${'visit-row-' + visit.id}" th:each="visit : ${visits}">
-            <td>
-                <a th:href="@{/garage/visits/__${visit.id}__}"
-                   th:text="${visit.bookedDate}">
-                </a>
-            </td>
-            <td th:with="clientId=${customerMap.get(''+ visit.vehicle.licensePlate() + '')}">
-                <a th:href="@{/garage/customers/__${clientId}__}"
-                   th:text="${visit.clientName}">
-                </a>
-            </td>
-            <td th:text="${visit.employeeName}"></td>
-            <td>
-                <a th:href="@{/garage/vehicles/__${visit.vehicle.id()}__}"
-                   th:text="${visit.vehicle.licensePlate()}">
-                </a>
-            </td>
-            <td th:text="${visit.vehicle.toString()}"></td>
-            <td>
-                <ul class="list-unstyled mb-0">
-                    <li th:each="service : ${visit.services}" th:text="${service.serviceName}"></li>
-                </ul>
-            </td>
-            <td id="visit-status" th:text="${visit.status}"></td>
-            <td class="d-flex justify-content-center align-content-center bg-transparent">
-                <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal"
-                        data-bs-target="#rescheduleModal"
-                        th:attr="data-visit-id=${visit.id}">
-                    Reschedule
-                </button>
-
-                <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-                        th:attr="data-visit-id=${visit.id}">
-                    Cancel
-                </button>
-
-                <!-- Reschedule Modal -->
-                <div class="modal fade" id="rescheduleModal" tabindex="-1" aria-labelledby="rescheduleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="rescheduleModalLabel">Reschedule Visit</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="date" id="newBookedDate" class="form-control"/>
-                                <input type="hidden" id="rescheduleVisitId" th:value="${visit.id}">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="submitReschedule()">Confirm
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to cancel this visit?
-                                <input type="hidden" id="deleteVisitId" th:value="${visit.id}">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Yes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="container mt-4">
-        <div id="alert-placeholder"></div>
-    </div>
-
-    <nav th:replace="~{/fragments/pagination::pagination(pagingVisit)}"></nav>
-</div>
-<!--Display Visit End-->
 
 
 <!-- Footer Start -->

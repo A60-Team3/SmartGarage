@@ -9,7 +9,7 @@ $(document).ready(function () {
         const brand = $('#brand').val();
 
         if (!jwtToken) {
-            console.log('User is not logged in.');
+            showAlert("Login to API first", 'danger');
             return;
         }
 
@@ -38,8 +38,8 @@ $(document).ready(function () {
                     });
                 }
             },
-            error: function () {
-                console.log('Failed to search vehicles');
+            error: function (response) {
+                showAlert('Error: ' + response.responseText, 'danger');
             }
         });
     });
@@ -79,8 +79,8 @@ $(document).ready(function () {
                     $('#visit-info-body').append(visitRow);
                 });
             },
-            error: function () {
-                console.log('Failed to fetch visits');
+            error: function (response) {
+                showAlert('Error: ' + response.responseText, 'danger');
             }
         });
     };
@@ -99,10 +99,10 @@ $(document).ready(function () {
                 status: status
             },
             success: function () {
-                alert('Visit updated successfully');
-            },
-            error: function () {
-                alert('Failed to update visit');
+                showAlert('Visit status updated successfully', 'success');
+                },
+            error: function (response) {
+                showAlert('Error: ' + response.responseText, 'danger'); // Show error message
             }
         });
     };
