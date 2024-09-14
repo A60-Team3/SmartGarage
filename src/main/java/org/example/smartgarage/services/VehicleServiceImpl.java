@@ -2,11 +2,14 @@ package org.example.smartgarage.services;
 
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
-import org.example.smartgarage.models.*;
+import org.example.smartgarage.models.UserEntity;
+import org.example.smartgarage.models.Vehicle;
 import org.example.smartgarage.repositories.contracts.VehicleRepository;
 import org.example.smartgarage.services.contracts.VehicleService;
+import org.example.smartgarage.services.contracts.VisitService;
 import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
 import org.example.smartgarage.utils.filtering.VehicleSpecification;
+import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +21,12 @@ import java.util.List;
 public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleRepository vehicleRepository;
+    private final VisitService visitService;
 
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, VisitService visitService) {
         this.vehicleRepository = vehicleRepository;
+        this.visitService = visitService;
     }
 
     @Override
@@ -54,7 +59,7 @@ public class VehicleServiceImpl implements VehicleService {
     public Vehicle create(Vehicle vehicle, UserEntity user) {
 
         Vehicle existingVehicle = vehicleRepository.findVehicleByLicensePlateOrVin(vehicle.getLicensePlate(), vehicle.getVin());
-        if (existingVehicle != null){
+        if (existingVehicle != null) {
             throw new EntityDuplicateException("Vehicle already exists.");
         }
         vehicle.setClerk(user);
@@ -72,8 +77,8 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle repoVehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
         Vehicle existingVehicle = vehicleRepository.findVehicleByLicensePlateOrVin(vehicle.getLicensePlate(), vehicle.getVin());
-        if (existingVehicle != null){
-            if (existingVehicle.getId() != repoVehicle.getId()){
+        if (existingVehicle != null) {
+            if (existingVehicle.getId() != repoVehicle.getId()) {
                 throw new EntityDuplicateException("Vehicle already exists");
             }
         }
@@ -94,7 +99,20 @@ public class VehicleServiceImpl implements VehicleService {
     public void delete(long id) {
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
-        vehicleRepository.delete(vehicle);
+        VisitFilterOptions visitFilterOptions = new VisitFilterOptions(
+                null, null, null, null, id,
+                null, null, null, null,
+                null, null, null, null);
+
+        boolean empty = visitService.findAll(visitFilterOptions).isEmpty();
+
+        if (empty) {
+            vehicleRepository.delete(vehicle);
+        } else {
+            vehicle.setDeleted(true);
+            vehicleRepository.saveAndFlush(vehicle);
+        }
+
     }
 
 

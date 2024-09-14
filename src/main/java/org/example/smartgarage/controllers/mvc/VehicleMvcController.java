@@ -3,18 +3,26 @@ package org.example.smartgarage.controllers.mvc;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.smartgarage.dtos.response.VehicleBrandOutDTO;
 import org.example.smartgarage.dtos.response.VehicleModelOutDTO;
+import org.example.smartgarage.dtos.response.VehicleOutDTO;
 import org.example.smartgarage.mappers.VehicleBrandMapper;
 import org.example.smartgarage.mappers.VehicleMapper;
 import org.example.smartgarage.mappers.VehicleModelMapper;
+import org.example.smartgarage.models.Vehicle;
 import org.example.smartgarage.models.VehicleBrand;
 import org.example.smartgarage.models.VehicleModel;
 import org.example.smartgarage.services.contracts.*;
 import org.example.smartgarage.utils.filtering.VehicleBrandFilterOptions;
+import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
 import org.example.smartgarage.utils.filtering.VehicleModelFilterOptions;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/garage")
@@ -46,14 +54,14 @@ public class VehicleMvcController {
     }
 
     @GetMapping("/brands")
-    public String getBrands(@RequestParam(value = "pageIndex", defaultValue = "0") int pageIndex,
+    public String getBrands(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-                            @ModelAttribute("vehicleBrandFilterOptions")VehicleBrandFilterOptions filterOptions,
-                            Model model){
+                            @ModelAttribute("vehicleBrandFilterOptions") VehicleBrandFilterOptions filterOptions,
+                            Model model) {
 
         filterOptions.removeInvalid();
 
-        Page<VehicleBrand> brands = vehicleBrandService.getAll(pageIndex,pageSize, filterOptions);
+        Page<VehicleBrand> brands = vehicleBrandService.getAll(pageIndex - 1, pageSize, filterOptions);
         //Page<VehicleBrandOutDTO> brandOutDTOS = vehicleBrandMapper.vehicleBrandsToVehicleBrandDTOs(brands);
 
         model.addAttribute("brands", brands);
@@ -64,14 +72,14 @@ public class VehicleMvcController {
 
     @GetMapping("/brands/{brandId}/models")
     public String getModels(@PathVariable long brandId,
-                            @RequestParam(value = "pageIndex", defaultValue = "0") int pageIndex,
+                            @RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-                            @ModelAttribute("vehicleModelFilterOptions")VehicleModelFilterOptions filterOptions,
-                            Model model){
+                            @ModelAttribute("vehicleModelFilterOptions") VehicleModelFilterOptions filterOptions,
+                            Model model) {
 
         filterOptions.removeInvalid();
         VehicleBrand brand = vehicleBrandService.getById(brandId);
-        Page<VehicleModel> models = vehicleModelService.getByBrand(brand, pageIndex, pageSize, filterOptions);
+        Page<VehicleModel> models = vehicleModelService.getByBrand(brand, pageIndex - 1, pageSize, filterOptions);
         Page<VehicleModelOutDTO> modelOutDTOS = vehicleModelMapper.vehicleModelsToVehicleModelDTOs(models);
 
         model.addAttribute("brandId", brandId);
@@ -79,5 +87,28 @@ public class VehicleMvcController {
         model.addAttribute("totalPages", models.getTotalPages());
         model.addAttribute("models", modelOutDTOS);
         return "models";
+    }
+
+    @GetMapping("/vehicles")
+    public String getAllVehiclesPage(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
+                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                     @ModelAttribute("vehicleFilterOptions") VehicleFilterOptions filterOptions,
+                                     Model model) {
+
+        filterOptions.removeInvalid();
+
+        Page<Vehicle> vehicles = vehicleService.getAll(pageIndex - 1, pageSize, filterOptions);
+        List<VehicleOutDTO> vehicleOutDTOS = vehicles.map(vehicleMapper::toDTO).toList();
+
+        Map<String, Long> ownerMap = new HashMap<>();
+        vehicles.forEach(vehicle -> ownerMap.put(vehicle.getVin(), vehicle.getOwner().getId()));
+
+        model.addAttribute("vehicles", vehicleOutDTOS);
+        model.addAttribute("ownerMap", ownerMap);
+        model.addAttribute("totalPages", vehicles.getTotalPages());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("currentPage", vehicles.getNumber() + 1);
+
+        return "vehicles";
     }
 }

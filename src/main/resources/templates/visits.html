@@ -4,7 +4,7 @@
 
 <head th:replace="~{/fragments/head.html::head('Visits')}"></head>
 
-<body>
+<body class="bg-light bg-gradient">
 <!-- Spinner Start -->
 <div th:replace="~{/fragments/spinner}"></div>
 <!-- Spinner End -->
@@ -190,7 +190,7 @@
 
                 <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
-                        th:attr="data-visit-id=${visit.id}">
+                        th:attr="data-delete-id=${visit.id}">
                     Cancel
                 </button>
 
@@ -206,7 +206,7 @@
                             </div>
                             <div class="modal-body">
                                 <input type="date" id="newBookedDate" class="form-control"/>
-                                <input type="hidden" id="rescheduleVisitId" th:value="${visit.id}">
+                                <input type="hidden" th:id="${'rescheduleVisitId' + visit.id}" th:value="${visit.id}">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

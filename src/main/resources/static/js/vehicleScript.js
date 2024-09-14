@@ -1,6 +1,6 @@
 // Confirm delete
 function confirmDelete() {
-    const clientId = localStorage.getItem('delete_id');
+    const vehicleId = localStorage.getItem('delete_id');
 
     if (!jwtToken) {
         showAlert('Login to API first.', 'danger');
@@ -10,13 +10,13 @@ function confirmDelete() {
 
     // Send DELETE request to delete user
     $.ajax({
-        url: `/api/garage/users/${clientId}`,
+        url: `/api/garage/vehicles/${vehicleId}`,
         type: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + jwtToken
         },
         success: function (response) {
-            showAlert('Client deleted successfully', 'success');
+            showAlert('Vehicle scraped successfully', 'success');
             location.reload();  // Reload the page to update the table
         },
         error: function (response) {
@@ -24,3 +24,4 @@ function confirmDelete() {
         }
     });
 }
+

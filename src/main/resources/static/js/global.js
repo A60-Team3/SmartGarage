@@ -28,3 +28,13 @@ function toggleFilter() {
 
     filterFormContainer.style.display = isVisible ? 'none' : 'block';
 }
+
+$('#deleteModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget);
+    const vehicleId = button.data('delete-id');
+    localStorage.setItem('delete_id', vehicleId);
+});
+
+$('#deleteModal').on('hidden.bs.modal', function (event) {
+    localStorage.removeItem('delete_id');
+});

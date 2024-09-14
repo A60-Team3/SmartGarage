@@ -150,7 +150,6 @@ public class VehicleController {
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @DeleteMapping("/vehicles/{id}")
     public ResponseEntity<?> delete(@PathVariable long id) {
-
         vehicleService.delete(id);
         return ResponseEntity.ok("Vehicle deleted successfully");
     }

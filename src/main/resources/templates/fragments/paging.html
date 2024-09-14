@@ -37,6 +37,19 @@
     [[${label}]]
 </a>
 
+<a th:fragment="pagingVehicles(pageNum, label, tooltip)" class="page-link"
+   th:href="@{'__${requestURI}__' + '?'
+                        + ${(vehicleFilterOptions.owner.isPresent() && !vehicleFilterOptions.owner.isEmpty())  ? 'owner=' + vehicleFilterOptions.owner.get() + '&' : ''}
+                        + ${(vehicleFilterOptions.brandName.isPresent() && !vehicleFilterOptions.brandName.isEmpty())  ? 'brandName=' + vehicleFilterOptions.brandName.get() + '&' : ''}
+                        + ${(vehicleFilterOptions.licensePlate.isPresent() && !vehicleFilterOptions.licensePlate.isEmpty())  ? 'licensePlate=' + vehicleFilterOptions.licensePlate.get() + '&' : ''}
+                        + ${(vehicleFilterOptions.vin.isPresent() && !vehicleFilterOptions.vin.isEmpty())  ? 'vin=' + vehicleFilterOptions.vin.get() + '&' : ''}
+                        + ${(vehicleFilterOptions.sortBy.isPresent() && !vehicleFilterOptions.sortBy.get().isEmpty()) ? 'sortBy=' + vehicleFilterOptions.sortBy.get() + '&' : ''}
+                        + ${(vehicleFilterOptions.sortOrder.isPresent() && !vehicleFilterOptions.sortOrder.get().isEmpty()) ? 'sortOrder=' + vehicleFilterOptions.sortOrder.get() + '&' : ''}
+                        + 'pageIndex=' + ${pageNum + 1} + '&pageSize=' + ${pageSize}}"
+   th:title="${tooltip}" rel="tooltip">
+    [[${label}]]
+</a>
+
 <a th:fragment="pagingBrands(pageNum, label, tooltip)" class="page-link"
    th:href="@{'__${requestURI}__' + '?' + ${(vehicleBrandFilterOptions.name != null && !vehicleBrandFilterOptions.name.isEmpty()) ? 'name=' + vehicleBrandFilterOptions.name + '&' : ''}
                         + ${(vehicleBrandFilterOptions.sortOrder != null && !vehicleBrandFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + vehicleBrandFilterOptions.sortOrder + '&' : ''}

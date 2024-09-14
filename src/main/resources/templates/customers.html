@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{/fragments/head.html::head('Visits')}"></head>
+<head th:replace="~{/fragments/head.html::head('Customers')}"></head>
 
-<body>
+<body class="bg-light bg-gradient">
 <!-- Spinner Start -->
 <div th:replace="~{/fragments/spinner}"></div>
 <!-- Spinner End -->
@@ -105,7 +105,7 @@
                 </div>
                 <div class="col-md-6">
                     <input class="form-control" type="text" id="vehicleVin"
-                           placeholder="Customer Vehicle VIN"
+                           placeholder="Customer Vehicle Chassis Number"
                            th:value="*{vin.orElse('')}"
                            th:name="vin"/>
                 </div>
@@ -154,7 +154,7 @@
             <th>Client Email</th>
             <th>Client Phone Number</th>
             <th>Date Registered</th>
-            <th sec:authorize="!hasRole('CUSTOMER')">Authorities</th>
+            <th sec:authorize="hasRole('HR')">Authorities</th>
             <th>Vehicles Serviced</th>
             <th></th>
         </tr>
@@ -164,14 +164,14 @@
             th:with="clientId=${userMap.get(''+ user.email + '')}"
             th:id="${'user-row-' + clientId}">
             <td>
-                <a th:href="@{/garage/customers/__${clientId}__}"
+                <a th:href="@{/garage/users/__${clientId}__}"
                    th:text="${user.fullName}">
                 </a>
             </td>
             <td th:text="${user.email}"></td>
             <td th:text="${user.phoneNumber}"></td>
             <td th:text="${user.registered}"></td>
-            <td>
+            <td sec:authorize="hasRole('HR')">
                 <span th:each="role, iterStat : ${user.roles}">
                    <span th:text="${role}">Role</span>
                    <span th:if="${!iterStat.last}">,</span>
@@ -188,14 +188,14 @@
             </td>
             <td class="d-flex justify-content-center align-content-center bg-transparent">
                 <button type="button" class="btn btn-secondary btn-sm mx-1">
-                    <a th:href="@{/garage/customers/__${clientId}__}">
+                    <a th:href="@{/garage/users/__${clientId}__}">
                         Edit
                     </a>
                 </button>
 
                 <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
                         data-bs-target="#deleteModal"
-                        th:attr="data-client-id=${clientId}">
+                        th:attr="data-delete-id=${clientId}">
                     Delete
                 </button>
 
@@ -210,8 +210,8 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to cancel this visit?
-                                <input type="hidden" id="deleteClientId" th:value="${clientId}">
+                                Are you sure you want to delete this user?
+                                <input type="hidden" th:id="${'deleteClientId' + clientId}" th:value="${clientId}">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>

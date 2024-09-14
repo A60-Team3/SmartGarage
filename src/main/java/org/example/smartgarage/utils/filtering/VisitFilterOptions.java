@@ -1,7 +1,6 @@
 package org.example.smartgarage.utils.filtering;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +19,6 @@ public class VisitFilterOptions {
     private Optional<LocalDate> bookedOn;
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
-
 
     public VisitFilterOptions(Long customerId, String customerName,
                               Long clerkId, String clerkName, Long vehicleId, List<Long> orders, TimeOperator scheduleCondition,
@@ -41,6 +39,8 @@ public class VisitFilterOptions {
         this.sortBy = Optional.ofNullable(sortBy);
         this.sortOrder = Optional.ofNullable(sortOrder);
     }
+
+
 
     public Optional<Long> getCustomerId() {
         return customerId;

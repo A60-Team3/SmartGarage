@@ -31,10 +31,17 @@ public class VehicleSpecification implements Specification<Vehicle> {
                 predicates.add(criteriaBuilder.equal(root.join("owner").get("phoneNumber"), value)));
         vehicleFilterOptions.getBrandName().ifPresent(value ->
                 predicates.add(criteriaBuilder.equal(root.join("brandName").get("brandName"), value)));
-        vehicleFilterOptions.getVehicleVin().ifPresent(value ->
+        vehicleFilterOptions.getVin().ifPresent(value ->
                 predicates.add(criteriaBuilder.like(root.get("vin"), "%"+value+"%")));
-        vehicleFilterOptions.getVehicleRegistry().ifPresent(value ->
+        vehicleFilterOptions.getLicensePlate().ifPresent(value ->
                 predicates.add(criteriaBuilder.like(root.get("licensePlate"), "%"+value+"%")));
+        if (vehicleFilterOptions.isDeleted()) {
+            predicates.add(criteriaBuilder.isTrue(root.get("isDeleted")));
+        } else {
+            predicates.add(criteriaBuilder.isFalse(root.get("isDeleted")));
+
+        }
+
 
         if (vehicleFilterOptions.getSortBy().isPresent()) {
             String sortBy = vehicleFilterOptions.getSortBy().get();
