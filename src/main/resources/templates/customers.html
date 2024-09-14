@@ -28,112 +28,112 @@
     <div id="filter-form-container" style="display: none">
         <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${userFilterOptions}">
             <div class="row g-3">
-                <input type="text" placeholder="Last Name" th:field="*{lastName}"/>
-                <input type="text" placeholder="Email" th:field="*{email}"/>
-                <input type="text" placeholder="Username" th:field="*{username}"/>
-                <input type="text" placeholder="Phone Number" th:field="*{phoneNumber}"/>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" placeholder="First Name"
-                           th:value="*{customerName.orElse('')}"
-                           th:name="customerName"/>
+                    <input class="form-control" type="text" placeholder="First Name" id="firstName"
+                           th:value="*{firstName.orElse('')}"
+                           th:name="firstName"/>
                 </div>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" id="clientName"
-                           placeholder="Client Given or Family Name"
-                           th:value="*{customerName.orElse('')}"
-                           th:name="customerName"/>
+                    <input class="form-control" type="text" placeholder="Last Name" id="lastName"
+                           th:value="*{lastName.orElse('')}"
+                           th:name="lastName"/>
+                </div>
+
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="customerEmail" placeholder="Customer Email"
+                           th:value="*{email.orElse('')}"
+                           th:name="email"/>
                 </div>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" id="employeeId" placeholder="Employee Id"
-                           th:value="*{clerkId.orElse('')}"
-                           th:name="clerkId"/>
+                    <input class="form-control" type="text" id="customerUsername"
+                           placeholder="Customer Username"
+                           th:value="*{username.orElse('')}"
+                           th:name="username"/>
                 </div>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" id="employeeName"
-                           placeholder="Employee Given or Family Name"
-                           th:value="*{clerkName.orElse('')}"
-                           th:name="clerkName"/>
+                    <input class="form-control" type="tel" id="customerPhoneNumber" placeholder="Customer Phone Number"
+                           th:pattern="#{user.phone.number.regexp}"
+                           th:value="*{phoneNumber.orElse('')}"
+                           th:name="phoneNumber"/>
                 </div>
-                <div class="col-md-6">
-                    <input class="form-control" type="text" id="vehicleId" placeholder="Vehicle Id"
-                           th:value="*{vehicleId.orElse('')}"
-                           th:name="vehicleId"/>
-                </div>
-                <div class="col-md-6">
-                    <select class="form-select" th:field="*{orders}" id="orders">
-                        <option th:name="orders" value="">Services</option>
-                        <option th:each="service : ${availableServices}"
-                                th:value="${service.id}" th:text="${service.serviceName}">
-                            Choose Service
-                        </option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <select class="form-select" th:field="*{scheduleCondition}"
-                            id="scheduleOption" onchange="toggleScheduleEnd()">
-                        <option th:name="scheduleCondtion" value="">Booked Date Condition</option>
-                        <option th:each="enum : ${T (org.example.smartgarage.utils.filtering.TimeOperator).values()}"
-                                th:value="${enum.name}" th:text="${enum.toString().toLowerCase()}">
-                            Select Date Option
-                        </option>
-                    </select>
+                <div class="col-md-6" sec:authorize="hasRole('CLERK')">
+                    <input class="form-control" type="text" placeholder="User Role" id="clerkUser" hidden="hidden"
+                           th:value="'CUSTOMER'"
+                           th:name="authority"/>
                 </div>
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="scheduleFrom" class="form-label">Booked Date Start</label>
-                            <input class="form-control" type="date" id="scheduleFrom"
-                                   th:value="${visitFilterOptions.scheduleDateFrom.isPresent()
-                                   ? #temporals.format(visitFilterOptions.scheduleDateFrom.get(), 'yyyy-MM-dd')
-                                   : ''}"
-                                   th:name="scheduleDateFrom"/>
+                            <select class="form-select" id="registeredOption" th:field="*{registeredCondition}">
+                                <option th:name="registeredCondition" value="">Registered Date Condition</option>
+                                <option th:each="enum : ${T (org.example.smartgarage.utils.filtering.TimeOperator).values()}"
+                                        th:unless="${enum.name == 'BETWEEN'}"
+                                        th:value="${enum}" th:text="${enum.toString().toLowerCase()}">
+                                    Select Date Option
+                                </option>
+                            </select>
                         </div>
-                        <div class="col-md-6" id="scheduleEndContainer" style="display: none">
-                            <label for="scheduleTo" class="form-label">Booked Date End</label>
-                            <input class="form-control" type="date" id="scheduleTo"
-                                   th:value="${visitFilterOptions.scheduleDateTo.isPresent()
-                                   ? #temporals.format(visitFilterOptions.scheduleDateTo.get(), 'yyyy-MM-dd')
+                        <div class="col-md-6">
+                            <input class="form-control" type="date" id="registeredDate"
+                                   th:value="${userFilterOptions.registered.isPresent()
+                                   ? #temporals.format(userFilterOptions.registered.get(), 'yyyy-MM-dd')
                                    : ''}"
-                                   th:name="scheduleDateTo"/>
+                                   th:name="registered"/>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <select class="form-select" id="bookedOption" th:field="*{bookedCondition}">
-                        <option th:name="bookedCondition" value="">Created Date Condition</option>
-                        <option th:each="enum : ${T (org.example.smartgarage.utils.filtering.TimeOperator).values()}"
-                                th:unless="${enum.name == 'BETWEEN'}"
-                                th:value="${enum}" th:text="${enum.toString().toLowerCase()}">
-                            Select Date Option
+                <div class="col-md-6" sec:authorize="hasRole('HR')">
+                    <select class="form-select" th:field="*{authority}" id="HRUser">
+                        <option th:name="userAuthority" value="">User Authority</option>
+                        <option th:each="enum : ${T (org.example.smartgarage.models.enums.UserRole).values()}"
+                                th:value="${enum.name}" th:text="${enum.toString().toLowerCase()}">
+                            Select User Role
                         </option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <input class="form-control" type="date" id="bookedDate"
-                           th:value="${visitFilterOptions.bookedOn.isPresent()
-                                   ? #temporals.format(visitFilterOptions.bookedOn.get(), 'yyyy-MM-dd')
-                                   : ''}"
-                           th:name="bookedOn"/>
+                    <input class="form-control" type="text" id="vehicleBrand"
+                           placeholder="Customer Vehicle Brand"
+                           th:value="*{brandName.orElse('')}"
+                           th:name="brandName"/>
                 </div>
                 <div class="col-md-6">
-                    <select class="form-select" id="sortBy" th:field="*{sortBy}">
-                        <option value="">Sort By</option>
-                        <option value="clerk">Clerk</option>
-                        <option value="client">Client</option>
-                        <option value="brandName">Car Brand</option>
-                        <option value="modelName">Car Model</option>
-                        <option value="yearOfCreation">Car Production Year</option>
-                        <option value="licensePlate">License Plate</option>
-                        <option value="vin">Chassis Number</option>
-                        <option value="updatedOn">Date Updated</option>
-                    </select>
+                    <input class="form-control" type="text" id="vehicleLicensePlate"
+                           placeholder="Customer Vehicle License Plate"
+                           th:value="*{licensePlate.orElse('')}"
+                           th:name="licensePlate"/>
                 </div>
                 <div class="col-md-6">
-                    <select id="sortOrder" class="form-select" th:field="*{sortOrder}">
-                        <option value="">Sort Order</option>
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
+                    <input class="form-control" type="text" id="vehicleVin"
+                           placeholder="Customer Vehicle VIN"
+                           th:value="*{vin.orElse('')}"
+                           th:name="vin"/>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select class="form-select" id="sortBy" th:field="*{sortBy}">
+                                <option value="">Sort By</option>
+                                <option value="firstName">First Name</option>
+                                <option value="lastName">Last Name</option>
+                                <option value="email">Email</option>
+                                <option value="username">Username</option>
+                                <option value="phoneNumber">Phone Number</option>
+                                <option value="brandName">Vehicle Brand</option>
+                                <option value="licensePlate">License Plate</option>
+                                <option value="vin">Chassis Number</option>
+                                <option sec:authorize="hasRole('HR')" value="authority">User Role</option>
+                                <option value="registered">Date Registered</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="sortOrder" class="form-select" th:field="*{sortOrder}">
+                                <option value="">Sort Order</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-between mt-4">
@@ -145,6 +145,94 @@
 </div>
 <!-- Filter End -->
 
+<!--Display Clients Start-->
+<div id="clients-table" class="container mt-4 bg-light-gray bg-gradient">
+    <table class="table table-borderless table-hover table-striped text-center text-nowrap">
+        <thead>
+        <tr>
+            <th>Client Name</th>
+            <th>Client Email</th>
+            <th>Client Phone Number</th>
+            <th>Date Registered</th>
+            <th sec:authorize="!hasRole('CUSTOMER')">Authorities</th>
+            <th>Vehicles Serviced</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}"
+            th:with="clientId=${userMap.get(''+ user.email + '')}"
+            th:id="${'user-row-' + clientId}">
+            <td>
+                <a th:href="@{/garage/customers/__${clientId}__}"
+                   th:text="${user.fullName}">
+                </a>
+            </td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+            <td th:text="${user.registered}"></td>
+            <td>
+                <span th:each="role, iterStat : ${user.roles}">
+                   <span th:text="${role}">Role</span>
+                   <span th:if="${!iterStat.last}">,</span>
+                </span>
+            </td>
+            <td>
+                <ul class="list-unstyled mb-0">
+                    <li th:each="vehicle : ${user.vehicles}">
+                        <a th:href="@{/garage/vehicles/__${vehicle.id}__}"
+                           th:text="${vehicle.toString()}">
+                        </a>
+                    </li>
+                </ul>
+            </td>
+            <td class="d-flex justify-content-center align-content-center bg-transparent">
+                <button type="button" class="btn btn-secondary btn-sm mx-1">
+                    <a th:href="@{/garage/customers/__${clientId}__}">
+                        Edit
+                    </a>
+                </button>
+
+                <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        th:attr="data-client-id=${clientId}">
+                    Delete
+                </button>
+
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to cancel this visit?
+                                <input type="hidden" id="deleteClientId" th:value="${clientId}">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="container mt-4">
+        <div id="alert-placeholder"></div>
+    </div>
+
+    <nav th:replace="~{/fragments/pagination::pagination(pagingUsers)}"></nav>
+
+</div>
+<!--Display Clients End-->
 
 <!-- Footer Start -->
 <div th:replace="~{/fragments/footer}"></div>
@@ -154,7 +242,7 @@
 <div th:replace="~{/fragments/toTop}"></div>
 
 <div th:replace="~{/fragments/scripts}"></div>
-<script type="text/javascript" src="/js/visitsScript.js"></script>
+<script type="text/javascript" src="/js/customersScript.js"></script>
 
 </body>
 </html>

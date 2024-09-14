@@ -140,7 +140,7 @@ public class UserEntitySpecification implements Specification<UserEntity> {
                             ? criteriaBuilder.desc(roleJoin.get("userRole"))
                             : criteriaBuilder.asc(roleJoin.get("userRole"));
                     break;
-                case "updatedOn":
+                case "registered":
                     order = sortOrder.equalsIgnoreCase("desc")
                             ? criteriaBuilder.desc(root.get("registered"))
                             : criteriaBuilder.asc(root.get("registered"));

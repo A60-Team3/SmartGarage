@@ -57,11 +57,11 @@ public class VisitMvcController {
         if (rescheduled) {
             pageIndex = visitService.calculateVisitPage(rescheduleVisitId, filterOptions, pageSize);
         }
-        Map<String, Long> vehicleOwners = new HashMap<>();
 
         Page<Visit> visits = visitService.findAll(filterOptions, pageIndex - 1, pageSize);
         List<VisitOutDto> visitOutDtos = visits.stream().map(visitMapper::toDto).toList();
 
+        Map<String, Long> vehicleOwners = new HashMap<>();
         visits.stream().forEach(visit -> {
             vehicleOwners.put(visit.getVehicle().getLicensePlate(),visit.getClient().getId());
         });

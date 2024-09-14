@@ -72,16 +72,9 @@ function confirmDelete() {
             location.reload();  // Reload the page to update the table
         },
         error: function (response) {
-            removeRowAfterDeletion(visitId);
             showAlert('Error: ' + response.responseText, 'danger');
         }
     });
-}
-
-function removeRowAfterDeletion(visitId) {
-    let visitTable = document.getElementById('visits-table');
-    const tableRow = document.getElementById('visit-row-'+ visitId);
-    visitTable.removeChild(tableRow);
 }
 
 $(document).ready(function() {

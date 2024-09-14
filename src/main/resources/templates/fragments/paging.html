@@ -17,8 +17,22 @@
     [[${label}]]
 </a>
 
-<a th:fragment="pagingComments(pageNum, label, tooltip)" class="page-link"
-   th:href="@{'__${requestURI}__' + '?' + 'pageIndex=' + ${pageNum + 1} + '&pageSize=' + ${pageSize}}"
+<a th:fragment="pagingUsers(pageNum, label, tooltip)" class="page-link"
+   th:href="@{'__${requestURI}__' + '?'
+                        + ${(userFilterOptions.firstName.isPresent() && !userFilterOptions.firstName.isEmpty())  ? 'firstName=' + userFilterOptions.firstName.get() + '&' : ''}
+                        + ${(userFilterOptions.lastName.isPresent() && !userFilterOptions.lastName.isEmpty())  ? 'lastName=' + userFilterOptions.lastName.get() + '&' : ''}
+                        + ${(userFilterOptions.email.isPresent() && !userFilterOptions.email.isEmpty())  ? 'email=' + userFilterOptions.email.get() + '&' : ''}
+                        + ${(userFilterOptions.username.isPresent() && !userFilterOptions.username.isEmpty())  ? 'username=' + userFilterOptions.username.get() + '&' : ''}
+                        + ${(userFilterOptions.phoneNumber.isPresent() && !userFilterOptions.phoneNumber.isEmpty())  ? 'phoneNumber=' + userFilterOptions.phoneNumber.get() + '&' : ''}
+                        + ${(userFilterOptions.registeredCondition.isPresent()) ? 'registeredCondition=' + userFilterOptions.registeredCondition.get() + '&' : ''}
+                        + ${userFilterOptions.registered.isPresent() ? 'registered=' + userFilterOptions.registered.get() + '&' : ''}
+                        + ${(userFilterOptions.authority.isPresent()) ? 'authority=' + userFilterOptions.authority.get() + '&' : ''}
+                        + ${(userFilterOptions.brandName.isPresent() && !userFilterOptions.brandName.isEmpty())  ? 'brandName=' + userFilterOptions.brandName.get() + '&' : ''}
+                        + ${(userFilterOptions.licensePlate.isPresent() && !userFilterOptions.licensePlate.isEmpty())  ? 'licensePlate=' + userFilterOptions.licensePlate.get() + '&' : ''}
+                        + ${(userFilterOptions.vin.isPresent() && !userFilterOptions.vin.isEmpty())  ? 'vin=' + userFilterOptions.vin.get() + '&' : ''}
+                        + ${(userFilterOptions.sortBy.isPresent() && !userFilterOptions.sortBy.get().isEmpty()) ? 'sortBy=' + userFilterOptions.sortBy.get() + '&' : ''}
+                        + ${(userFilterOptions.sortOrder.isPresent() && !userFilterOptions.sortOrder.get().isEmpty()) ? 'sortOrder=' + userFilterOptions.sortOrder.get() + '&' : ''}
+                        + 'pageIndex=' + ${pageNum + 1} + '&pageSize=' + ${pageSize}}"
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>
