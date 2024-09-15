@@ -13,6 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 public class VehicleBrandServiceImpl implements VehicleBrandService {
 
@@ -21,6 +24,13 @@ public class VehicleBrandServiceImpl implements VehicleBrandService {
     @Autowired
     public VehicleBrandServiceImpl(VehicleBrandRepository vehicleBrandRepository) {
         this.vehicleBrandRepository = vehicleBrandRepository;
+    }
+
+    @Override
+    public List<VehicleBrand> getAll() {
+        List<VehicleBrand> brands = vehicleBrandRepository.findAll();
+        List<VehicleBrand> sorted = brands.stream().sorted(Comparator.comparing(VehicleBrand::getBrandName)).toList();
+        return sorted;
     }
 
     @Override

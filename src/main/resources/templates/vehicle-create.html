@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head('Add Vehicle')}"></head>
+
+<body>
+
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<div class="col-lg-6">
+    <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
+        <h1 class="text-white mb-4">Add Vehicle</h1>
+        <form th:action="@{/garage/vehicles/new}" th:object="${vehicle}">
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <input type="text" class="form-control border-0" placeholder="License Plate" style="height: 55px;" th:field="*{licensePlate}">
+                </div>
+                <div class="col-12 col-sm-6">
+                    <input type="text" class="form-control border-0" placeholder="VIN" style="height: 55px;" th:field="*{vin}">
+                </div>
+                <div class="col-12 col-sm-6">
+                    <input class="form-control border-0" id="brand-input" list="brands" placeholder="Brand" th:field="*{brandName}" oninput="filterModels()" style="height: 55px;">
+                    <datalist id="brands">
+                        <option th:each="brand : ${brands}" th:value="${brand.getBrandName()}" th:text="${brand.getBrandName()}" th:attr="data-brand-id=${brand.getId()}">Service 1</option>
+                    </datalist>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <input class="form-control border-0" id="model-input" list="models" placeholder="Model" th:field="*{modelName}" style="height: 55px;">
+                    <datalist id="models" >
+                        <option th:each="model : ${models}" th:value="${model.getModelName()}" th:text="${model.getModelName()}" th:attr="data-model-brand-id=${model.getBrand().getBrandName()}">Service 1</option>
+                    </datalist>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <input class="form-control border-0" id="year-input" list="years" placeholder="Year" th:field="*{year}" style="height: 55px;">
+                    <datalist id="years" style="height: 55px;">
+                        <!--<option th:each="year : ${years}" th:value="${year.getYear()}" th:text="${year.getYear()}">Service 1</option>-->
+                    </datalist>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <input class="form-control border-0" list="clients" placeholder="Client" th:field="*{ownerId}" style="height: 55px;">
+                    <datalist id="clients">
+                        <option selected>Client</option>
+                        <option th:each="client : ${clients}" th:value="${client.getId()}" th:text="${client.getFirstName() + ' ' + client.getLastName()}">Service 1</option>
+                    </datalist>
+                </div>
+
+
+                <div class="col-12">
+                    <button class="btn btn-secondary w-100 py-3" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/vehicle-creation-script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+</body>
+</html>

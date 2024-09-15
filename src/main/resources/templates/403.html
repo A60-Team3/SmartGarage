@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{/fragments/head.html::head('403')}"></head>
+
+<body>
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!-- Page Header Start -->
+<!--<div th:replace="~{/fragments/pageHead}"></div>-->
+<!-- Page Header End -->
+
+
+<!-- 404 Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
+                <h1 class="display-1">403</h1>
+                <h1 class="mb-4">Access Denied</h1>
+                <a class="btn btn-primary rounded-pill py-3 px-5" href="" th:href="@{/garage/home}">Go Back To Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 404 End -->
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+</body>
+
+</html>

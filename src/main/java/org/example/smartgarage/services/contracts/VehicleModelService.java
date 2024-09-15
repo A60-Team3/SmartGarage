@@ -5,10 +5,13 @@ import org.example.smartgarage.models.VehicleModel;
 import org.example.smartgarage.utils.filtering.VehicleModelFilterOptions;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public interface VehicleModelService {
+
+    List<VehicleModel> getAll();
 
     VehicleModel getById(long id);
 

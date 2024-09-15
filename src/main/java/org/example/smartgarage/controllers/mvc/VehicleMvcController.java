@@ -1,15 +1,14 @@
 package org.example.smartgarage.controllers.mvc;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.smartgarage.dtos.request.VehicleInDTO;
 import org.example.smartgarage.dtos.response.VehicleBrandOutDTO;
 import org.example.smartgarage.dtos.response.VehicleModelOutDTO;
 import org.example.smartgarage.dtos.response.VehicleOutDTO;
 import org.example.smartgarage.mappers.VehicleBrandMapper;
 import org.example.smartgarage.mappers.VehicleMapper;
 import org.example.smartgarage.mappers.VehicleModelMapper;
-import org.example.smartgarage.models.Vehicle;
-import org.example.smartgarage.models.VehicleBrand;
-import org.example.smartgarage.models.VehicleModel;
+import org.example.smartgarage.models.*;
 import org.example.smartgarage.services.contracts.*;
 import org.example.smartgarage.utils.filtering.VehicleBrandFilterOptions;
 import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
@@ -19,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -110,5 +110,22 @@ public class VehicleMvcController {
         model.addAttribute("currentPage", vehicles.getNumber() + 1);
 
         return "vehicles";
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
+    @GetMapping("/vehicles/new")
+    public String showNewVehiclePage(Model model){
+
+        List<VehicleBrand> brands = vehicleBrandService.getAll();
+        List<VehicleModel> models = vehicleModelService.getAll();
+        List<VehicleYear> years = vehicleYearService.getAll();
+        List<UserEntity> clients = userService.findAll();
+
+        model.addAttribute("vehicle", new VehicleInDTO(null, null, null, null, null, null));
+        model.addAttribute("brands", brands);
+        model.addAttribute("models", models);
+        model.addAttribute("years", years);
+        model.addAttribute("clients", clients);
+        return "vehicle-create";
     }
 }

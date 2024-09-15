@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head('Visits')}"></head>
+
+<body>
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!-- Filter Start -->
+<div class="container mt-4">
+    <div class="d-flex align-items-center justify-content-center mb-4">
+            <span><i class="fa fa-search fa-lg"
+                     id="search-icon" style="cursor: pointer"
+                     onclick="toggleFilter()"></i></span>
+        <h5 class="fw-bold ms-2">Filter Options</h5>
+    </div>
+    <div id="filter-form-container" style="display: none">
+        <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${visitFilterOptions}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="vehicleId" placeholder="Vehicle Id"
+                           th:value="*{vehicleId.orElse('')}"
+                           th:name="vehicleId"/>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-select" th:field="*{scheduleCondition}"
+                            id="scheduleOption" onchange="toggleScheduleEnd()">
+                        <option th:name="scheduleCondtion" value="">Booked Date Condition</option>
+                        <option th:each="enum : ${T (org.example.smartgarage.utils.filtering.TimeOperator).values()}"
+                                th:value="${enum.name}" th:text="${enum.toString().toLowerCase()}">
+                            Select Date Option
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" type="date" id="scheduleFrom"
+                           th:value="${visitFilterOptions.scheduleDateFrom.isPresent()
+                                   ? #temporals.format(visitFilterOptions.scheduleDateFrom.get(), 'yyyy-MM-dd')
+                                   : ''}"
+                           th:name="scheduleDateFrom"/>
+                </div>
+
+                <div class="col-md-6">
+                    <select class="form-select" id="sortBy" th:field="*{sortBy}">
+                        <option value="">Sort By</option>
+                        <option value="clerk">Clerk</option>
+                        <option value="brandName">Car Brand</option>
+                        <option value="modelName">Car Model</option>
+                        <option value="yearOfCreation">Car Production Year</option>
+                        <option value="licensePlate">License Plate</option>
+                        <option value="vin">Chassis Number</option>
+                        <option value="updatedOn">Date Updated</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select id="sortOrder" class="form-select" th:field="*{sortOrder}">
+                        <option value="">Sort Order</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <input class="btn btn-danger" type="submit" value="Search"/>
+                <a class="btn btn-outline-secondary" th:href="@{__${requestURI}__}">Clear Filter</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Filter End -->
+<div  class="container mt-4 bg-light-gray bg-gradient" th:if="${visits.isEmpty()}" th:align="center">
+    No visits
+</div>
+<!--Display Visits Start-->
+<div id="visits-table" class="container mt-4 bg-light-gray bg-gradient" th:unless="${visits.isEmpty()}">
+    <table class="table table-borderless table-hover table-striped text-center text-nowrap">
+        <thead>
+        <tr>
+            <th>Appointment Date</th>
+            <th>Clerk Name</th>
+            <th>Vehicle License Plate</th>
+            <th>Vehicle Info - Brand || Model || Year</th>
+            <th>Booked Services</th>
+            <th>Visit Status</th>
+            <th>Generate Report</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:id="${'visit-row-' + visit.id}" th:each="visit : ${visits}">
+            <td>
+                <a th:href="@{/garage/visits/__${visit.id}__}"
+                   th:text="${visit.bookedDate}">
+                </a>
+            </td>
+            <td th:text="${visit.employeeName}"></td>
+            <td>
+                <a th:href="@{/garage/vehicles/__${visit.vehicle.id()}__}"
+                   th:text="${visit.vehicle.licensePlate()}">
+                </a>
+            </td>
+            <td th:text="${visit.vehicle.toString()}"></td>
+            <td>
+                <ul class="list-unstyled mb-0">
+                    <li th:each="service : ${visit.services}" th:text="${service.serviceName}"></li>
+                </ul>
+            </td>
+            <td id="visit-status" th:text="${visit.status}"></td>
+            <td id="generate-report">
+                <input type="checkbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="container mt-4">
+        <div id="alert-placeholder"></div>
+    </div>
+
+    <nav th:replace="~{/fragments/pagination::pagination(pagingVisit)}"></nav>
+</div>
+<!--Display Visit End-->
+
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/visitsScript.js"></script>
+
+</body>
+</html>

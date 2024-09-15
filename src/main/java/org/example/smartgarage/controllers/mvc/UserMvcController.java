@@ -51,7 +51,10 @@ public class UserMvcController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/client")
-    public String getCustomerPage() {
+    public String getCustomerPage(@AuthenticationPrincipal CustomUserDetails principal,
+                                  Model model) {
+        UserEntity client = userService.getById(principal.getId());
+        model.addAttribute("client", client);
         return "client";
     }
 

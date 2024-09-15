@@ -7,6 +7,9 @@ import org.example.smartgarage.repositories.contracts.VehicleYearRepository;
 import org.example.smartgarage.services.contracts.VehicleYearService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 public class VehicleYearServiceImpl implements VehicleYearService {
 
@@ -14,6 +17,14 @@ public class VehicleYearServiceImpl implements VehicleYearService {
 
     public VehicleYearServiceImpl(VehicleYearRepository vehicleYearRepository) {
         this.vehicleYearRepository = vehicleYearRepository;
+    }
+
+    @Override
+    public List<VehicleYear> getAll() {
+        List<VehicleYear> years = vehicleYearRepository.findAll();
+        List<VehicleYear> sorted = years.stream().sorted(Comparator.comparing(VehicleYear::getYear)).toList();
+
+        return sorted;
     }
 
     @Override

@@ -69,9 +69,9 @@
 
 <a th:fragment="pagingOrderTypes(pageNum, label, tooltip)" class="page-link"
    th:href="@{'__${requestURI}__' + '?' + ${(orderTypeFilterOptions.name != null && !orderTypeFilterOptions.name.isEmpty()) ? 'name=' + orderTypeFilterOptions.name + '&' : ''}
-                        + ${(orderTypeFilterOptions.minPrice != null && !orderTypeFilterOptions.minPrice.isEmpty()) ? 'sortOrder=' + orderTypeFilterOptions.minPrice + '&' : ''}
-                        + ${(orderTypeFilterOptions.maxPrice != null && !orderTypeFilterOptions.maxPrice.isEmpty()) ? 'sortOrder=' + orderTypeFilterOptions.maxPrice + '&' : ''}
-                        + ${(orderTypeFilterOptions.sortBy != null && !orderTypeFilterOptions.sortBy.isEmpty()) ? 'sortOrder=' + orderTypeFilterOptions.sortBy + '&' : ''}
+                        + ${(orderTypeFilterOptions.minPrice != null && !orderTypeFilterOptions.minPrice.isEmpty()) ? 'minPrice=' + orderTypeFilterOptions.minPrice + '&' : ''}
+                        + ${(orderTypeFilterOptions.maxPrice != null && !orderTypeFilterOptions.maxPrice.isEmpty()) ? 'maxPrice=' + orderTypeFilterOptions.maxPrice + '&' : ''}
+                        + ${(orderTypeFilterOptions.sortBy != null && !orderTypeFilterOptions.sortBy.isEmpty()) ? 'sortBy=' + orderTypeFilterOptions.sortBy + '&' : ''}
                         + ${(orderTypeFilterOptions.sortOrder != null && !orderTypeFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + orderTypeFilterOptions.sortOrder + '&' : ''}
                         + 'pageIndex=' + ${pageNum}}"
    th:title="${tooltip}" rel="tooltip">

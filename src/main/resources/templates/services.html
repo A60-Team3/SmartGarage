@@ -21,15 +21,6 @@
     <div th:replace="~{/fragments/pageHead::pageHead('Services')}"></div>
     <!-- Page Header End -->
 
-    <!-- Service Start -->
-    <!--<div th:replace="~{/fragments/partServices}"></div>-->
-    <!-- Service End -->
-
-
-
-    <!-- Testimonial Start -->
-    <!--<div th:replace="~{/fragments/partComments}"></div>-->
-    <!-- Testimonial End -->
     <!-- Filter Start -->
     <div class="container mt-4">
         <div class="d-flex align-items-center justify-content-center mb-4">
@@ -42,19 +33,19 @@
             <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${orderTypeFilterOptions}">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <input class="form-control" type="text" id="modelName" placeholder="Model name"
+                        <input class="form-control" type="text" id="modelName" placeholder="Service"
                                th:value="*{name.orElse('')}"
                                th:name="name"/>
                     </div>
                     <div class="col-md-6">
                         <input class="form-control" type="text" id="minPrice" placeholder="Minimum Price"
                                th:value="*{minPrice.orElse('')}"
-                               th:name="year"/>
+                               th:name="minPrice"/>
                     </div>
                     <div class="col-md-6">
                         <input class="form-control" type="text" id="maxPrice" placeholder="Maximum Price"
                                th:value="*{maxPrice.orElse('')}"
-                               th:name="year"/>
+                               th:name="maxPrice"/>
                     </div>
 
                     <div class="col-md-6">
