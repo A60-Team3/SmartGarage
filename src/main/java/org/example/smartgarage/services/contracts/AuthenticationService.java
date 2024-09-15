@@ -8,6 +8,8 @@ import org.example.smartgarage.dtos.request.LoginDTO;
 import org.example.smartgarage.dtos.response.TokenDto;
 import org.example.smartgarage.models.UserEntity;
 
+import java.io.IOException;
+
 public interface AuthenticationService {
 
     TokenDto jwtLogin(LoginDTO loginDTO);
@@ -18,5 +20,5 @@ public interface AuthenticationService {
 
     void sendResetEmail(UserEntity existingUser, HttpServletRequest request);
 
-    void resetPassword(String password, long userId, HttpServletRequest request);
+    void resetPassword(String password, long userId, HttpServletRequest request) throws IOException;
 }

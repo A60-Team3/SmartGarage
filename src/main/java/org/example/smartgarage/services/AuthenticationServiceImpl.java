@@ -23,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -118,11 +119,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void resetPassword(String password, long userId, HttpServletRequest request) {
+    public void resetPassword(String password, long userId, HttpServletRequest request) throws IOException {
         UserEntity updatedUserInfo = userService.getById(userId);
         updatedUserInfo.setPassword(password);
 
-        UserEntity user = userService.update(userId, updatedUserInfo, dto.profilePic());
+        UserEntity user = userService.update(userId, updatedUserInfo, null);
 
         eventPublisher.publishEvent(new PasswordResetCompleteEvent(user, applicationUrl(request)));
     }

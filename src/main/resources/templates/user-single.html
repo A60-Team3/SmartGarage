@@ -23,10 +23,34 @@
         <div class="col-auto">
             <div class="user-info bg-white p-4 rounded shadow">
                 <ul class="list-unstyled">
-                    <li class="text-center">
-                        <img class="profile-picture img-thumbnail rounded-circle mb-3" style="max-height: 200px"
-                             th:src="${user.profilePicture != null ? user.profilePicture.photoUrl : '/img/blank_profile.png'}"
-                             alt="profile_picture">
+                    <li class="profile-container-update img-fluid rounded-circle">
+                        <div th:if="${user.username == #authentication.name}">
+                            <label for="profile-upload">
+                                <img class="profile-picture"
+                                     th:src="${user.profilePicture != null ? user.profilePicture.photoUrl : '/img/blank_profile.png'}"
+                                     alt="profile_picture">
+                            </label>
+
+                            <form id="profile-form"
+                                  th:action="@{/garage/users/__${userId}__/avatar}"
+                                  method="post"
+                                  enctype="multipart/form-data"
+                                  th:object="${userUpdateDto}">
+                                <input type="hidden" th:value="${user.username}" th:name="username">
+                                <input type="hidden" th:value="${user.firstName}" th:name="firstName">
+                                <input type="hidden" th:value="${user.lastName}" th:name="lastName">
+                                <input type="hidden" th:value="${user.email}" th:name="email">
+                                <input type="hidden" th:value="${user.phoneNumber}" th:name="phoneNumber">
+                                <input type="file" th:field="*{profilePic}" id="profile-upload" name="profilePicture"
+                                       style="display: none;" onchange="uploadPhoto()"/>
+                            </form>
+                        </div>
+
+                        <div th:unless="${user.username == #authentication.name}">
+                            <img class="profile-picture"
+                                 th:src="${user.profilePicture != null ? user.profilePicture.photoUrl : '/img/blank_profile.png'}"
+                                 alt="profile_picture">
+                        </div>
                     </li>
                     <li><h5 th:text="'Full Name: ' + ${user.firstName} + ' ' + ${user.lastName}">Full Name</h5></li>
                     <li><h5 th:text="'Email: ' + ${user.email}">Email</h5></li>
@@ -106,7 +130,7 @@
              aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="editUserForm">
+                    <form id="editUserForm" th:object="${userUpdateDto}" enctype="multipart/form-data">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -129,6 +153,11 @@
                                 <input type="text" class="form-control" id="username" th:value="${user.username}"
                                        required>
                             </div>
+
+                            <div th:unless="${#authentication.name.equals(user.username)}">
+                                <input type="hidden" id="username" th:value="${user.username}">
+                            </div>
+
                             <div class="form-group mb-3">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" id="email" th:value="${user.email}"
@@ -142,18 +171,11 @@
                             </div>
                             <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" required
-                                       th:value="${user.password}">
+                                <input type="password" class="form-control" id="password" required>
                             </div>
                             <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
                                 <label for="passwordConfirm">Confirm Password</label>
-                                <input type="password" class="form-control" id="passwordConfirm" required
-                                       th:value="${user.password}">
-                            </div>
-                            <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
-                                <label for="profilePicture">Change Picture</label>
-                                <input type="file" class="form-control" id="profilePicture" required
-                                       th:value="${user.profilePicture}">
+                                <input type="password" class="form-control" id="passwordConfirm" required>
                             </div>
                         </div>
                         <div class="modal-footer">

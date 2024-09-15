@@ -29,19 +29,32 @@ public class ImageUploadHelper {
             throw new IllegalFileUploadException("Max file size is 2MB");
         }
 
-        String fileName = file.getOriginalFilename();
-        String extension = Arrays.stream(fileName.split("\\."))
-                .reduce((a, b) -> b)
-                .orElse("");
-
-        if (!isAllowedExtension(fileName, pattern)) {
+        String contentType = file.getContentType();
+        if (contentType == null || !isSupportedContentType(contentType)){
             throw new IllegalFileUploadException("Only jpg, png, gif, jpeg files are allowed");
         }
+
+
+//        String fileName = file.getOriginalFilename();
+//        String extension = Arrays.stream(fileName.split("\\."))
+//                .reduce((a, b) -> b)
+//                .orElse("");
+//
+//        if (!isAllowedExtension(fileName, pattern)) {
+//            throw new IllegalFileUploadException("Only jpg, png, gif, jpeg files are allowed");
+//        }
     }
 
     public static String getFileName(String name) {
         DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         String date = dateFormat.format(System.currentTimeMillis());
         return String.format(FILE_NAME_FORMAT, name, date);
+    }
+
+    private static boolean isSupportedContentType(String contentType) {
+        return contentType.equals("image/png")
+                || contentType.equals("image/jpg")
+                || contentType.equals("image/jpeg")
+                || contentType.equals("image/gif");
     }
 }

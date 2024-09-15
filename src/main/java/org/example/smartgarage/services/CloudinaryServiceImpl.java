@@ -6,6 +6,7 @@ import org.example.smartgarage.services.contracts.CloudinaryService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collections;
 @Service
 public class CloudinaryServiceImpl implements CloudinaryService {
@@ -24,7 +25,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                     .upload(multipartFile.getBytes(), Collections.emptyMap())
                     .get("secure_url")
                     .toString();
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new IllegalFileUploadException("Failed to upload file");
         }
     }

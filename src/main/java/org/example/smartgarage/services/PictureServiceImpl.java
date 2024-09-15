@@ -35,15 +35,13 @@ public class PictureServiceImpl implements PictureService {
                         : null;
 
         if (profilePicture == null) {
-
             profilePicture = new ProfilePicture(photoUrl);
-//            profilePicture.setUserId(user);
-//
-//            pictureRepository.savePhoto(profilePicture);
+            pictureRepository.saveAndFlush(profilePicture);
+
         } else {
             //TODO when updating must delete existing in cloudinary ??
             profilePicture.setPhotoUrl(photoUrl);
-//            pictureRepository.updatePhoto(profilePicture);
+            pictureRepository.saveAndFlush(profilePicture);
         }
 
         return profilePicture;

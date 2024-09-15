@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/garage")
 public class AuthenticationMvcController {
@@ -93,7 +95,7 @@ public class AuthenticationMvcController {
                                 @Valid @ModelAttribute("passwordDto") PasswordResetDto dto,
                                 BindingResult bindingResult,
                                 Model model,
-                                HttpServletRequest request) {
+                                HttpServletRequest request) throws IOException {
 
         if (bindingResult.hasErrors()) {
             return "password-reset";

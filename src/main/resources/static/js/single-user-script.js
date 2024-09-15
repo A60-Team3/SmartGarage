@@ -38,6 +38,10 @@ $('#editUserForm').submit(function (event) {
     });
 });
 
+function uploadPhoto(){
+    document.getElementById('profile-form').submit();
+}
+
 $('#carsBtn').click(function () {
     const userId = $('#userId').val();
 
@@ -191,7 +195,7 @@ function confirmDelete() {
         },
         success: function (response) {
             showAlert('User deleted successfully', 'success');
-            location.reload();  // Reload the page to update the table
+            window.location.href = window.location.origin;
         },
         error: function (response) {
             showAlert('Error: ' + response.responseText, 'danger');

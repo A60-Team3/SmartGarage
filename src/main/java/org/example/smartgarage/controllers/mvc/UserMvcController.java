@@ -1,20 +1,27 @@
 package org.example.smartgarage.controllers.mvc;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.smartgarage.dtos.request.UserUpdateDto;
 import org.example.smartgarage.dtos.response.UserOutDto;
+import org.example.smartgarage.exceptions.EntityDuplicateException;
+import org.example.smartgarage.exceptions.EntityNotFoundException;
+import org.example.smartgarage.exceptions.IllegalFileUploadException;
 import org.example.smartgarage.mappers.UserMapper;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +71,8 @@ public class UserMvcController {
     @GetMapping("/customers")
     public String getCustomersPage(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
                                    @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
-                                   @ModelAttribute("userFilterOptions")UserFilterOptions filterOptions,
-                                   Model model){
+                                   @ModelAttribute("userFilterOptions") UserFilterOptions filterOptions,
+                                   Model model) {
         filterOptions.removeInvalid();
 
         Page<UserEntity> users = userService.findAll(pageIndex - 1, pageSize, filterOptions);
@@ -75,8 +82,8 @@ public class UserMvcController {
         users.forEach(user -> userMap.put(user.getEmail(), user.getId()));
 
         model.addAttribute("users", userOutDtos);
-        model.addAttribute("userMap",userMap);
-        model.addAttribute("totalPages",users.getTotalPages());
+        model.addAttribute("userMap", userMap);
+        model.addAttribute("totalPages", users.getTotalPages());
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("currentPage", users.getNumber() + 1);
 
@@ -86,13 +93,34 @@ public class UserMvcController {
     @PreAuthorize("hasAnyRole('CLERK', 'HR') or #principal.id == userId")
     @GetMapping("/users/{userId}")
     public String getSingleUser(@PathVariable long userId,
+                                @ModelAttribute("userUpdateDto") UserUpdateDto dto,
                                 @AuthenticationPrincipal CustomUserDetails principal,
-                                Model model){
+                                Model model) {
 
         UserEntity user = userService.getById(userId);
 
         model.addAttribute("user", user);
 
         return "user-single";
+    }
+
+    @PostMapping("/users/{userId}/avatar")
+    public String changeProfilePicture(@PathVariable long userId,
+                                       @ModelAttribute("userUpdateDto") UserUpdateDto dto,
+                                       Model model) throws IOException {
+        UserEntity user = userService.getById(userId);
+        try {
+            userService.update(userId, user, dto.profilePic());
+        } catch (EntityDuplicateException | IllegalFileUploadException e) {
+            model.addAttribute("statusCode", HttpStatus.BAD_REQUEST.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "error-page";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "error-page";
+        }
+
+        return "redirect:/garage/users/" + userId;
     }
 }

@@ -2,10 +2,12 @@ package org.example.smartgarage.services;
 
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
+import org.example.smartgarage.exceptions.IllegalFileUploadException;
 import org.example.smartgarage.models.ProfilePicture;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.repositories.contracts.UserRepository;
 import org.example.smartgarage.services.contracts.CloudinaryService;
+import org.example.smartgarage.services.contracts.PictureService;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.utils.ImageUploadHelper;
 import org.example.smartgarage.utils.filtering.UserEntitySpecification;
@@ -24,12 +26,14 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CloudinaryService cloudinaryService;
+    private final PictureService pictureService;
     private final PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserRepository userRepository, CloudinaryService cloudinaryService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, CloudinaryService cloudinaryService, PictureService pictureService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.cloudinaryService = cloudinaryService;
+        this.pictureService = pictureService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -61,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity update(long userId, UserEntity updatedUserInfo, MultipartFile multipartFile) throws IOException {
+    public UserEntity update(long userId, UserEntity updatedUserInfo, MultipartFile multipartFile) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User", userId));
 
@@ -86,12 +90,16 @@ public class UserServiceImpl implements UserService {
                     }
                 });
 
-        if (!multipartFile.isEmpty()){
+        if (multipartFile != null && !multipartFile.isEmpty()){
             ImageUploadHelper.assertAllowed(multipartFile, ImageUploadHelper.IMAGE_PATTERN);
-            String photoUrl = cloudinaryService.uploadImage(multipartFile);
-            user.setProfilePicture(new ProfilePicture(photoUrl));
-        } else {
-            user.setProfilePicture(null);
+
+            try {
+                String photoUrl = cloudinaryService.uploadImage(multipartFile);
+                ProfilePicture profilePicture = pictureService.savePhoto(photoUrl, user);
+                user.setProfilePicture(profilePicture);
+            } catch (IOException e) {
+                throw new IllegalFileUploadException(e.getMessage());
+            }
         }
 
         user.setFirstName(updatedUserInfo.getFirstName());
