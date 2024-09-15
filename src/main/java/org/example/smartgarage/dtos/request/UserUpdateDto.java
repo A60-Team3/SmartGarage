@@ -22,12 +22,10 @@ public record UserUpdateDto(
         @Unique(type = UniqueType.USERNAME, message = "Username already exists")
         String username,
 
-        @NotBlank
         @Size(min = 8, message = "Password must be at least 8 characters long")
         @Pattern(regexp = passwordRegex, message = "Password should contain a capital letter, digit, and special symbol")
         String password,
 
-        @NotBlank(message = "This field is mandatory")
         String passwordConfirm,
 
         @NotBlank

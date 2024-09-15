@@ -142,11 +142,18 @@
                             </div>
                             <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" required>
+                                <input type="password" class="form-control" id="password" required
+                                       th:value="${user.password}">
                             </div>
                             <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
                                 <label for="passwordConfirm">Confirm Password</label>
-                                <input type="password" class="form-control" id="passwordConfirm" required>
+                                <input type="password" class="form-control" id="passwordConfirm" required
+                                       th:value="${user.password}">
+                            </div>
+                            <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
+                                <label for="profilePicture">Change Picture</label>
+                                <input type="file" class="form-control" id="profilePicture" required
+                                       th:value="${user.profilePicture}">
                             </div>
                         </div>
                         <div class="modal-footer">

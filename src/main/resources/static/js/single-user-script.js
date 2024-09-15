@@ -14,7 +14,8 @@ $('#editUserForm').submit(function (event) {
         email: $('#email').val(),
         phoneNumber: $('#phoneNumber').val(),
         password: $('#password').val(),
-        passwordConfirm: $('#passwordConfirm').val()
+        passwordConfirm: $('#passwordConfirm').val(),
+        profilePic: $('#profilePicture').val()
     };
 
     $.ajax({

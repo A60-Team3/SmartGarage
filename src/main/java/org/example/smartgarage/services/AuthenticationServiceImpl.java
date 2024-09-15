@@ -122,7 +122,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserEntity updatedUserInfo = userService.getById(userId);
         updatedUserInfo.setPassword(password);
 
-        UserEntity user = userService.update(userId, updatedUserInfo);
+        UserEntity user = userService.update(userId, updatedUserInfo, dto.profilePic());
 
         eventPublisher.publishEvent(new PasswordResetCompleteEvent(user, applicationUrl(request)));
     }

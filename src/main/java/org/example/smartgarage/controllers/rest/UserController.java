@@ -5,9 +5,11 @@ import jakarta.validation.Valid;
 import org.example.smartgarage.dtos.request.UserUpdateDto;
 import org.example.smartgarage.dtos.response.UserOutDto;
 import org.example.smartgarage.mappers.UserMapper;
+import org.example.smartgarage.models.ProfilePicture;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.enums.UserRole;
 import org.example.smartgarage.security.CustomUserDetails;
+import org.example.smartgarage.services.contracts.CloudinaryService;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.utils.filtering.TimeOperator;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
@@ -21,6 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -90,7 +93,7 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<UserOutDto> updateUser(@Valid @RequestBody UserUpdateDto dto,
                                                  @PathVariable long userId,
-                                                 @AuthenticationPrincipal CustomUserDetails principal) {
+                                                 @AuthenticationPrincipal CustomUserDetails principal) throws IOException {
         boolean hasRights = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(s -> s.equals("ROLE_CLERK"));
@@ -99,13 +102,15 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authorized action");
         }
 
-        if (dto.password().equals(dto.passwordConfirm())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password fields must match");
+        if (dto.password() != null && !dto.password().isBlank()){
+            if (dto.password().equals(dto.passwordConfirm())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password fields must match");
+            }
         }
 
         UserEntity updatedUserInfo = userMapper.toEntity(dto);
 
-        UserEntity updatedUser = userService.update(userId, updatedUserInfo);
+        UserEntity updatedUser = userService.update(userId, updatedUserInfo, dto.profilePic());
 
         return ResponseEntity.ok(userMapper.toDto(updatedUser));
     }

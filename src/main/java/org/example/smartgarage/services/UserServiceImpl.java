@@ -1,35 +1,35 @@
 package org.example.smartgarage.services;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.example.smartgarage.events.PasswordResetRequestEvent;
 import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
+import org.example.smartgarage.models.ProfilePicture;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.repositories.contracts.UserRepository;
+import org.example.smartgarage.services.contracts.CloudinaryService;
 import org.example.smartgarage.services.contracts.UserService;
-import org.example.smartgarage.services.contracts.VerificationTokenService;
-import org.example.smartgarage.utils.RandomPasswordGenerator;
+import org.example.smartgarage.utils.ImageUploadHelper;
 import org.example.smartgarage.utils.filtering.UserEntitySpecification;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CloudinaryService cloudinaryService;
     private final PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, CloudinaryService cloudinaryService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.cloudinaryService = cloudinaryService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity update(long userId, UserEntity updatedUserInfo) {
+    public UserEntity update(long userId, UserEntity updatedUserInfo, MultipartFile multipartFile) throws IOException {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User", userId));
 
@@ -86,10 +86,20 @@ public class UserServiceImpl implements UserService {
                     }
                 });
 
+        if (!multipartFile.isEmpty()){
+            ImageUploadHelper.assertAllowed(multipartFile, ImageUploadHelper.IMAGE_PATTERN);
+            String photoUrl = cloudinaryService.uploadImage(multipartFile);
+            user.setProfilePicture(new ProfilePicture(photoUrl));
+        } else {
+            user.setProfilePicture(null);
+        }
+
         user.setFirstName(updatedUserInfo.getFirstName());
         user.setLastName(updatedUserInfo.getLastName());
         user.setUsername(updatedUserInfo.getUsername());
-        user.setPassword(passwordEncoder.encode(updatedUserInfo.getPassword()));
+        if (updatedUserInfo.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(updatedUserInfo.getPassword()));
+        }
         user.setEmail(updatedUserInfo.getEmail());
         user.setPhoneNumber(updatedUserInfo.getPhoneNumber());
 
