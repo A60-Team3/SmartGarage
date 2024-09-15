@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head(${user.firstName + ' ' + user.lastName})}"></head>
+
+<body class="bg-light bg-gradient">
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!--Display User Start-->
+<div class="container-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <div class="user-info bg-white p-4 rounded shadow">
+                <ul class="list-unstyled">
+                    <li class="text-center">
+                        <img class="profile-picture img-thumbnail rounded-circle mb-3" style="max-height: 200px"
+                             th:src="${user.profilePicture != null ? user.profilePicture.photoUrl : '/img/blank_profile.png'}"
+                             alt="profile_picture">
+                    </li>
+                    <li><h5 th:text="'Full Name: ' + ${user.firstName} + ' ' + ${user.lastName}">Full Name</h5></li>
+                    <li><h5 th:text="'Email: ' + ${user.email}">Email</h5></li>
+                    <li><h5 th:text="'Phone number: ' + ${user.phoneNumber}">Cellphone</h5></li>
+                    <li><h5 th:text="'Joined: ' + ${#temporals.format(user.registered, 'MMM dd YYYY')}">Registered</h5>
+                    </li>
+                    <li sec:authorize="hasAnyRole('CLERK', 'HR')">
+                        <h5> User Roles:
+                            <span th:each="role, iterStat : ${user.roles}">
+                    <span th:text="${role.authority}">Role</span>
+                    <span th:if="${!iterStat.last}">,</span>
+                </span>
+                        </h5>
+                    </li>
+                </ul>
+                <div class="d-flex justify-content-evenly gap-3">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#editUserModal">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal"
+                            th:attr="data-delete-id=${userId}">
+                        Delete
+                    </button>
+                </div>
+                <div class="d-flex justify-content-evenly gap-3 mt-3">
+                    <button type="button" class="btn btn-primary btn-sm" id="carsBtn">
+                        Cars
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="visitsBtn">
+                        Visits
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">
+            <div id="vehicle-list-section" class="container my-5" style="display:none;">
+                <div class="user-vehicles-info bg-white p-4 rounded shadow">
+                    <h4 class="text-center">User Vehicles</h4>
+                    <ul id="vehicle-list" class="list-group"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="user-visits-info bg-white p-4 rounded shadow text-center"
+                 id="user-visits-info" style="display:none;">
+                <h4>User Visits</h4>
+                <table id="visit-list"
+                       class="table table-bordered table-striped table-hover text-nowrap">
+                    <thead>
+                    <tr>
+                        <th scope="col">Booked Date</th>
+                        <th scope="col">Vehicle</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Served By</th>
+                        <th scope="col">Total Cost</th>
+                        <th scope="col">Report</th>
+                    </tr>
+                    </thead>
+                    <tbody id="visit-info-body">
+                    <!-- Dynamic content will be populated here -->
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-evenly gap-3 mt-3">
+                    <button type="button" class="btn btn-secondary btn-sm" id="reportBtn" disabled
+                            data-bs-toggle="modal" data-bs-target="#generateReportModal">>
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--Edit User Modal Start-->
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="editUserForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="userId" th:value="${user.id}">
+                            <div class="form-group mb-3">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName" th:value="${user.firstName}"
+                                       required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" th:value="${user.lastName}"
+                                       required>
+                            </div>
+                            <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" th:value="${user.username}"
+                                       required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" th:value="${user.email}"
+                                       required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="tel" class="form-control" id="phoneNumber"
+                                       th:value="${user.phoneNumber}"
+                                       required>
+                            </div>
+                            <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <div class="form-group mb-3" th:if="${#authentication.name.equals(user.username)}">
+                                <label for="passwordConfirm">Confirm Password</label>
+                                <input type="password" class="form-control" id="passwordConfirm" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--Edit User Modal End-->
+
+        <!--Delete User Modal Start-->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this user?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Delete User Modal End-->
+
+        <!-- Generate Report Modal Start -->
+        <div class="modal fade" id="generateReportModal" tabindex="-1" aria-labelledby="generateReportModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="generateReportForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="generateReportModalLabel">Generate Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group mb-3">
+                                <label for="targetEmail">Target Email</label>
+                                <input type="email" class="form-control" id="targetEmail" placeholder="Enter email"
+                                       required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="exchangeCurrency">Exchange Currency</label>
+                                <select class="form-control" id="exchangeCurrency">
+                                    <option value="">
+                                        Default
+                                    </option>
+                                    <option th:each="enum : ${T (org.example.smartgarage.models.enums.CurrencyCode).values()}"
+                                            th:value="${enum.name}" th:text="${enum.toString()}">
+                                        Choose currency
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Generate Report</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Generate Report Modal End -->
+    </div>
+
+    <div class="container mt-4">
+        <div id="alert-placeholder"></div>
+    </div>
+</div>
+<!--Display User End-->
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/single-user-script.js"></script>
+
+</body>
+</html>

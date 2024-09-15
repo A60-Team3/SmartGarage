@@ -158,6 +158,11 @@ public class VisitServiceImpl implements VisitService {
         return (visitIndex / pageSize) + 1;
     }
 
+    @Override
+    public List<Visit> findAllById(List<Long> visitIds) {
+        return visitRepository.findAllById(visitIds);
+    }
+
     private EventLog logEvent(Visit visit, String event) {
         EventLog eventLog = new EventLog(event, visit);
         return historyService.save(eventLog);

@@ -8,7 +8,7 @@
                 <a class="nav-item nav-link" th:href="@{/garage/admin}">Admin</a>
             </div>
             <div sec:authorize="hasRole('CUSTOMER')">
-                <a class="nav-item nav-link" th:href="@{/garage/customer}">Client</a>
+                <a class="nav-item nav-link" th:href="@{/garage/client}">Client</a>
             </div>
             <div sec:authorize="hasRole('CLERK')">
                 <a class="nav-item nav-link" th:href="@{/garage/clerk}">Clerk</a>

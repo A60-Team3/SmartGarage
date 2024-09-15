@@ -93,6 +93,22 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleOutDTOPage);
     }
 
+    @PreAuthorize("hasAnyRole('CLERK','HR') or #principal.id == userId")
+    @GetMapping("/vehicles/user/{userId}")
+    public ResponseEntity<?> getAllUserVehicles(@PathVariable long userId,
+                                                @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                @RequestParam(required = false) String sortBy,
+                                                @RequestParam(required = false) String sortOrder,
+                                                @AuthenticationPrincipal CustomUserDetails principal) {
+
+        UserEntity user = userService.getById(userId);
+
+        VehicleFilterOptions vehicleFilterOptions = new VehicleFilterOptions(user.getPhoneNumber(), null, null, null, sortBy, sortOrder);
+        List<Vehicle> filtered = vehicleService.findFiltered(vehicleFilterOptions);
+        return ResponseEntity.ok(filtered.stream().map(vehicleMapper::toDTO).toList());
+    }
+
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/vehicles/{id}")
     public ResponseEntity<?> getById(@PathVariable long id) {

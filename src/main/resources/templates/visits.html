@@ -164,7 +164,7 @@
                 </a>
             </td>
             <td th:with="clientId=${customerMap.get(''+ visit.vehicle.licensePlate() + '')}">
-                <a th:href="@{/garage/customers/__${clientId}__}"
+                <a th:href="@{/garage/users/__${clientId}__}"
                    th:text="${visit.clientName}">
                 </a>
             </td>

@@ -30,4 +30,6 @@ public interface VisitService {
     void deleteVisit(long visitId);
 
     int calculateVisitPage(long visitId, VisitFilterOptions filterOptions, int pageSize);
+
+    List<Visit> findAllById(List<Long> visitIds);
 }

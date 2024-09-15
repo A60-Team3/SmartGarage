@@ -170,3 +170,29 @@
 .password-reset a:hover {
     color: #864700; /* Hover effect for the forgot password link */
 }
+
+/* Set the container to full width */
+.container-fluid {
+    width: 100%;
+}
+
+/* Ensure columns take only as much space as needed */
+.col-auto {
+    margin-bottom: 20px; /* Adds space between the columns */
+}
+
+/* Ensure all content fits inside the columns */
+.user-info, .user-vehicles-info, .user-visits-info {
+    white-space: nowrap; /* Prevents content from wrapping */
+}
+
+/* For the visits table, ensure it fits in its column */
+#visit-list {
+    width: auto;
+    table-layout: auto;
+}
+
+/* For table cells to behave well on smaller screens */
+.table th, .table td {
+    white-space: nowrap;
+}

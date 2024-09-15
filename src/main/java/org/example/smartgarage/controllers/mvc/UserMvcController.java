@@ -4,16 +4,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.smartgarage.dtos.response.UserOutDto;
 import org.example.smartgarage.mappers.UserMapper;
 import org.example.smartgarage.models.UserEntity;
+import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.utils.filtering.UserFilterOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -44,7 +43,7 @@ public class UserMvcController {
     }
 
     @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/customer")
+    @GetMapping("/client")
     public String getCustomerPage() {
         return "client";
     }
@@ -82,5 +81,18 @@ public class UserMvcController {
         model.addAttribute("currentPage", users.getNumber() + 1);
 
         return "customers";
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'HR') or #principal.id == userId")
+    @GetMapping("/users/{userId}")
+    public String getSingleUser(@PathVariable long userId,
+                                @AuthenticationPrincipal CustomUserDetails principal,
+                                Model model){
+
+        UserEntity user = userService.getById(userId);
+
+        model.addAttribute("user", user);
+
+        return "user-single";
     }
 }

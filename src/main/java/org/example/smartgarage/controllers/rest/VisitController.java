@@ -21,7 +21,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,9 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -92,7 +92,7 @@ public class VisitController {
         return ResponseEntity.ok(visitsPage);
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') or #userId == principal.getId()")
+    @PreAuthorize("!hasRole('MECHANIC') or #userId == principal.getId()")
     @GetMapping("/users/{userId}/visits")
     public ResponseEntity<?> findAll(@RequestParam(value = "offset", defaultValue = "0") int offset,
                                      @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
@@ -245,6 +245,29 @@ public class VisitController {
         return ResponseEntity.ok(pageNumber);
     }
 
+    @GetMapping("/visits/report")
+    public ResponseEntity<byte[]> generateReport(@RequestParam List<Long> visitIds,
+                                 @RequestParam String email,
+                                 @RequestParam(required = false) CurrencyCode exchangeCurrency){
+
+        UserEntity user = userService.findByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please provide valid email");
+        }
+
+        List<Visit> visitsToReport = visitService.findAllById(visitIds);
+        List<VisitOutDto> visitOutDtos = visitsToReport.stream().map(visitMapper::toDto).toList();
+        visitOutDtos = visitService.calculateCost(visitOutDtos,exchangeCurrency);
+        ByteArrayOutputStream pdf = visitService.createPdf(visitOutDtos, user);
+        eventPublisher.publishEvent(new EmailReportEvent(pdf, user));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "visit-report.pdf");
+
+        return new ResponseEntity<>(pdf.toByteArray(), headers, HttpStatus.OK);
+    }
+
     private static VisitFilterOptions createVisitFilterOptions(
             Long customerId, String customerName, Long clerkId, String clerkName,
             Long vehicleId, List<Long> orders,
@@ -263,20 +286,17 @@ public class VisitController {
         Pageable pageable = PageRequest.of(offset, pageSize);
 
         List<Visit> visits = visitService.findAll(visitFilterOptions);
-
-        if (visits.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No entry satisfies the filter conditions");
-        }
-
         List<VisitOutDto> visitOutDtos = visits.stream().map(visitMapper::toDto).toList();
 
-        visitOutDtos = visitService.calculateCost(visitOutDtos, exchangeCurrency);
+        if (!visitOutDtos.isEmpty()) {
+            visitOutDtos = visitService.calculateCost(visitOutDtos, exchangeCurrency);
 
-        UserEntity user = userService.getById(userId);
+            UserEntity user = userService.getById(userId);
 
-        if (toPdf) {
-            ByteArrayOutputStream pdf = visitService.createPdf(visitOutDtos, user);
-            eventPublisher.publishEvent(new EmailReportEvent(pdf, user));
+            if (toPdf) {
+                ByteArrayOutputStream pdf = visitService.createPdf(visitOutDtos, user);
+                eventPublisher.publishEvent(new EmailReportEvent(pdf, user));
+            }
         }
 
         return new PageImpl<>(visitOutDtos, pageable, visitOutDtos.size());
