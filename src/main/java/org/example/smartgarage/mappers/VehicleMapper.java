@@ -28,6 +28,7 @@ public interface VehicleMapper {
     @Mapping(target="modelName", expression="java(vehicleModelService.getByName(vehicleInDTO.modelName()))")
     @Mapping(target="yearOfCreation", expression="java(vehicleYearService.getByYear(vehicleInDTO.year()))")
     @Mapping(target="owner", expression="java(userService.getById(vehicleInDTO.ownerId()))")
+    @Mapping(target="deleted", ignore = true)
     Vehicle toEntity(VehicleInDTO vehicleInDTO,
                      @Context VehicleBrandService vehicleBrandService,
                      @Context VehicleModelService vehicleModelService,
@@ -39,6 +40,12 @@ public interface VehicleMapper {
     @Mapping(target="year", source = "yearOfCreation.year")
     @Mapping(target="ownerName", expression = "java(vehicle.getOwner().getFirstName() + \" \" + vehicle.getOwner().getLastName())")
     VehicleOutDTO toDTO(Vehicle vehicle);
+
+    @Mapping(target="brandName", source = "brandName.brandName")
+    @Mapping(target="modelName", source = "modelName.modelName")
+    @Mapping(target="year", source = "yearOfCreation.year")
+    @Mapping(target="ownerId", source = "owner.id")
+    VehicleInDTO vehicleToVehicleDTO(Vehicle vehicle);
 
     default Page<VehicleOutDTO> vehiclesToVehicleDTOs(Page<Vehicle> vehicles) {
         List<VehicleOutDTO> dtos = vehicles.stream()

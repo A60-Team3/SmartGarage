@@ -6,7 +6,7 @@ public record VehicleInDTO(
 
         @NotBlank(message = "License plate should not be empty")
         @Size(min = 6, max = 8, message = "Invalid license plate length")
-        @Pattern(regexp = licensePlateRegex)
+        @Pattern(regexp = licensePlateRegex, message = "License plate should be a valid Bulgarian registration")
         String licensePlate,
 
         @NotBlank(message = "VIN should not be empty")

@@ -20,35 +20,42 @@
 
 <div class="col-lg-6 form-create-update">
     <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
-        <h1 class="text-white mb-4">Add Vehicle</h1>
-        <form th:action="@{/garage/vehicles/new}" th:object="${vehicle}">
+        <h1 class="text-white mb-4" th:if="${requestURI.contains('new')}">Add Vehicle</h1>
+        <h1 class="text-white mb-4" th:if="${requestURI.contains('update')}">Update Vehicle</h1>
+        <form th:action="@{__${requestURI}__}" th:object="${vehicle}" th:method="post">
             <div class="row g-3">
                 <div class="col-12 col-sm-6">
                     <input type="text" class="form-control border-0" placeholder="License Plate" style="height: 55px;" th:field="*{licensePlate}">
+                    <label class="label-error" th:errors="*{licensePlate}">Title error placeholder</label>
                 </div>
                 <div class="col-12 col-sm-6">
                     <input type="text" class="form-control border-0" placeholder="VIN" style="height: 55px;" th:field="*{vin}">
+                    <label class="label-error" th:errors="*{vin}">Title error placeholder</label>
                 </div>
                 <div class="col-12 col-sm-6">
                     <input class="form-control border-0" id="brand-input" list="brands" placeholder="Brand" th:field="*{brandName}" oninput="filterModels()" style="height: 55px;">
+                    <label class="label-error" th:errors="*{brandName}">Title error placeholder</label>
                     <datalist id="brands">
                         <option id="brand-option" th:each="brand : ${brands}" th:value="${brand.getBrandName()}" th:text="${brand.getBrandName()}" th:attr="data-brand-id=${brand.getId()}">Service 1</option>
                     </datalist>
                 </div>
                 <div class="col-12 col-sm-6">
                     <input class="form-control border-0" id="model-input" list="models" placeholder="Model" th:field="*{modelName}" oninput="filterYears()" style="height: 55px;">
+                    <label class="label-error" th:errors="*{modelName}">Title error placeholder</label>
                     <datalist id="models" >
                         <option th:each="model : ${models}" th:value="${model.getModelName()}" th:text="${model.getModelName()}" th:attr="data-model-brand=${model.getBrand().getBrandName()}" disabled>Service 1</option>
                     </datalist>
                 </div>
                 <div class="col-12 col-sm-6">
                     <input class="form-control border-0" id="year-input" list="years" placeholder="Year" th:field="*{year}" style="height: 55px;">
+                    <label class="label-error" th:errors="*{year}">Title error placeholder</label>
                     <datalist id="years">
                         <option th:each="year : ${years}" th:value="${year.getYear()}" th:text="${year.getYear()}" th:attr="data-model-years=${year.getModelNames()}" disabled>Service 1</option>
                     </datalist>
                 </div>
                 <div class="col-12 col-sm-6">
                     <input class="form-control border-0" list="clients" placeholder="Client" th:field="*{ownerId}" style="height: 55px;">
+                    <label class="label-error" th:errors="*{ownerId}">Title error placeholder</label>
                     <datalist id="clients">
                         <option selected>Client</option>
                         <option th:each="client : ${clients}" th:value="${client.getId()}" th:text="${client.getFirstName() + ' ' + client.getLastName()}">Service 1</option>
@@ -57,7 +64,7 @@
 
 
                 <div class="col-12">
-                    <button class="btn btn-secondary w-100 py-3" type="submit">Submit</button>
+                    <input class="btn btn-secondary w-100 py-3" type="submit" value="Submit">
                 </div>
             </div>
         </form>
