@@ -236,3 +236,7 @@
 .profile-container-update:hover::after {
     opacity: 1; /* Show the "Change Picture" text on hover */
 }
+
+.form-create-update{
+    margin: auto;
+}

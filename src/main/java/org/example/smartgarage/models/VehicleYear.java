@@ -6,6 +6,8 @@ import org.example.smartgarage.models.baseEntity.BaseEntity;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 @Entity
 @Table(name = "vehicle_years")
 public class VehicleYear extends BaseEntity {
@@ -30,6 +32,12 @@ public class VehicleYear extends BaseEntity {
 
     public void setModels(Set<VehicleModel> models) {
         this.models = models;
+    }
+
+    public String getModelNames() {
+        return models.stream()
+                .map(VehicleModel::getModelName)
+                .collect(Collectors.joining(", "));
     }
 
     @Override
