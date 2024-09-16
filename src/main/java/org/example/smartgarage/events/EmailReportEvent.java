@@ -4,6 +4,6 @@ import org.example.smartgarage.models.UserEntity;
 
 import java.io.ByteArrayOutputStream;
 
-public record EmailReportEvent (ByteArrayOutputStream pdfDocument,
+public record EmailReportEvent (byte[] pdfDocument,
                                 UserEntity user) {
 }

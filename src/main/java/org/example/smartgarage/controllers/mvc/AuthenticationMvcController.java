@@ -134,15 +134,12 @@ public class AuthenticationMvcController {
                                @AuthenticationPrincipal CustomUserDetails principal,
                                Model model) {
 
-
         if (bindingResult.hasErrors()) {
             return "user-create";
         }
 
         UserEntity user = userMapper.toEntity(dto);
         UserEntity saved = authenticationService.registerCustomer(user, request);
-
-
 
         return "redirect:/garage/users/" + saved.getId();
     }

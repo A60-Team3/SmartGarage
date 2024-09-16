@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -80,7 +79,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public ByteArrayOutputStream createPdf(List<VisitOutDto> visits, UserEntity principal) {
+    public byte[] createPdf(List<VisitOutDto> visits, UserEntity principal) {
         try {
             return reportService.createVisitReport(visits, principal);
         } catch (IOException e) {

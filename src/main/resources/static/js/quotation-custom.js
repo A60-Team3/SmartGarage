@@ -2,8 +2,6 @@ function addService() {
     const serviceContainer = document.getElementById('services-container');
     const serviceEntry = document.querySelector('.service-entry').cloneNode(true);
 
-    // serviceEntry.querySelector('select').selectedIndex = 0;
-
     serviceContainer.appendChild(serviceEntry);
 }
 
@@ -14,5 +12,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // Trigger the modal if 'email' is present
         const modal = new bootstrap.Modal(document.getElementById('successModal'));
         modal.show();
+
+        // Redirect to the home page when the modal is closed
+        document.getElementById('successModal').addEventListener('hidden.bs.modal', function () {
+            window.location.href = '/';  // Redirect to home page
+        });
     }
 });

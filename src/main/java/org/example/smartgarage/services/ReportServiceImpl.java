@@ -43,8 +43,8 @@ public class ReportServiceImpl implements ReportService {
     private static final String GARAGE_LOGO = "src/main/resources/static/img/garage_logo.jpg";
 
     @Override
-    public ByteArrayOutputStream createVisitReport(List<VisitOutDto> visits, UserEntity user) throws IOException {
-        if (visits.isEmpty()) return new ByteArrayOutputStream();
+    public byte[] createVisitReport(List<VisitOutDto> visits, UserEntity user) throws IOException {
+        if (visits.isEmpty()) return new ByteArrayOutputStream().toByteArray();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = new PdfWriter(
@@ -176,8 +176,10 @@ public class ReportServiceImpl implements ReportService {
         }
 
         document.close();
-
-        return byteArrayOutputStream;
+        pdfWriter.close();
+        byte[] pdf = byteArrayOutputStream.toByteArray();
+        byteArrayOutputStream.close();
+        return pdf;
     }
 
     @Override

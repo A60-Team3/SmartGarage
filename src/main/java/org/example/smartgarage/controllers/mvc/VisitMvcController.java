@@ -6,10 +6,12 @@ import org.example.smartgarage.dtos.response.VisitOutDto;
 import org.example.smartgarage.mappers.VisitMapper;
 import org.example.smartgarage.models.ServiceType;
 import org.example.smartgarage.models.UserEntity;
+import org.example.smartgarage.models.Vehicle;
 import org.example.smartgarage.models.Visit;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.OrderTypeService;
 import org.example.smartgarage.services.contracts.UserService;
+import org.example.smartgarage.services.contracts.VehicleService;
 import org.example.smartgarage.services.contracts.VisitService;
 import org.example.smartgarage.utils.filtering.TimeOperator;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
@@ -32,12 +34,14 @@ public class VisitMvcController {
     private final VisitService visitService;
     private final OrderTypeService orderTypeService;
     private final UserService userService;
+    private final VehicleService vehicleService;
     private final VisitMapper visitMapper;
 
-    public VisitMvcController(VisitService visitService, OrderTypeService orderTypeService, UserService userService, VisitMapper visitMapper) {
+    public VisitMvcController(VisitService visitService, OrderTypeService orderTypeService, UserService userService, VehicleService vehicleService, VisitMapper visitMapper) {
         this.visitService = visitService;
         this.orderTypeService = orderTypeService;
         this.userService = userService;
+        this.vehicleService = vehicleService;
         this.visitMapper = visitMapper;
     }
 
@@ -107,10 +111,14 @@ public class VisitMvcController {
 
     }
 
-    @GetMapping("/visits/new")
+    @GetMapping("/new")
     public String getCreateVisitPage(@ModelAttribute("visitInDto") VisitInDto visitInDto,
                                      Model model) {
         List<UserEntity> allUsers = userService.findAll();
+        List<Vehicle> allVehicles = vehicleService.getAll();
+
+        model.addAttribute("users", allUsers);
+        model.addAttribute("vehicles", allVehicles);
 
         return "visit-create";
     }

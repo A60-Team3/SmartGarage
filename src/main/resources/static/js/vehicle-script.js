@@ -8,7 +8,7 @@ function confirmDelete() {
     }
     $('#deleteModal').modal('hide');
 
-    // Send DELETE request to delete user
+    // Send DELETE request to delete vehicle
     $.ajax({
         url: `/api/garage/vehicles/${vehicleId}`,
         type: 'DELETE',

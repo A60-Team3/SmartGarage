@@ -23,7 +23,7 @@ public class EmailReportEventListener{
     @Value("${email.sender.email}")
     private String senderEmail;
 
-    private ByteArrayOutputStream document;
+    private byte[] document;
     private UserEntity user;
 
     public EmailReportEventListener(JavaMailSender mailSender) {
@@ -64,7 +64,7 @@ public class EmailReportEventListener{
         messageHelper.setText(mailContent, true);
         messageHelper.addAttachment(
                 String.format("Visit_Report_%s.pdf", currentTime),
-                new ByteArrayDataSource(document.toByteArray(), "application/pdf")
+                new ByteArrayDataSource(document, "application/pdf")
         );
         mailSender.send(message);
     }

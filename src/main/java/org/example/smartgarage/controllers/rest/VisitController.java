@@ -32,6 +32,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -258,14 +260,18 @@ public class VisitController {
         List<Visit> visitsToReport = visitService.findAllById(visitIds);
         List<VisitOutDto> visitOutDtos = visitsToReport.stream().map(visitMapper::toDto).toList();
         visitOutDtos = visitService.calculateCost(visitOutDtos,exchangeCurrency);
-        ByteArrayOutputStream pdf = visitService.createPdf(visitOutDtos, user);
+
+        byte[] pdf = visitService.createPdf(visitOutDtos, user);
+
         eventPublisher.publishEvent(new EmailReportEvent(pdf, user));
 
+        String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "visit-report.pdf");
+        headers.setContentDispositionFormData("attachment", String.format("Visit_Report_%s.pdf", currentTime));
+        headers.setContentLength(pdf.length);
 
-        return new ResponseEntity<>(pdf.toByteArray(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(pdf);
     }
 
     private static VisitFilterOptions createVisitFilterOptions(
@@ -294,7 +300,7 @@ public class VisitController {
             UserEntity user = userService.getById(userId);
 
             if (toPdf) {
-                ByteArrayOutputStream pdf = visitService.createPdf(visitOutDtos, user);
+                byte[] pdf = visitService.createPdf(visitOutDtos, user);
                 eventPublisher.publishEvent(new EmailReportEvent(pdf, user));
             }
         }

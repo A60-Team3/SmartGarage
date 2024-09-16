@@ -11,8 +11,8 @@ public record VisitInDto(
         @FutureOrPresent
         LocalDate bookedDate,
         @Positive(message = "No such customer. Must be positive.")
-        long customerId,
+        Long customerId,
         @Positive(message = "No such vehicle. Must be positive.")
-        long vehicleId
+        Long vehicleId
         ) {
 }

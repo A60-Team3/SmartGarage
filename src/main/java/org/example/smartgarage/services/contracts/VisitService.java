@@ -21,7 +21,7 @@ public interface VisitService {
 
     List<VisitOutDto> calculateCost(List<VisitOutDto> visitOutDtos, CurrencyCode exchangeCurrency);
 
-    ByteArrayOutputStream createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal);
+    byte[] createPdf(List<VisitOutDto> visitOutDtos, UserEntity principal);
 
     Visit create(Visit visit, Long clerkId);
 
