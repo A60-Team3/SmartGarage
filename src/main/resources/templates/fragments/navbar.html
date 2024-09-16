@@ -4,14 +4,22 @@
     </a>
     <div class="navbar-nav ms-auto p-4 p-lg-0">
         <div sec:authorize="isAuthenticated()">
-            <div sec:authorize="hasRole('HR')">
-                <a class="nav-item nav-link" th:href="@{/garage/admin}">Admin</a>
+            <div sec:authorize="hasRole('HR')" class="d-flex gap-2">
+                <a class="nav-item nav-link" th:href="@{/garage/hr}">Admin</a>
+                <a class="nav-item nav-link clerk-links" style="display: none"
+                   th:href="@{/garage/users/new}">Register User</a>
             </div>
             <div sec:authorize="hasRole('CUSTOMER')">
                 <a class="nav-item nav-link" th:href="@{/garage/client}">Client</a>
             </div>
-            <div sec:authorize="hasRole('CLERK')">
+            <div sec:authorize="hasRole('CLERK')" class="d-flex gap-2">
                 <a class="nav-item nav-link" th:href="@{/garage/clerk}">Clerk</a>
+                <a class="nav-item nav-link clerk-links" style="display: none"
+                   th:href="@{/garage/visits/new}">New Visit</a>
+                <a class="nav-item nav-link clerk-links" style="display: none"
+                   th:href="@{/garage/users/new}">Register User</a>
+                <a class="nav-item nav-link clerk-links" style="display: none"
+                   th:href="@{/garage/vehicles/new}">Register Vehicle</a>
             </div>
             <div sec:authorize="hasRole('MECHANIC')">
                 <a class="nav-item nav-link" th:href="@{/garage/mechanic}">Mechanic</a>
@@ -30,24 +38,28 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
             <a th:href="@{/garage/home}" class="nav-item nav-link">Home</a>
-            <a th:href="@{/garage/about}" class="nav-item nav-link">About</a>
-            <a th:href="@{/garage/brands}" class="nav-item nav-link">Car brands</a>
             <a th:href="@{/garage/services}" class="nav-item nav-link">Services</a>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                <div class="dropdown-menu fade-up m-0">
-                    <a th:href="@{/garage/booking}" class="dropdown-item">Booking</a>
-                    <a th:href="@{/garage/team}" class="dropdown-item">Our Team</a>
-                    <a th:href="@{/garage/reviews}" class="dropdown-item">Comments</a>
-                    <a th:href="@{/garage/404}" class="dropdown-item">404 Page</a>
+            <a th:href="@{/garage/brands}" class="nav-item nav-link">Car brands</a>
+            <div sec:authorize="!isAuthenticated() or hasRole('CUSTOMER')">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a th:href="@{/garage/booking}" class="dropdown-item">Booking</a>
+                        <a th:href="@{/garage/team}" class="dropdown-item">Our Team</a>
+                        <a th:href="@{/garage/reviews}" class="dropdown-item">Comments</a>
+                        <a th:href="@{/garage/404}" class="dropdown-item">404 Page</a>
+                    </div>
                 </div>
+                <a th:href="@{/garage/contacts}" class="nav-item nav-link">Contact</a>
+                <a th:href="@{/garage/about}" class="nav-item nav-link">About</a>
             </div>
-            <a th:href="@{/garage/contacts}" class="nav-item nav-link">Contact</a>
             <div sec:authorize="!isAuthenticated()">
                 <a class="nav-item nav-link" th:href="@{/garage/login}">Log In</a>
             </div>
             <div sec:authorize="isAuthenticated()">
                 <a class="nav-item nav-link" href="#" onclick="logout()">Log out</a>
+                <a class="nav-item nav-link" href="#" id="profilePage" th:value="${principal.username}"
+                   onclick="profilePage()">Profile</a>
             </div>
         </div>
         <div sec:authorize="!isAuthenticated() or hasRole('CUSTOMER')">

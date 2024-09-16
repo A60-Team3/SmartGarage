@@ -45,6 +45,6 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     private boolean validateOwner(UserEntity user) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return !user.getUsername().equals(username);
+        return user.getUsername().equals(username);
     }
 }

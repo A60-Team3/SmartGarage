@@ -118,7 +118,7 @@ public class VehicleMvcController {
         return "vehicles";
     }
 
-    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
+    @PreAuthorize("hasRole('CLERK')")
     @GetMapping("/vehicles/new")
     public String showNewVehiclePage(Model model) {
 

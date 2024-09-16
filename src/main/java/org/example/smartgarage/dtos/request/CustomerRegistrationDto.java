@@ -5,7 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.example.smartgarage.models.enums.UniqueType;
+import org.example.smartgarage.models.enums.UserRole;
 import org.example.smartgarage.validation.Unique;
+
+import java.util.Set;
 
 public record CustomerRegistrationDto(
         @Size(min = 2, max = 32, message = "First name must be between 2 and 32 characters")
@@ -23,7 +26,9 @@ public record CustomerRegistrationDto(
         @Unique(type = UniqueType.PHONE, message = "Phone number already exists")
         @Pattern(regexp = phoneRegex, message = "Phone number must consist of 10 digits")
         @Size(min = 10, max = 10)
-        String phoneNumber
+        String phoneNumber,
+
+        Set<UserRole> roles
 
 ) {
     public static final String emailRegex = "^[a-zA-Z0-9]+([._-][0-9a-zA-Z]+)*@[a-zA-Z0-9]+([.-][0-9a-zA-Z]+)*\\.[a-zA-Z]{2,}$";

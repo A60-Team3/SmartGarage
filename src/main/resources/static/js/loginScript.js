@@ -55,11 +55,7 @@ function failLogin(form, url, messages, passwordReset, formToHide) {
         document.getElementById('password').value = '';
         form.classList.add('rolling-down');
         setTimeout(() => {
-            const errorMessage = document.createElement("h5");
-            errorMessage.classList.add('error-message')
-            const newMessage = document.createTextNode("Invalid username or password");
-            errorMessage.appendChild(newMessage);
-            messages.appendChild(errorMessage);
+            showAlert('Invalid username or password', 'danger')
 
             formToHide.style.display = "flex";
             messages.style.display = "flex";

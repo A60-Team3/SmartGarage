@@ -48,7 +48,7 @@ $(document).ready(function () {
     window.fetchVisits = function (vehicleId) {
 
         $.ajax({
-            url: '/api/garage/clerks/visits',
+            url: '/api/garage/visits',
             type: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + jwtToken
@@ -72,7 +72,11 @@ $(document).ready(function () {
                                             <option value="READY_FOR_PICKUP" ${visit.status === 'READY_FOR_PICKUP' ? 'selected' : ''}>READY FOR PICKUP</option>
                                         </select>
                                     </td>
-                                    <td>${visit.services.map(service => service.serviceName).join(', ')}</td>
+                                    <td>
+                                        <ul class="list-unstyled">  
+                                        ${visit.services.map(service => `<li>${service.serviceName}</li>`).join('')}
+                                        </ul>
+                                    </td>
                                     <td><button onclick="updateVisit(${visit.id})">Update</button></td>
                                 </tr>
                             `;

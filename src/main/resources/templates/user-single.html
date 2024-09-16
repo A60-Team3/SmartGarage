@@ -23,10 +23,10 @@
         <div class="col-auto">
             <div class="user-info bg-white p-4 rounded shadow">
                 <ul class="list-unstyled">
-                    <li class="profile-container-update img-fluid rounded-circle">
+                    <li class="profile-container-update img-thumbnail rounded-circle m-auto" style="width: 200px; height: 200px; overflow: hidden">
                         <div th:if="${user.username == #authentication.name}">
                             <label for="profile-upload">
-                                <img class="profile-picture"
+                                <img class="profile-picture img-fluid rounded-circle" style="object-fit: cover; width: 100%; height: 100%;"
                                      th:src="${user.profilePicture != null ? user.profilePicture.photoUrl : '/img/blank_profile.png'}"
                                      alt="profile_picture">
                             </label>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div th:unless="${user.username == #authentication.name}">
-                            <img class="profile-picture"
+                            <img class="profile-picture img-fluid rounded-circle" style="object-fit: cover; width: 100%; height: 100%;"
                                  th:src="${user.profilePicture != null ? user.profilePicture.photoUrl : '/img/blank_profile.png'}"
                                  alt="profile_picture">
                         </div>

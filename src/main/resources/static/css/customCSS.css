@@ -203,8 +203,8 @@
     display: flex; /* Flexbox to help with centering if needed */
     justify-content: center; /* Center the image horizontally */
     align-items: center; /* Center the image vertically */
-    max-width: 300px; /* optional: limits the maximum width */
-    height: auto;
+    width: 30vh; /* optional: limits the maximum width */
+    height: 30vh;
     overflow: hidden; /* hides any overflow */
 }
 

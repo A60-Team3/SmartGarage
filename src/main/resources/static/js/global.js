@@ -38,3 +38,42 @@ $('#deleteModal').on('show.bs.modal', function (event) {
 $('#deleteModal').on('hidden.bs.modal', function (event) {
     localStorage.removeItem('delete_id');
 });
+
+function profilePage(){
+    const username = document.getElementById('profilePage');
+
+    $.ajax({
+        url: `/api/garage/vehicles/user/${userId}`,
+        type: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + jwtToken
+        },
+        success: function (response) {
+            $('#vehicle-list').empty(); // Clear any existing data
+            $('#vehicle-list-section').show();
+
+            if (response.length === 0) {
+                $('#vehicle-list').append('<li>No vehicles found</li>');
+            } else {
+                response.forEach(vehicle => {
+                    $('#vehicle-list').append(`
+                    <li class="list-unstyled">
+                        <div>
+                            <h5>License Plate: 
+                            <button class="vehicle-license-plate btn" type="button" value="${vehicle.id}"
+                            data-vehicle-id="${vehicle.id}">
+                                ${vehicle.licensePlate}
+                            </button>
+                            </h5>
+                            <h6>Brand: ${vehicle.brandName}</h6>
+                            <h6>Model: ${vehicle.modelName}</h6>
+                        </div>
+                    </li>`);
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            showAlert('Error fetching user cars: ' + xhr.responseText, 'danger');
+        }
+    });
+}

@@ -79,7 +79,7 @@ public class VisitController {
                                      @RequestParam(required = false) CurrencyCode exchangeCurrency,
                                      @AuthenticationPrincipal CustomUserDetails principal) {
         VisitFilterOptions visitFilterOptions = createVisitFilterOptions(
-                null, customerName, principal.getId(), clerkName,
+                null, customerName, null, clerkName,
                 vehicleId, orders, scheduleCondition, scheduleDateFrom, scheduleDateTo,
                 bookedCondition, bookedOn, sortBy, sortOrder
         );

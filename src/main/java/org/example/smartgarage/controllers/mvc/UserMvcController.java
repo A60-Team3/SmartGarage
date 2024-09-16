@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +43,7 @@ public class UserMvcController {
     }
 
     @PreAuthorize("hasRole('HR')")
-    @GetMapping("/admin")
+    @GetMapping("/hr")
     public String getHrPage() {
         return "admin";
     }
@@ -93,7 +92,13 @@ public class UserMvcController {
         return "customers";
     }
 
-    @PreAuthorize("hasAnyRole('CLERK', 'HR') or #principal.id == userId")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/users/me")
+    public String getProfilePage(@AuthenticationPrincipal CustomUserDetails principal) {
+        return "redirect:/garage/users/" + principal.getId();
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'HR') or #principal.id == #userId")
     @GetMapping("/users/{userId}")
     public String getSingleUser(@PathVariable long userId,
                                 @ModelAttribute("userUpdateDto") UserUpdateDto dto,

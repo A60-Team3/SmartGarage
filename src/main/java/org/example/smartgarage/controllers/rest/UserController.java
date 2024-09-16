@@ -104,7 +104,7 @@ public class UserController {
         }
 
         if (dto.password() != null && !dto.password().isBlank()){
-            if (dto.password().equals(dto.passwordConfirm())) {
+            if (!dto.password().equals(dto.passwordConfirm())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password fields must match");
             }
         }

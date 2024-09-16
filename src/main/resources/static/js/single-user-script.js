@@ -28,7 +28,6 @@ $('#editUserForm').submit(function (event) {
         data: JSON.stringify(userData),
         success: function (response) {
             $('#editUserModal').modal('hide');
-            showAlert('User updated successfully!', 'success');
             // Update the UI to reflect new user info
             location.reload(); // Optionally reload the page or just update the UI dynamically
         },
@@ -36,6 +35,7 @@ $('#editUserForm').submit(function (event) {
             showAlert('Error updating user: ' + xhr.responseText, 'danger');
         }
     });
+    showAlert('User updated successfully!', 'success');
 });
 
 function uploadPhoto(){

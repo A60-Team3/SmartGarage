@@ -2,7 +2,10 @@ package org.example.smartgarage.controllers.mvc;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.example.smartgarage.dtos.request.CustomerRegistrationDto;
 import org.example.smartgarage.dtos.request.PasswordResetDto;
+import org.example.smartgarage.mappers.UserMapper;
+import org.example.smartgarage.models.Role;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.VerificationToken;
 import org.example.smartgarage.security.CustomUserDetails;
@@ -18,16 +21,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/garage")
 public class AuthenticationMvcController {
     private final UserService userService;
+    private final UserMapper userMapper;
     private final VerificationTokenService tokenService;
     private final AuthenticationService authenticationService;
 
-    public AuthenticationMvcController(UserService userService, VerificationTokenService tokenService, AuthenticationService authenticationService) {
+    public AuthenticationMvcController(UserService userService, UserMapper userMapper, VerificationTokenService tokenService, AuthenticationService authenticationService) {
         this.userService = userService;
+        this.userMapper = userMapper;
         this.tokenService = tokenService;
         this.authenticationService = authenticationService;
     }
@@ -109,5 +115,35 @@ public class AuthenticationMvcController {
         authenticationService.resetPassword(dto.getPassword(), userId, request);
 
         return "redirect:/garage/login?reset=true";
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'HR')")
+    @GetMapping("/users/new")
+    public String getRegisterUserPage(@ModelAttribute("registrationDto") CustomerRegistrationDto dto,
+                                      @AuthenticationPrincipal CustomUserDetails principal,
+                                      Model model) {
+
+        return "user-create";
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'HR')")
+    @PostMapping("/users/new")
+    public String registerUser(@Valid @ModelAttribute("registrationDto") CustomerRegistrationDto dto,
+                               BindingResult bindingResult,
+                               HttpServletRequest request,
+                               @AuthenticationPrincipal CustomUserDetails principal,
+                               Model model) {
+
+
+        if (bindingResult.hasErrors()) {
+            return "user-create";
+        }
+
+        UserEntity user = userMapper.toEntity(dto);
+        UserEntity saved = authenticationService.registerCustomer(user, request);
+
+
+
+        return "redirect:/garage/users/" + saved.getId();
     }
 }

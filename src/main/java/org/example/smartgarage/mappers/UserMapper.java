@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface UserMapper {
 
+    @Mapping(target = "roles", source = "roles", qualifiedByName = "userRolesToRoles")
     UserEntity toEntity(CustomerRegistrationDto customerRegistrationDto);
 
     UserEntity toEntity(EmployeeRegistrationDto employeeRegistrationDto);
@@ -36,5 +37,12 @@ public interface UserMapper {
                 .map(Role::getRole)
                 .map(UserRole::name)
                 .collect(Collectors.toSet());
+    }
+
+    @Named("userRolesToRoles")
+    default Set<Role> mapUserRolesToRole(Set<UserRole> roles) {
+        return roles != null
+                ? roles.stream().map(Role::new).collect(Collectors.toSet())
+                : null;
     }
 }

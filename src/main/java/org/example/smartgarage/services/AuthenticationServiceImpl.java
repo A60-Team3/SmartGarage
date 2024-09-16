@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -73,10 +74,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setUsername(user.getEmail());
         user.setPassword(passwordEncoder.encode(rndCustomerPassword));
 
-        Role userRole = roleService.findByAuthority(UserRole.CUSTOMER);
-
         Set<Role> roles = new HashSet<>();
-        roles.add(userRole);
+
+        if (user.getRoles() == null) {
+            Role userRole = roleService.findByAuthority(UserRole.CUSTOMER);
+            roles.add(userRole);
+        } else {
+            List<Role> list = user.getRoles().stream()
+                    .map(Role::getRole)
+                    .map(roleService::findByAuthority)
+                    .toList();
+
+            roles.addAll(list);
+        }
 
         user.setRoles(roles);
 

@@ -42,11 +42,22 @@ function submitReschedule() {
         headers: {
             'Authorization': 'Bearer ' + jwtToken
         },
-        data: { bookedDate: newBookedDate },
-        success: function(response) {
-            window.location.href = `${window.location}&rescheduled=true&rescheduleVisitId=${visitId}`;
+        data: {bookedDate: newBookedDate},
+        success: function (response) {
+            const rescheduleString = `rescheduled=true&rescheduleVisitId=`;
+            let url = window.location.href;
+            const indexOf = url.indexOf(rescheduleString);
+            url = url.replace(url.substring(indexOf), "");
+
+            if (url.indexOf("?") < 0) {
+                url = `${url}?${rescheduleString}${visitId}`;
+            } else {
+                url = `${url}&${rescheduleString}${visitId}`;
+            }
+
+            window.location.href = url;
         },
-        error: function(response) {
+        error: function (response) {
             showAlert('Error: ' + response.responseText, 'danger');
         }
     });
@@ -81,7 +92,7 @@ function confirmDelete() {
     });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const updatedVisitId = urlParams.get('rescheduleVisitId');
 
@@ -89,7 +100,7 @@ $(document).ready(function() {
         const visitRow = document.getElementById('visit-row-' + updatedVisitId);
         if (visitRow) {
             // Scroll to the updated visit row
-            visitRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            visitRow.scrollIntoView({behavior: 'smooth', block: 'center'});
             // Optionally highlight the row for better visibility
             $(visitRow).css('background-color', '#dede9c');
             setTimeout(() => {
