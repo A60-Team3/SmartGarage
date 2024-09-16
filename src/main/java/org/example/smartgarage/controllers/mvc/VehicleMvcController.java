@@ -120,7 +120,7 @@ public class VehicleMvcController {
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/vehicles/new")
-    public String showNewVehiclePage(Model model){
+    public String showNewVehiclePage(Model model) {
 
         List<VehicleBrand> brands = vehicleBrandService.getAll();
         List<VehicleModel> models = vehicleModelService.getAll();
@@ -140,11 +140,11 @@ public class VehicleMvcController {
     public String createVehicle(@Valid @ModelAttribute("vehicle") VehicleInDTO dto,
                                 BindingResult bindingResult,
                                 Model model,
-                                @AuthenticationPrincipal CustomUserDetails principal){
+                                @AuthenticationPrincipal CustomUserDetails principal) {
 
         UserEntity employee = userService.getById(principal.getId());
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             List<VehicleBrand> brands = vehicleBrandService.getAll();
             List<VehicleModel> models = vehicleModelService.getAll();
             List<VehicleYear> years = vehicleYearService.getAll();
@@ -171,9 +171,18 @@ public class VehicleMvcController {
 
     @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
     @GetMapping("/vehicles/{vehicleId}/update")
-    public String showUpdateVehiclePage(@PathVariable long vehicleId, Model model){
+    public String showUpdateVehiclePage(@PathVariable long vehicleId, Model model) {
 
-        Vehicle vehicle = vehicleService.getById(vehicleId);
+        Vehicle vehicle = null;
+        try {
+            vehicle = vehicleService.getById(vehicleId);
+        } catch (EntityNotFoundException e) {
+
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "error-page";
+
+        }
         VehicleInDTO dto = vehicleMapper.vehicleToVehicleDTO(vehicle);
         List<VehicleBrand> brands = vehicleBrandService.getAll();
         List<VehicleModel> models = vehicleModelService.getAll();
@@ -194,11 +203,11 @@ public class VehicleMvcController {
                                 @Valid @ModelAttribute("vehicle") VehicleInDTO dto,
                                 BindingResult bindingResult,
                                 Model model,
-                                @AuthenticationPrincipal CustomUserDetails principal){
+                                @AuthenticationPrincipal CustomUserDetails principal) {
 
         UserEntity employee = userService.getById(principal.getId());
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             List<VehicleBrand> brands = vehicleBrandService.getAll();
             List<VehicleModel> models = vehicleModelService.getAll();
             List<VehicleYear> years = vehicleYearService.getAll();

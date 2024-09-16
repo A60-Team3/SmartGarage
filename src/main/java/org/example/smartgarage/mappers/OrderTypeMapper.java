@@ -19,6 +19,7 @@ public interface OrderTypeMapper {
     ServiceType toEntity(OrderTypeInDTO orderTypeInDTO);
 
     OrderTypeOutDTO toDTO(ServiceType serviceType);
+    OrderTypeInDTO orderTypeToOrderTypeDTO(ServiceType serviceType);
 
     default Page<OrderTypeOutDTO> orderTypesToOrderTypeDTOs(Page<ServiceType> orderTypes) {
         List<OrderTypeOutDTO> dtos = orderTypes.stream()

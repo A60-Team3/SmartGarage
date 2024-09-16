@@ -21,10 +21,12 @@ public record VehicleInDTO(
         @Size(min = 2, max = 50, message = "Model name should be between 2 and 50 symbols!")
         String modelName,
 
-        @Positive(message = "Year should be positive")
+        @NotNull(message = "Year should not be empty!")
+        @Positive(message = "Year should be positive!")
         @Min(value = 1886, message = "You think there were cars before 1886? Not in this universe.")
         Integer year,
 
+        @NotNull(message = "Owner ID should not be empty")
         @Positive(message = "Owner ID should be positive")
         Long ownerId
 
