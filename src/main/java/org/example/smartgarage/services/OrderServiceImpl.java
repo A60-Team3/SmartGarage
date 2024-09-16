@@ -1,5 +1,6 @@
 package org.example.smartgarage.services;
 
+import org.example.smartgarage.exceptions.EntityDuplicateException;
 import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.exceptions.VisitMismatchException;
@@ -81,6 +82,10 @@ public class OrderServiceImpl implements OrderService {
         checkForVisit(userId, visit);
         order.setVisitId(visit);
 
+        Order existing = orderRepository.findByVisitIdAndServiceType(visit, order.getServiceType());
+        if(existing != null){
+            throw new EntityDuplicateException("Visit already has this service");
+        }
         orderRepository.saveAndFlush(order);
 
         logEvent(order,visit, " added");

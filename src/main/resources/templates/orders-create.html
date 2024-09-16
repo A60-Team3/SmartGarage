@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head('Add Vehicle')}"></head>
+
+<body>
+
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<div class="col-lg-6 form-create-update">
+    <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
+        <h1 class="text-white mb-4" th:if="${requestURI.contains('new')}">Add Orders</h1>
+        <h1 class="text-white mb-4" th:if="${requestURI.contains('update')}">Update Orders</h1>
+        <form th:action="@{__${requestURI}__}" th:object="${orders}" th:method="post">
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <label for="orderCount">Number of Orders:</label>
+                    <input type="number" id="orderCount" name="orderCount" class="form-control border-0" min="1" value="1" oninput="generateOrderInputs()" required style="height: 55px;">
+                </div>
+
+                <div id="orderInputs" class="col-12 col-sm-6" th:field="*{serviceTypeIds}">
+
+                </div>
+                <datalist id="serviceTypeList">
+                    <option th:each="orderType : ${orderTypes}" th:value="${orderType.getId()}" th:text="${orderType.getServiceName()}" th:attr="data-order-type-id=${orderType.getId()}">Service 1</option>
+                </datalist>
+                <div class="col-12">
+                    <input class="btn btn-secondary w-100 py-3" type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/orders-script.js"></script>
+</body>
+</html>

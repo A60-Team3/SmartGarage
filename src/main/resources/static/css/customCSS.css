@@ -241,6 +241,9 @@
     margin: auto;
 }
 
+.form-create-update label{
+    color:black;
+}
 .label-error{
     color: black;
 }
