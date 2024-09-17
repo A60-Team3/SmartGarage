@@ -124,7 +124,7 @@ $('#generateReportForm').submit(function (event) {
     selectedVisitIds.push($('#visitId').val());
 
     const targetEmail = $('#targetEmail').val();
-    const exchangeCurrency = $('#exchangeCurrency').val();
+    const exchangeCurrency = $('#currency').val();
     $('#generateReportModal').modal('hide');
 
     $.ajax({
@@ -149,13 +149,13 @@ $('#generateReportForm').submit(function (event) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const visitId = document.getElementById('visitId').value;
-    const currencySelect = document.getElementById('visitCurrency');
+    const currencySelect = document.getElementById('exchangeCurrency');
 
     currencySelect.addEventListener('change', function() {
         const selectedCurrency = this.value;
 
         if (selectedCurrency) {
-            window.location.href = `/garage/visits/${visitId}/currency?exchangeCurrency=${selectedCurrency}`;
+            window.location.href = `/garage/visits/${visitId}?exchangeCurrency=${selectedCurrency}`;
         }
     });
 });

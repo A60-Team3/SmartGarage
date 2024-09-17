@@ -145,12 +145,13 @@
                     Total Cost
                 </span>
                     <span>
-                    <select class="form-select" id="visitCurrency" style="width: 150px">
-                                    <option value="">
+                    <select class="form-select" name="exchangeCurrency" id="exchangeCurrency" style="width: 150px">
+                                    <option th:value="${T (org.example.smartgarage.models.enums.CurrencyCode).BGN}">
                                         Default
                                     </option>
                                     <option th:each="enum : ${T (org.example.smartgarage.models.enums.CurrencyCode).values()}"
-                                            th:value="${enum.name}" th:text="${enum.toString()}">
+                                            th:value="${enum.name}" th:text="${enum.toString()}"
+                                            th:selected="${enum == currency}">
                                         Choose currency
                                     </option>
                                 </select>
@@ -243,7 +244,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="exchangeCurrency">Exchange Currency</label>
-                        <select class="form-control" id="exchangeCurrency">
+                        <select class="form-control" id="currency">
                             <option value="">
                                 Default
                             </option>

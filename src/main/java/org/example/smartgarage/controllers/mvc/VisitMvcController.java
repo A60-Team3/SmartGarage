@@ -148,9 +148,14 @@ public class VisitMvcController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{visitId}")
-    public String getSingleVisitPage(Model model, @PathVariable long visitId) {
+    public String getSingleVisitPage(Model model, @PathVariable long visitId,
+                                     @RequestParam(required = false) CurrencyCode exchangeCurrency) {
         Visit visit = visitService.findById(visitId);
         VisitOutDto dto = visitMapper.toDto(visit);
+        if (exchangeCurrency != null) {
+            dto = visitService.calculateCost(List.of(dto),exchangeCurrency).get(0);
+            model.addAttribute("currency", exchangeCurrency);
+        }
         dto.setTotalCost(dto.getTotalCost().setScale(2, RoundingMode.HALF_UP));
 
         model.addAttribute("clientEmail", visit.getClient().getEmail());
@@ -176,21 +181,5 @@ public class VisitMvcController {
         Visit saved = visitService.create(visit, clerk.getId());
 
         return "redirect:/garage/visits/"+saved.getId()+"/orders/new";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{visitId}/currency")
-    public String recalculateCost(Model model, @PathVariable long visitId,
-                                  @RequestParam CurrencyCode exchangeCurrency) {
-        Visit visit = visitService.findById(visitId);
-        VisitOutDto dto = visitMapper.toDto(visit);
-        dto = visitService.calculateCost(List.of(dto),exchangeCurrency).get(0);
-        dto.setTotalCost(dto.getTotalCost().setScale(2, RoundingMode.HALF_UP));
-
-        model.addAttribute("clientEmail", visit.getClient().getEmail());
-        model.addAttribute("clientId", visit.getClient().getId());
-        model.addAttribute("visit", dto);
-
-        return "visit-single";
     }
 }
