@@ -26,13 +26,13 @@
             <div class="row g-3">
                 <div class="col-12 col-sm-6">
                     <label for="orderCount">Number of Orders:</label>
-                    <input type="number" id="orderCount" name="orderCount" class="form-control border-0" min="1" value="1" oninput="generateOrderInputs()" required style="height: 55px;">
+                    <input type="number" id="orderCount" name="orderCount" class="form-control border-0" min="1" th:max="${orderTypes.size()}" value="1" oninput="generateOrderInputs()" required style="height: 55px;">
                 </div>
 
                 <div id="orderInputs" class="col-12 col-sm-6" th:field="*{serviceTypeIds}">
 
                 </div>
-                <datalist id="serviceTypeList">
+                <datalist id="serviceTypeList" th:attr="size=${orderTypes.size()}">
                     <option th:each="orderType : ${orderTypes}" th:value="${orderType.getId()}" th:text="${orderType.getServiceName()}" th:attr="data-order-type-id=${orderType.getId()}">Service 1</option>
                 </datalist>
                 <div class="col-12">
