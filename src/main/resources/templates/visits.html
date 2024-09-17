@@ -142,8 +142,8 @@
 <!-- Filter End -->
 
 <!--Display Visits Start-->
-<div id="visits-table" class="container mt-4 bg-light-gray bg-gradient">
-    <table class="table table-borderless table-hover table-striped text-center text-nowrap">
+<div id="visits-table" class="container mt-4 bg-light-gray bg-gradient" style="margin: 10rem">
+    <table class="table table-borderless table-hover table-striped text-center text-nowrap m-auto">
         <thead>
         <tr>
             <th>Appointment Date</th>
@@ -153,6 +153,7 @@
             <th>Vehicle Info - Brand || Model || Year</th>
             <th>Booked Services</th>
             <th>Visit Status</th>
+            <th>Report?</th>
             <th></th>
         </tr>
         </thead>
@@ -181,6 +182,9 @@
                 </ul>
             </td>
             <td id="visit-status" th:text="${visit.status}"></td>
+            <td>
+                <input type="checkbox" th:value="${visit.id}" th:id="${'report-'+visit.id}">
+            </td>
             <td class="d-flex justify-content-center align-content-center bg-transparent">
                 <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal"
                         data-bs-target="#rescheduleModal"
@@ -238,10 +242,60 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Generate Report Modal Start -->
+                <div class="modal fade" id="generateReportModal" tabindex="-1"
+                     aria-labelledby="generateReportModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="generateReportForm">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="generateReportModalLabel">Generate Report</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group mb-3">
+                                        <label for="targetEmail">Target Email</label>
+                                        <input type="email" class="form-control" id="targetEmail"
+                                               placeholder="Enter email"
+                                               required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="exchangeCurrency">Exchange Currency</label>
+                                        <select class="form-control" id="exchangeCurrency">
+                                            <option value="">
+                                                Default
+                                            </option>
+                                            <option th:each="enum : ${T (org.example.smartgarage.models.enums.CurrencyCode).values()}"
+                                                    th:value="${enum.name}" th:text="${enum.toString()}">
+                                                Choose currency
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Generate Report</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </td>
         </tr>
         </tbody>
     </table>
+
+    <div class="d-flex justify-content-evenly gap-3 mt-3">
+        <button type="button" class="btn btn-secondary btn-sm" id="reportBtn" disabled
+                data-bs-toggle="modal" data-bs-target="#generateReportModal">
+            Generate Report
+        </button>
+    </div>
 
     <div class="container mt-4">
         <div id="alert-placeholder"></div>
@@ -261,6 +315,7 @@
 
 <div th:replace="~{/fragments/scripts}"></div>
 <script type="text/javascript" src="/js/visits-script.js"></script>
+<script type="text/javascript" src="/js/report-generate.js"></script>
 
 </body>
 </html>

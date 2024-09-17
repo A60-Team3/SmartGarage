@@ -122,6 +122,9 @@ public class VisitServiceImpl implements VisitService {
             if (visitsForSpecificDate.size() > 5) {
                 throw new VisitMismatchException("Chosen date already fully booked. Choose another.");
             }
+            logEvent(visit,
+                    String.format("Visit rescheduled from [%s] to [%s]",
+                            visit.getScheduleDate(), bookedDate));
             visit.setScheduleDate(bookedDate);
         }
 
@@ -131,7 +134,9 @@ public class VisitServiceImpl implements VisitService {
 
         Visit savedVisit = visitRepository.saveAndFlush(visit);
 
-        logEvent(savedVisit, String.format("Visit status changed to [%s]", status));
+        if (status != null) {
+            logEvent(savedVisit, String.format("Visit status changed to [%s]", status));
+        }
 
         return savedVisit;
     }

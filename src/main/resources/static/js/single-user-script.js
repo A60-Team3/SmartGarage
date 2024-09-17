@@ -102,7 +102,7 @@ $(document).on('click', '#visitsBtn, .vehicle-license-plate', function () {
             response.content.forEach(visit => {
                 const visitRow = `
                                 <tr>
-                                    <td>${visit.bookedDate}</td>
+                                    <td><a href="/garage/visits/${visit.id}">${visit.bookedDate}</a></td>
                                     <td><a href="/garage/vehicles/${visit.vehicle.id}">${visit.vehicle.licensePlate}</a></td>
                                     <td>${visit.status}</td>
                                     <td>${visit.employeeName}</td>

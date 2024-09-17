@@ -8,21 +8,22 @@ import org.example.smartgarage.models.ServiceType;
 import org.example.smartgarage.models.UserEntity;
 import org.example.smartgarage.models.Vehicle;
 import org.example.smartgarage.models.Visit;
+import org.example.smartgarage.models.enums.CurrencyCode;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.OrderTypeService;
 import org.example.smartgarage.services.contracts.UserService;
 import org.example.smartgarage.services.contracts.VehicleService;
 import org.example.smartgarage.services.contracts.VisitService;
-import org.example.smartgarage.utils.filtering.TimeOperator;
 import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -113,7 +114,6 @@ public class VisitMvcController {
         return "visits-client";
 
     }
-
     @GetMapping("/new")
     public String getCreateVisitPage(@ModelAttribute("visitInDto") VisitInDto visitInDto,
                                      @ModelAttribute("visitFilter") VisitFilterOptions options,
@@ -146,11 +146,24 @@ public class VisitMvcController {
         return "visit-create";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{visitId}")
+    public String getSingleVisitPage(Model model, @PathVariable long visitId) {
+        Visit visit = visitService.findById(visitId);
+        VisitOutDto dto = visitMapper.toDto(visit);
+        dto.setTotalCost(dto.getTotalCost().setScale(2, RoundingMode.HALF_UP));
+
+        model.addAttribute("clientEmail", visit.getClient().getEmail());
+        model.addAttribute("visit", dto);
+
+        return "visit-single";
+    }
+
     @PostMapping("/new")
-    public String setBookedDate(@ModelAttribute("visitInDto") VisitInDto visitInDto,
-                                BindingResult bindingResult,
-                                @AuthenticationPrincipal CustomUserDetails clerk,
-                                Model model) {
+    public String createNewVisit(@ModelAttribute("visitInDto") VisitInDto visitInDto,
+                                 BindingResult bindingResult,
+                                 @AuthenticationPrincipal CustomUserDetails clerk,
+                                 Model model) {
 
         if (bindingResult.hasErrors()) {
             return "visit-create";
@@ -160,6 +173,21 @@ public class VisitMvcController {
 
         Visit saved = visitService.create(visit, clerk.getId());
 
-        return "redirect:/garage/visits/new";
+        return "redirect:/garage/visits/"+saved.getId()+"/orders/new";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{visitId}/currency")
+    public String recalculateCost(Model model, @PathVariable long visitId,
+                                  @RequestParam CurrencyCode exchangeCurrency) {
+        Visit visit = visitService.findById(visitId);
+        VisitOutDto dto = visitMapper.toDto(visit);
+        dto = visitService.calculateCost(List.of(dto),exchangeCurrency).get(0);
+        dto.setTotalCost(dto.getTotalCost().setScale(2, RoundingMode.HALF_UP));
+
+        model.addAttribute("clientEmail", visit.getClient().getEmail());
+        model.addAttribute("visit", dto);
+
+        return "visit-single";
     }
 }

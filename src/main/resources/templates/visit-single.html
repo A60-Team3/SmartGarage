@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head(${'Visit Dated: '+ visit.getBookedDate()})}"></head>
+
+<body class="bg-light bg-gradient">
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!--Visit Info Start-->
+<div class="container mt-5" th:object="${visit}">
+    <h2 class="mb-4 text-center">Visit Details</h2>
+    <div class="card p-4 shadow">
+        <table class="table table-striped table-bordered">
+            <tbody>
+            <tr>
+                <th>Booked Date</th>
+                <td class="d-flex align-items-center gap-3">
+                <span th:text="${visit.bookedDate}">
+                    BookedDate
+                </span>
+                    <span sec:authorize="hasRole('CLERK')">
+                        <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal"
+                                data-bs-target="#rescheduleModal"
+                                th:attr="data-visit-id=${visit.id}">
+                            Reschedule
+                        </button>
+
+                        <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                th:attr="data-delete-id=${visit.id}">
+                            Cancel
+                        </button>
+                    </span>
+                </td>
+            </tr>
+            <tr sec:authorize="!hasRole('CUSTOMER')">
+                <th>Client Name</th>
+                <td th:text="${visit.clientName}">Client Name</td>
+            </tr>
+            <tr sec:authorize="!hasRole('CLERK')">
+                <th>Employee Name</th>
+                <td th:text="${visit.clientName}">Clerk Name</td>
+            </tr>
+            <tr>
+                <th>Vehicle</th>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        <li th:text="${'Brand:  ' + visit.vehicle.brandName}">Brand</li>
+                        <li th:text="${'Model:  ' + visit.vehicle.modelName}">Model</li>
+                        <li th:text="${'Year:  ' + visit.vehicle.year}">Year</li>
+                        <li>
+                            <a th:href="@{/garage/vehicles/__${visit.vehicle.id}__}"
+                               th:text="${'License Plate:  ' + visit.vehicle.licensePlate}">
+                                License Plate
+                            </a>
+                        </li>
+                        <li th:text="${'Chassis Number:  ' + visit.vehicle.vin}">Chassis Number:</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Services</th>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        <li th:each="service : ${visit.services}"
+                            th:text="${service.toString()}">
+                            Service
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td th:text="${visit.status}">Status</td>
+            </tr>
+            <tr>
+                <th>History</th>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        <li th:each="log : ${visit.history}"
+                            th:text="${log}">
+                            Log Entry
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Total Cost</th>
+                <td class="d-flex align-items-center gap-3">
+                <span th:text="${visit.totalCost + ' ' + visit.currency}">
+                    Total Cost
+                </span>
+                    <span>
+                    <select class="form-select" id="visitCurrency" style="width: 150px">
+                                    <option value="">
+                                        Default
+                                    </option>
+                                    <option th:each="enum : ${T (org.example.smartgarage.models.enums.CurrencyCode).values()}"
+                                            th:value="${enum.name}" th:text="${enum.toString()}">
+                                        Choose currency
+                                    </option>
+                                </select>
+                </span>
+                </td>
+            </tr>
+            <tr>
+                <th>Exchange Rate</th>
+                <td th:text="${'BGN to '+ visit.currency + ' : ' + visit.exchangeRate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <button type="button" class="btn btn-secondary btn-sm" id="reportBtn"
+                data-bs-toggle="modal" data-bs-target="#generateReportModal">
+            Generate Report
+        </button>
+    </div>
+    <div class="container mt-4">
+        <div id="alert-placeholder"></div>
+    </div>
+</div>
+<!--Visit Info End-->
+
+<!-- Reschedule Modal Start-->
+<div class="modal fade" id="rescheduleModal" tabindex="-1" aria-labelledby="rescheduleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rescheduleModalLabel">Reschedule Visit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="date" id="newBookedDate" class="form-control"/>
+                <input type="hidden" th:id="${'rescheduleVisitId' + visit.id}" th:value="${visit.id}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitReschedule()">Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Reschedule Modal End-->
+
+
+<!-- Delete Confirmation Modal Start-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel this visit?
+                <input type="hidden" id="deleteVisitId" th:value="${visit.id}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Confirmation Modal End-->
+
+<!-- Generate Report Modal Start -->
+<div class="modal fade" id="generateReportModal" tabindex="-1" aria-labelledby="generateReportModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="generateReportForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="generateReportModalLabel">Generate Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <input hidden="hidden" id="visitId" th:value="${visit.id}">
+                        <label for="targetEmail">Target Email</label>
+                        <input type="email" class="form-control" id="targetEmail" th:value="${clientEmail}"
+                               placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="exchangeCurrency">Exchange Currency</label>
+                        <select class="form-control" id="exchangeCurrency">
+                            <option value="">
+                                Default
+                            </option>
+                            <option th:each="enum : ${T (org.example.smartgarage.models.enums.CurrencyCode).values()}"
+                                    th:value="${enum.name}" th:text="${enum.toString()}">
+                                Choose currency
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Generate Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Generate Report Modal End -->
+
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/visit-single.js"></script>
+
+</body>
+</html>

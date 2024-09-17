@@ -18,7 +18,7 @@ public class VisitOutDto {
     private List<String> history;
     private BigDecimal totalCost;
     private String currency = "BGN";
-    private double exchangeRate = 1.0;
+    private double exchangeRate = 1.0000;
 
     public VisitOutDto() {
     }
@@ -123,4 +123,5 @@ public class VisitOutDto {
     public void setId(long id) {
         this.id = id;
     }
+
 }

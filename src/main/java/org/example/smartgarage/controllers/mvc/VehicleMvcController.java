@@ -120,6 +120,14 @@ public class VehicleMvcController {
         return "vehicles";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vehicles/{vehicleId}")
+    public String showSingleVehiclePage(Model model, @PathVariable String vehicleId) {
+
+
+        return "vehicle-single";
+    }
+
     @PreAuthorize("hasRole('CLERK')")
     @GetMapping("/vehicles/new")
     public String showNewVehiclePage(Model model) {
