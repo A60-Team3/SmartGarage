@@ -22,20 +22,20 @@
 <div class="container my-5">
     <div class="row text-center">
         <!-- First Image with Link -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <a th:href="@{/garage/visits/client/__${client.id}__}">
                 <img th:src="${'/img/image-visits.webp'}" class="img-fluid img-thumbnail" alt="Car entering a Car Shop" >
             </a>
             <h5 class="mt-3">VISITS</h5>
         </div>
 
-        <!-- Third Image with Link -->
-       <!-- <div class="col-md-4">
-            <a href="/garage/view3">
+        <!-- Second Image with Link -->
+        <div class="col-md-6">
+            <a th:href="@{/garage/vehicles/client/__${client.id}__}">
                 <img th:src="${'/img/image-vehicles.webp'}" class="img-fluid img-thumbnail" alt="Several cars in a line">
             </a>
             <h5 class="mt-3">VEHICLES</h5>
-        </div>-->
+        </div>
     </div>
 </div>
 <!-- Content End -->

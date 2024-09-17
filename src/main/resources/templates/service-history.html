@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head::head('Services Handled')}"></head>
+
+<body>
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!-- Page Header Start -->
+<div th:replace="~{/fragments/pageHead::pageHead('Services')}"></div>
+<!-- Page Header End -->
+
+<!-- Filter Start -->
+<div class="container mt-4">
+    <div class="d-flex align-items-center justify-content-center mb-4">
+            <span><i class="fa fa-search fa-lg"
+                     id="search-icon" style="cursor: pointer"
+                     onclick="toggleFilter()"></i></span>
+        <h5 class="fw-bold ms-2">Filter Options</h5>
+    </div>
+    <div id="filter-form-container" style="display: none">
+        <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${orderTypeFilterOptions}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="modelName" placeholder="Service"
+                           th:value="*{name.orElse('')}"
+                           th:name="name"/>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="minPrice" placeholder="Minimum Price"
+                           th:value="*{minPrice.orElse('')}"
+                           th:name="minPrice"/>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="maxPrice" placeholder="Maximum Price"
+                           th:value="*{maxPrice.orElse('')}"
+                           th:name="maxPrice"/>
+                </div>
+
+                <div class="col-md-6">
+                    <select class="form-select" id="sortBy" th:field="*{sortBy}">
+                        <option value="">Sort By</option>
+                        <option value="name">Name</option>
+                        <option value="price">Price</option>
+
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select id="sortOrder" class="form-select" th:field="*{sortOrder}">
+                        <option value="">Sort Order</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <input class="btn btn-danger" type="submit" value="Search"/>
+                <a class="btn btn-outline-secondary" th:href="@{__${requestURI}__}">Clear Filter</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Filter End -->
+
+<!--Display Visits Start-->
+<div class="container mt-4">
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Services</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderType : ${orderTypes}">
+            <td th:text="${orderType.serviceName}"></td>
+            <td th:text="${orderType.servicePrice}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <nav th:replace="~{/fragments/pagination.html :: pagination(pagingOrderTypes)}"></nav>
+</div>
+<!--Display Visit End-->
+
+<!-- Booking Start -->
+<!--<div th:replace="~{/fragments/partBooking}"></div>-->
+<!-- Booking End -->
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/visitsScript.js"></script>
+</body>
+
+</html>

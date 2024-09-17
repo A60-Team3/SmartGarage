@@ -30,7 +30,7 @@ public class VehicleSpecification implements Specification<Vehicle> {
         vehicleFilterOptions.getOwner().ifPresent(value ->
                 predicates.add(criteriaBuilder.equal(root.join("owner").get("phoneNumber"), value)));
         vehicleFilterOptions.getBrandName().ifPresent(value ->
-                predicates.add(criteriaBuilder.equal(root.join("brandName").get("brandName"), value)));
+                predicates.add(criteriaBuilder.like(root.join("brandName").get("brandName"), "%" + value + "%")));
         vehicleFilterOptions.getVin().ifPresent(value ->
                 predicates.add(criteriaBuilder.like(root.get("vin"), "%"+value+"%")));
         vehicleFilterOptions.getLicensePlate().ifPresent(value ->

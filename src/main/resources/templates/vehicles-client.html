@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head.html::head('Visits')}"></head>
+
+<body class="d-flex flex-column min-vh-100">
+<!-- Spinner Start -->
+<div th:replace="~{/fragments/spinner}"></div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div th:replace="~{/fragments/topbar}"></div>
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<nav th:replace="~{/fragments/navbar}"></nav>
+<!-- Navbar End -->
+
+<!-- Filter Start -->
+<div class="container mt-4">
+    <div class="d-flex align-items-center justify-content-center mb-4">
+            <span><i class="fa fa-search fa-lg"
+                     id="search-icon" style="cursor: pointer"
+                     onclick="toggleFilter()"></i></span>
+        <h5 class="fw-bold ms-2">Filter Options</h5>
+    </div>
+    <div id="filter-form-container" style="display: none">
+        <form action="#" th:action="@{__${requestURI}__}" method="get" th:object="${vehicleFilterOptions}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="carBrand" placeholder="Vehicle Brand"
+                           th:value="*{brandName.orElse('')}"
+                           th:name="brandName"/>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="carLicense" placeholder="Vehicle License Plate"
+                           th:value="*{licensePlate.orElse('')}"
+                           th:name="licensePlate"/>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="carVIN"
+                           placeholder="Vehicle Chassis Number"
+                           th:value="*{vin.orElse('')}"
+                           th:name="vin"/>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select class="form-select" id="sortBy" th:field="*{sortBy}">
+                                <option value="">Sort By</option>
+                                <option value="brandName">Car Brand</option>
+                                <option value="modelName">Car Model</option>
+                                <option value="yearOfCreation">Car Production Year</option>
+                                <option value="licensePlate">License Plate</option>
+                                <option value="vin">Chassis Number</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select id="sortOrder" class="form-select" th:field="*{sortOrder}">
+                                <option value="">Sort Order</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <input class="btn btn-danger" type="submit" value="Search"/>
+                <a class="btn btn-outline-secondary" th:href="@{__${requestURI}__}">Clear Filter</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Filter End -->
+
+<!--Display Vehicles Start-->
+<div th:if="${vehicles.isEmpty()}" class="container mt-4 bg-light-gray bg-gradient" th:align="center">
+    No vehicles
+</div>
+<div th:unless="${vehicles.isEmpty()}" id="vehicles-table" class="container mt-4 bg-light-gray bg-gradient">
+    <table class="table table-borderless table-hover table-striped text-center text-nowrap">
+        <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Production Year</th>
+            <th>License Plate</th>
+            <th>Chassis Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:id="${'vehicle-row-' + vehicle.id}" th:each="vehicle : ${vehicles}">
+            <td th:text="${vehicle.brandName}"></td>
+            <td th:text="${vehicle.modelName}"></td>
+            <td th:text="${vehicle.year}"></td>
+            <td>
+                <a th:href="@{/garage/vehicles/__${vehicle.id}__}"
+                   th:text="${vehicle.licensePlate}">
+                </a>
+            </td>
+            <td th:text="${vehicle.vin}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="container mt-4">
+        <div id="alert-placeholder"></div>
+    </div>
+
+    <nav th:replace="~{/fragments/pagination::pagination(pagingVehicles)}"></nav>
+
+
+</div>
+<!--Display Vehicles End-->
+
+
+<!-- Footer Start -->
+<div th:replace="~{/fragments/footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<div th:replace="~{/fragments/toTop}"></div>
+
+<div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/vehicle-script.js"></script>
+
+</body>
+</html>

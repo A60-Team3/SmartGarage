@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/garage")
@@ -118,6 +119,34 @@ public class VehicleMvcController {
         model.addAttribute("currentPage", vehicles.getNumber() + 1);
 
         return "vehicles";
+    }
+
+    @GetMapping("vehicles/client/{customerId}")
+    public String getVehiclesForCustomer(@PathVariable long customerId,
+                                         @RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
+                                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+                                         @ModelAttribute("vehicleFilterOptions") VehicleFilterOptions filterOptions,
+                                         @AuthenticationPrincipal CustomUserDetails principal,
+                                         Model model){
+
+
+        filterOptions.removeInvalid();
+
+        if (principal.getId() != customerId) {
+            return "403";
+        }
+        UserEntity client = userService.getById(customerId);
+        filterOptions.setOwner(Optional.of(client.getPhoneNumber()));
+        Page<Vehicle> vehicles = vehicleService.getAll( pageIndex - 1, pageSize, filterOptions);
+
+        List<VehicleOutDTO> vehicleOutDTOS = vehicles.stream().map(vehicleMapper::toDTO).toList();
+
+        model.addAttribute("vehicles", vehicleOutDTOS);
+        model.addAttribute("totalPages", vehicles.getTotalPages());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("currentPage", vehicles.getNumber() + 1);
+
+        return "vehicles-client";
     }
 
     @PreAuthorize("isAuthenticated()")

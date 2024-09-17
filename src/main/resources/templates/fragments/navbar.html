@@ -42,7 +42,7 @@
                th:href="@{/garage/about}" class="nav-item nav-link">About</a>
             <a th:href="@{/garage/brands}" class="nav-item nav-link">Car brands</a>
             <a th:href="@{/garage/services}" class="nav-item nav-link">Services</a>
-            <div sec:authorize="!isAuthenticated() or hasRole('CUSTOMER')" class="nav-item dropdown">
+            <!--<div sec:authorize="!isAuthenticated() or hasRole('CUSTOMER')" class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu fade-up m-0">
                     <a th:href="@{/garage/booking}" class="dropdown-item">Booking</a>
@@ -50,7 +50,7 @@
                     <a th:href="@{/garage/reviews}" class="dropdown-item">Comments</a>
                     <a th:href="@{/garage/404}" class="dropdown-item">404 Page</a>
                 </div>
-            </div>
+            </div>-->
             <a sec:authorize="!isAuthenticated() or hasRole('CUSTOMER')"
                th:href="@{/garage/contacts}" class="nav-item nav-link">Contact</a>
             <div sec:authorize="!isAuthenticated()">
