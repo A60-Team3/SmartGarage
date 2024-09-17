@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.example.smartgarage.dtos.request.OrderInDTO;
 import org.example.smartgarage.dtos.request.OrderListInDTO;
 import org.example.smartgarage.exceptions.EntityDuplicateException;
+import org.example.smartgarage.exceptions.EntityNotFoundException;
 import org.example.smartgarage.exceptions.UserMismatchException;
 import org.example.smartgarage.exceptions.VisitMismatchException;
 import org.example.smartgarage.mappers.OrderMapper;
@@ -52,12 +53,12 @@ public class OrderMvcController {
     @GetMapping("/visits/{visitId}/orders/new")
     public String showNewOrdersPage(@PathVariable long visitId, Model model){
 
-        //List<OrderInDTO> dtoList = new ArrayList<>();
+
         Visit visit = visitService.findById(visitId);
-        List<ServiceType> orderTypes = orderTypeService.getAll();
-        /*for(int i = 0; i < orderTypes.size(); i++){
-            dtoList.add(new OrderInDTO(null));
-        }*/
+        List<ServiceType> list = visit.getServices().stream().map(Order::getServiceType).toList();
+        List<ServiceType> orderTypes = orderTypeService.getAll().stream()
+                .filter(order -> !list.contains(order)).toList();
+
         model.addAttribute("visit", visit);
         model.addAttribute("orderTypes", orderTypes);
         model.addAttribute("orders", new OrderListInDTO(null));
@@ -88,8 +89,26 @@ public class OrderMvcController {
                 newOrder.setServiceType(orderTypeService.getById(id));
                 orderService.create(newOrder, clientId, visit);
             }
-            return "redirect:/garage/visits?customerId=" + clientId;
+            return "redirect:/garage/visits/" + visitId;
         } catch (UserMismatchException | VisitMismatchException | EntityDuplicateException e) {
+            model.addAttribute("statusCode", HttpStatus.CONFLICT.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "error-page";
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('CLERK', 'MECHANIC')")
+    @GetMapping("/visits/{visitId}/orders/{orderId}/delete")
+    public String deleteOrder(@PathVariable long visitId,
+                              @PathVariable long orderId,
+                              Model model) {
+
+        try {
+            Visit visit = visitService.findById(visitId);
+            long clientId = visit.getClient().getId();
+            orderService.delete(clientId, visit, orderId);
+            return "redirect:/garage/visits/" + visitId;
+        } catch (UserMismatchException | VisitMismatchException | EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.CONFLICT.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "error-page";
