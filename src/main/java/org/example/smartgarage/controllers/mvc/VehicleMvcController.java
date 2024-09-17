@@ -14,9 +14,7 @@ import org.example.smartgarage.mappers.VehicleModelMapper;
 import org.example.smartgarage.models.*;
 import org.example.smartgarage.security.CustomUserDetails;
 import org.example.smartgarage.services.contracts.*;
-import org.example.smartgarage.utils.filtering.VehicleBrandFilterOptions;
-import org.example.smartgarage.utils.filtering.VehicleFilterOptions;
-import org.example.smartgarage.utils.filtering.VehicleModelFilterOptions;
+import org.example.smartgarage.utils.filtering.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,16 +37,18 @@ public class VehicleMvcController {
     private final VehicleModelService vehicleModelService;
     private final VehicleYearService vehicleYearService;
     private final UserService userService;
+    private final VisitService visitService;
     private final VehicleMapper vehicleMapper;
     private final VehicleBrandMapper vehicleBrandMapper;
     private final VehicleModelMapper vehicleModelMapper;
 
-    public VehicleMvcController(VehicleService vehicleService, VehicleBrandService vehicleBrandService, VehicleModelService vehicleModelService, VehicleYearService vehicleYearService, UserService userService, VehicleMapper vehicleMapper, VehicleBrandMapper vehicleBrandMapper, VehicleModelMapper vehicleModelMapper) {
+    public VehicleMvcController(VehicleService vehicleService, VehicleBrandService vehicleBrandService, VehicleModelService vehicleModelService, VehicleYearService vehicleYearService, UserService userService, VisitService visitService, VehicleMapper vehicleMapper, VehicleBrandMapper vehicleBrandMapper, VehicleModelMapper vehicleModelMapper) {
         this.vehicleService = vehicleService;
         this.vehicleBrandService = vehicleBrandService;
         this.vehicleModelService = vehicleModelService;
         this.vehicleYearService = vehicleYearService;
         this.userService = userService;
+        this.visitService = visitService;
         this.vehicleMapper = vehicleMapper;
         this.vehicleBrandMapper = vehicleBrandMapper;
         this.vehicleModelMapper = vehicleModelMapper;
@@ -127,8 +127,16 @@ public class VehicleMvcController {
         Vehicle vehicle = vehicleService.getById(vehicleId);
         VehicleOutDTO dto = vehicleMapper.toDTO(vehicle);
 
-        model.addAttribute("vehicle", dto);
+        VisitFilterOptions visitFilterOptions =
+                new VisitFilterOptions(null, null, null, null,
+                        vehicleId, null, null, null,
+                        null, null, null, null, null);
 
+        List<Visit> visitsForVehicle = visitService.findAll(visitFilterOptions);
+
+        model.addAttribute("vehicle", dto);
+        model.addAttribute("owner", vehicle.getOwner().getId());
+        model.addAttribute("vehicleVisits", visitsForVehicle);
 
         return "vehicle-single";
     }

@@ -93,7 +93,7 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleOutDTOPage);
     }
 
-    @PreAuthorize("hasAnyRole('CLERK','HR') or #principal.id == userId")
+    @PreAuthorize("hasAnyRole('CLERK','HR') or #userId == principal.id")
     @GetMapping("/vehicles/user/{userId}")
     public ResponseEntity<?> getAllUserVehicles(@PathVariable long userId,
                                                 @RequestParam(value = "offset", defaultValue = "0") int offset,

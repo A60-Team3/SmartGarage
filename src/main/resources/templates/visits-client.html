@@ -79,10 +79,12 @@
     </div>
 </div>
 <!-- Filter End -->
+
+<!--Display Visits Start-->
+<h4 class="container text-center m-auto">Your visits</h4>
 <div  class="container mt-4 bg-light-gray bg-gradient" th:if="${visits.isEmpty()}" th:align="center">
     No visits
 </div>
-<!--Display Visits Start-->
 <div id="visits-table" class="container mt-4 bg-light-gray bg-gradient" th:unless="${visits.isEmpty()}">
     <table class="table table-borderless table-hover table-striped text-center text-nowrap">
         <thead>

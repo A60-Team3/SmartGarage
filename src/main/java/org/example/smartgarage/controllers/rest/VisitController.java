@@ -254,7 +254,7 @@ public class VisitController {
 
         UserEntity user = userService.findByEmail(email);
         if (user == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please provide valid email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please provide valid clients email");
         }
 
         List<Visit> visitsToReport = visitService.findAllById(visitIds);

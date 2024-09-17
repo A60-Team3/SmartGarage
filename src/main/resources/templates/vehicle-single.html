@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{/fragments/head.html::head(${user.firstName + ' ' + user.lastName})}"></head>
+<head th:replace="~{/fragments/head.html::head(${vehicle.toString()})}"></head>
 
 <body class="bg-light bg-gradient">
 <!-- Spinner Start -->
@@ -18,115 +18,73 @@
 <!-- Navbar End -->
 
 <!--Vehicle Info Start-->
-<div class="container mt-5" th:object="${visit}">
-    <h2 class="mb-4 text-center">Visit Details</h2>
+<div class="container mt-5" th:object="${vehicle}">
+    <h2 class="mb-4 text-center">Vehicle Details</h2>
     <div class="card p-4 shadow">
         <table class="table table-striped table-bordered">
             <tbody>
             <tr>
-                <th>Booked Date</th>
+                <th>Registered Date</th>
                 <td class="d-flex align-items-center gap-3">
-                <span th:text="${visit.bookedDate}">
-                    BookedDate
+                <span th:text="${vehicle.addedOn}">
+                    Date of Registration
                 </span>
                     <span sec:authorize="hasRole('CLERK')">
-                        <button type="button" class="btn btn-secondary btn-sm mx-1" data-bs-toggle="modal"
-                                data-bs-target="#rescheduleModal"
-                                th:attr="data-visit-id=${visit.id}">
-                            Reschedule
-                        </button>
-
                         <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal"
-                                th:attr="data-delete-id=${visit.id}">
-                            Cancel
+                                th:attr="data-delete-id=${vehicle.id}">
+                            Remove
                         </button>
                     </span>
                 </td>
             </tr>
-            <tr sec:authorize="!hasRole('CUSTOMER')">
-                <th>Client Name</th>
-                <td th:text="${visit.clientName}">Client Name</td>
-            </tr>
-            <tr sec:authorize="!hasRole('CLERK')">
-                <th>Employee Name</th>
-                <td th:text="${visit.clientName}">Clerk Name</td>
+            <tr>
+                <th>Owner</th>
+                <td>
+                    <a th:href="@{/garage/users/__${owner}__}"
+                       th:text="${vehicle.ownerName}">
+                        Owner
+                    </a>
+                </td>
             </tr>
             <tr>
-                <th>Vehicle</th>
+                <th>Brand</th>
+                <td th:text="${vehicle.brandName}">Brand Name</td>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <td th:text="${vehicle.modelName}">Model Name</td>
+            </tr>
+            <tr>
+                <th>Production Year</th>
+                <td th:text="${vehicle.year}">Year</td>
+            </tr>
+            <tr>
+                <th>License Plate</th>
+                <td th:text="${vehicle.licensePlate}">License Plate</td>
+            </tr>
+            <tr>
+                <th>Chassis Number</th>
+                <td th:text="${vehicle.vin}">Chassis</td>
+            </tr>
+            <tr>
+                <th>Visits</th>
                 <td>
-                    <ul class="list-unstyled mb-0">
-                        <li th:text="${'Brand:  ' + visit.vehicle.brandName}">Brand</li>
-                        <li th:text="${'Model:  ' + visit.vehicle.modelName}">Model</li>
-                        <li th:text="${'Year:  ' + visit.vehicle.year}">Year</li>
-                        <li>
-                            <a th:href="@{/garage/vehicles/__${visit.vehicle.id}__}"
-                               th:text="${'License Plate:  ' + visit.vehicle.licensePlate}">
-                                License Plate
+                    <span th:each="visit, iterStat : ${vehicleVisits}">
+                        <span >
+                            <a th:href="@{/garage/visits/__${visit.id}__}"
+                               th:text="${visit.scheduleDate}">
+                                Visit
                             </a>
-                        </li>
-                        <li th:text="${'Chassis Number:  ' + visit.vehicle.vin}">Chassis Number:</li>
-                    </ul>
+                        </span>
+                        <span th:if="${!iterStat.last}">,</span>
+                    </span>
                 </td>
-            </tr>
-            <tr>
-                <th>Services</th>
-                <td>
-                    <ul class="list-unstyled mb-0">
-                        <li th:each="service : ${visit.services}"
-                            th:text="${service.toString()}">
-                            Service
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td th:text="${visit.status}">Status</td>
-            </tr>
-            <tr>
-                <th>History</th>
-                <td>
-                    <ul class="list-unstyled mb-0">
-                        <li th:each="log : ${visit.history}"
-                            th:text="${log}">
-                            Log Entry
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th>Total Cost</th>
-                <td class="d-flex align-items-center gap-3">
-                <span th:text="${visit.totalCost + ' ' + visit.currency}">
-                    Total Cost
-                </span>
-                    <span>
-                    <select class="form-select" id="visitCurrency" style="width: 150px">
-                                    <option value="">
-                                        Default
-                                    </option>
-                                    <option th:each="enum : ${T (org.example.smartgarage.models.enums.CurrencyCode).values()}"
-                                            th:value="${enum.name}" th:text="${enum.toString()}">
-                                        Choose currency
-                                    </option>
-                                </select>
-                </span>
-                </td>
-            </tr>
-            <tr>
-                <th>Exchange Rate</th>
-                <td th:text="${'BGN to '+ visit.currency + ' : ' + visit.exchangeRate}"></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="d-flex justify-content-center gap-3 mt-4">
-        <button type="button" class="btn btn-secondary btn-sm" id="reportBtn"
-                data-bs-toggle="modal" data-bs-target="#generateReportModal">
-            Generate Report
-        </button>
-    </div>
+
     <div class="container mt-4">
         <div id="alert-placeholder"></div>
     </div>
@@ -141,6 +99,7 @@
 <div th:replace="~{/fragments/toTop}"></div>
 
 <div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/vehicle-script.js"></script>
 
 </body>
 </html>
