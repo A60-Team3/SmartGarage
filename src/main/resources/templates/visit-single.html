@@ -70,12 +70,55 @@
                 </td>
             </tr>
             <tr>
-                <th>Services</th>
+                <th>
+                    <span>Services</span>
+                    <span sec:authorize="hasRole('CLERK')">
+                            <a class="btn btn-success btn-sm mx-1" role="button"
+                                    th:href="@{/garage/visits/__${visit.id}__/orders/new}">
+                                Add new
+                            </a>
+                    </span>
+                </th>
                 <td>
                     <ul class="list-unstyled mb-0">
-                        <li th:each="service : ${visit.services}"
-                            th:text="${service.toString()}">
-                            Service
+                        <li th:each="service : ${visitOrders}">
+                            <span th:text="${service.serviceType.toString}">
+                                BookedDate
+                            </span>
+                            <span sec:authorize="hasRole('CLERK')">
+                                <button type="button" class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
+                                        data-bs-target="#deleteOrderModal"
+                                        th:attr="data-delete-id=${service.id}, data-visit-id=${visit.id}, data-user-id=${clientId}">
+                                    Remove
+                                </button>
+                            </span>
+
+                            <!-- Delete Order Confirmation Modal Start-->
+                            <div class="modal fade" id="deleteOrderModal" tabindex="-1"
+                                 aria-labelledby="deleteModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalOrderLabel">Confirm Delete</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to remove this service?
+                                            <input type="hidden" id="deleteOrderId" th:value="${service.id}">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No
+                                            </button>
+                                            <button type="button" class="btn btn-danger" onclick="confirmOrderDelete()">
+                                                Yes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Delete Order Confirmation Modal End-->
                         </li>
                     </ul>
                 </td>

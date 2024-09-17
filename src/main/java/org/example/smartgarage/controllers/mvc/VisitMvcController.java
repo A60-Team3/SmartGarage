@@ -154,7 +154,9 @@ public class VisitMvcController {
         dto.setTotalCost(dto.getTotalCost().setScale(2, RoundingMode.HALF_UP));
 
         model.addAttribute("clientEmail", visit.getClient().getEmail());
+        model.addAttribute("clientId", visit.getClient().getId());
         model.addAttribute("visit", dto);
+        model.addAttribute("visitOrders",visit.getServices());
 
         return "visit-single";
     }
@@ -186,6 +188,7 @@ public class VisitMvcController {
         dto.setTotalCost(dto.getTotalCost().setScale(2, RoundingMode.HALF_UP));
 
         model.addAttribute("clientEmail", visit.getClient().getEmail());
+        model.addAttribute("clientId", visit.getClient().getId());
         model.addAttribute("visit", dto);
 
         return "visit-single";

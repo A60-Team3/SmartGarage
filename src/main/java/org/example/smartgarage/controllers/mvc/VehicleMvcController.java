@@ -122,7 +122,12 @@ public class VehicleMvcController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vehicles/{vehicleId}")
-    public String showSingleVehiclePage(Model model, @PathVariable String vehicleId) {
+    public String showSingleVehiclePage(Model model, @PathVariable Long vehicleId) {
+
+        Vehicle vehicle = vehicleService.getById(vehicleId);
+        VehicleOutDTO dto = vehicleMapper.toDTO(vehicle);
+
+        model.addAttribute("vehicle", dto);
 
 
         return "vehicle-single";

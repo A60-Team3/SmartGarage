@@ -65,6 +65,53 @@ function confirmDelete() {
     });
 }
 
+//Delete ORDER
+$('#deleteOrderModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget);
+    const vehicleId = button.data('delete-id');
+    const visitId = button.data('visit-id');
+    const userId = button.data('user-id');
+    localStorage.setItem('delete_id', vehicleId);
+    localStorage.setItem('visit-id', visitId);
+    localStorage.setItem('user-id', userId);
+});
+
+$('#deleteOrderModal').on('hidden.bs.modal', function (event) {
+    localStorage.removeItem('delete_id');
+    localStorage.removeItem('visit-id');
+    localStorage.removeItem('user-id');
+});
+
+function confirmOrderDelete() {
+    const orderId = localStorage.getItem('delete_id');
+    const userId = localStorage.getItem('user-id');
+    const visitId = localStorage.getItem('visit-id');
+
+    if (!jwtToken) {
+        showAlert('Login to API first.', 'danger');
+        return;
+    }
+    $('#deleteOrderModal').modal('hide');
+
+    // Send DELETE request to cancel visit
+    $.ajax({
+        url: `/api/garage/users/${userId}/visits/${visitId}/orders/${orderId}`,
+        type: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + jwtToken
+        },
+        success: function (response) {
+            window.location.href = `/garage/visits/${visitId}`;
+            showAlert('Order removed successfully', 'success');
+        },
+        error: function (response) {
+            showAlert('Error: ' + response.responseText, 'danger');
+        }
+    });
+}
+//Delete ORDER END
+
+
 $('#generateReportForm').submit(function (event) {
     event.preventDefault();
 
