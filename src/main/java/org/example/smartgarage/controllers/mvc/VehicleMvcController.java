@@ -72,6 +72,7 @@ public class VehicleMvcController {
 
         model.addAttribute("brands", brands);
         model.addAttribute("currentPage", brands.getNumber() + 1);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", brands.getTotalPages());
         return "brands";
     }
@@ -90,6 +91,7 @@ public class VehicleMvcController {
 
         model.addAttribute("brandId", brandId);
         model.addAttribute("currentPage", models.getNumber() + 1);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", models.getTotalPages());
         model.addAttribute("models", modelOutDTOS);
         return "models";

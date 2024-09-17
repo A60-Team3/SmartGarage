@@ -53,7 +53,7 @@
 <a th:fragment="pagingBrands(pageNum, label, tooltip)" class="page-link"
    th:href="@{'__${requestURI}__' + '?' + ${(vehicleBrandFilterOptions.name != null && !vehicleBrandFilterOptions.name.isEmpty()) ? 'name=' + vehicleBrandFilterOptions.name + '&' : ''}
                         + ${(vehicleBrandFilterOptions.sortOrder != null && !vehicleBrandFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + vehicleBrandFilterOptions.sortOrder + '&' : ''}
-                        + 'pageIndex=' + ${pageNum}}"
+                        + 'pageIndex=' + ${pageNum + 1} + '&pageSize=' + ${pageSize}}"
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>
@@ -62,7 +62,7 @@
    th:href="@{'__${requestURI}__' + '?' + ${(vehicleModelFilterOptions.name != null && !vehicleModelFilterOptions.name.isEmpty()) ? 'name=' + vehicleModelFilterOptions.name + '&' : ''}
                         + ${(vehicleModelFilterOptions.year != null && !vehicleModelFilterOptions.year.isEmpty()) ? 'sortOrder=' + vehicleModelFilterOptions.year + '&' : ''}
                         + ${(vehicleModelFilterOptions.sortOrder != null && !vehicleModelFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + vehicleModelFilterOptions.sortOrder + '&' : ''}
-                        + 'pageIndex=' + ${pageNum}}"
+                        + 'pageIndex=' + ${pageNum + 1} + '&pageSize=' + ${pageSize}}"
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>
@@ -73,7 +73,7 @@
                         + ${(orderTypeFilterOptions.maxPrice != null && !orderTypeFilterOptions.maxPrice.isEmpty()) ? 'maxPrice=' + orderTypeFilterOptions.maxPrice + '&' : ''}
                         + ${(orderTypeFilterOptions.sortBy != null && !orderTypeFilterOptions.sortBy.isEmpty()) ? 'sortBy=' + orderTypeFilterOptions.sortBy + '&' : ''}
                         + ${(orderTypeFilterOptions.sortOrder != null && !orderTypeFilterOptions.sortOrder.isEmpty()) ? 'sortOrder=' + orderTypeFilterOptions.sortOrder + '&' : ''}
-                        + 'pageIndex=' + ${pageNum}}"
+                        + 'pageIndex=' + ${pageNum + 1} + '&pageSize=' + ${pageSize}}"
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>

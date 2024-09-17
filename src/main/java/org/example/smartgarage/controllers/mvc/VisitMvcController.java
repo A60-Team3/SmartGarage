@@ -23,6 +23,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,41 +116,50 @@ public class VisitMvcController {
 
     @GetMapping("/new")
     public String getCreateVisitPage(@ModelAttribute("visitInDto") VisitInDto visitInDto,
+                                     @ModelAttribute("visitFilter") VisitFilterOptions options,
                                      Model model) {
+
+        Map<LocalDate, Long> dateMap = new HashMap<>();
+        List<Visit> allVisits = visitService.findAll(options);
+        allVisits.forEach(visit -> {
+            dateMap.computeIfAbsent(visit.getScheduleDate(),date -> 0L);
+            dateMap.computeIfPresent(visit.getScheduleDate(),
+                    (date,occurrence) -> occurrence + 1L);
+        });
+
+        List<String> fullyBookedDates = new ArrayList<>();
+
+        for (Map.Entry<LocalDate, Long> visitDates : dateMap.entrySet()) {
+            if (visitDates.getValue() >= 6) {
+                fullyBookedDates.add(visitDates.getKey()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
+        }
+
         List<UserEntity> allUsers = userService.findAll();
         List<Vehicle> allVehicles = vehicleService.getAll();
 
         model.addAttribute("users", allUsers);
         model.addAttribute("vehicles", allVehicles);
+        model.addAttribute("fullyBooked", fullyBookedDates);
 
         return "visit-create";
     }
 
-    @PostMapping("/visits/new/date")
+    @PostMapping("/new")
     public String setBookedDate(@ModelAttribute("visitInDto") VisitInDto visitInDto,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes,
+                                @AuthenticationPrincipal CustomUserDetails clerk,
                                 Model model) {
 
         if (bindingResult.hasErrors()) {
             return "visit-create";
         }
 
-        VisitFilterOptions visitFilterOptions =
-                new VisitFilterOptions(null, null, null, null, null, null,
-                        TimeOperator.EQUAL, visitInDto.bookedDate(), null, null,
-                        null, null, null);
+        Visit visit = visitMapper.toEntity(visitInDto);
 
-        List<Visit> visitsForDate = visitService.findAll(visitFilterOptions);
-        if (visitsForDate.size() >= 6) {
-            bindingResult.rejectValue("bookedDate", "This date is fully booked");
-            return "visit-create";
-        }
+        Visit saved = visitService.create(visit, clerk.getId());
 
-        redirectAttributes.addFlashAttribute(visitInDto);
-
-        return "visit-create";
+        return "redirect:/garage/visits/new";
     }
-
-
 }

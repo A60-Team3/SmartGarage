@@ -19,10 +19,49 @@
 <!-- Navbar End -->
 
 <!--Book Date Start-->
-<div th:object="${visitInDto}">
-    <label for="bookingDate" >Choose desired date</label>
-    <input type="date" name="bookingDate" id="bookingDate" th:field="*{bookedDate}">
-    <small class="label-error" th:errors="*{bookedDate}">Last name error placeholder</small>
+<div class="col-lg-6 form-create-update">
+    <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn"
+         data-wow-delay="0.6s">
+        <h1 class="text-white mb-4">Book a Visit</h1>
+        <form th:action="@{__${requestURI}__}" th:object="${visitInDto}" th:method="post">
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <h5><label for="bookingDate" class="text-dark">Choose desired date</label></h5>
+                    <input type="text" class="form-control" placeholder="Select a date" id="bookingDate" style="height: 55px;"
+                           th:field="*{bookedDate}">
+                    <small class="label-error" th:errors="*{bookedDate}">Booking Date error placeholder</small>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <h5><label for="client-input" class="text-dark">Client Id</label></h5>
+                    <input class="form-control border-0" list="clients" id="client-input" oninput="filterVehicles()"
+                           placeholder="Client" th:name="customerId" style="height: 55px;">
+                    <label class="label-error" th:errors="*{customerId}">Customer error placeholder</label>
+                    <datalist id="clients">
+                        <option selected>Client</option>
+                        <option th:each="user : ${users}" th:value="${user.id}"
+                                th:text="${user.getFirstName + ' ' + user.getLastName}">
+                            Customer Id
+                        </option>
+                    </datalist>
+                </div>
+                <div class="col-12">
+                    <h5><label for="vehicles" class="text-dark">Vehicle Id</label></h5>
+                    <label class="label-error" th:errors="*{vehicleId}">Vehicle error placeholder</label>
+                    <select id="vehicles" name="vehicleId" style="height: 55px;">
+                        <option th:each="vehicle : ${vehicles}" th:value="${vehicle.id}"
+                                th:attr="data-owner-id=${vehicle.owner.id}" disabled
+                                th:text="${vehicle.licensePlate + ' || ' + vehicle.brandName.brandName + ' || ' + vehicle.modelName.modelName}">
+                            Customer's Vehicle
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <input class="btn btn-secondary w-100 py-3" type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <!--Book Date End-->
 
@@ -35,5 +74,9 @@
 <div th:replace="~{/fragments/toTop}"></div>
 
 <div th:replace="~{/fragments/scripts}"></div>
+<script type="text/javascript" src="/js/visit-create-scripts.js"></script>
+<script type="text/javascript"> const fullyBookedDates = /*[[${fullyBooked}]]*/[[${fullyBooked}]];
+</script>
+
 </body>
 </html>

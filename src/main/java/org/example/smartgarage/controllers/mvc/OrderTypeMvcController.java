@@ -48,6 +48,7 @@ public class OrderTypeMvcController {
 
         model.addAttribute("orderTypes", orderTypes);
         model.addAttribute("currentPage", orderTypes.getNumber() + 1);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", orderTypes.getTotalPages());
 
         return "services";

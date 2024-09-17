@@ -79,13 +79,13 @@
             <thead class="thead-dark">
             <tr>
                 <th>Services</th>
-                <th>Price</th>
+                <th sec:authorize="isAuthenticated()">Price</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="orderType : ${orderTypes}">
                 <td th:text="${orderType.serviceName}"></td>
-                <td th:text="${orderType.servicePrice}"></td>
+                <td sec:authorize="isAuthenticated()" th:text="${orderType.servicePrice + ' BGN'}"></td>
             </tr>
             </tbody>
         </table>

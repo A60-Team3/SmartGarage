@@ -247,3 +247,9 @@
 .label-error{
     color: black;
 }
+
+.fully-booked {
+    background-color: #f44336; /* Red background */
+    color: white; /* White text */
+    border-radius: 50%;
+}
