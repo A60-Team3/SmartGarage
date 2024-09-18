@@ -17,6 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 import static org.example.smartgarage.helpers.CreationHelper.*;
@@ -36,6 +38,15 @@ public class VehicleBrandServiceTests {
     @BeforeEach
     public void setup() {
         brand = createMockBrand();
+    }
+
+    @Test
+    public void getAll_Should_CallRepository_WithoutFilter() {
+        Mockito.when(vehicleBrandRepository.findAll())
+                .thenReturn(List.of(brand));
+
+        Assertions.assertEquals(List.of(brand),vehicleBrandService.getAll());
+        Mockito.verify(vehicleBrandRepository, Mockito.times(1)).findAll();
     }
 
     @Test
@@ -99,7 +110,7 @@ public class VehicleBrandServiceTests {
     }
 
     @Test
-    public void create_Should_Throw_When_DuplicateExists(){
+    public void create_Should_Throw_When_DuplicateExists() {
         Mockito.when(vehicleBrandRepository.findByBrandNameIgnoreCase(brand.getBrandName()))
                 .thenReturn(Optional.of(brand));
 

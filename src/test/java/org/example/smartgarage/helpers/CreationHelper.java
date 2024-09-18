@@ -3,6 +3,7 @@ package org.example.smartgarage.helpers;
 import org.example.smartgarage.models.*;
 import org.example.smartgarage.models.enums.Status;
 import org.example.smartgarage.models.enums.UserRole;
+import org.example.smartgarage.utils.filtering.VisitFilterOptions;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class CreationHelper {
 
-    public static UserEntity createMockUser(){
+    public static UserEntity createMockUser() {
         UserEntity user = new UserEntity();
         user.setId(1);
         user.setFirstName("firstname");
@@ -28,14 +29,14 @@ public class CreationHelper {
         return user;
     }
 
-    public static UserEntity createMockEmployee(){
+    public static UserEntity createMockEmployee() {
         UserEntity user = createMockUser();
         user.getRoles().add(new Role(UserRole.CLERK));
 
         return user;
     }
 
-    public static UserEntity createMockCustomer(){
+    public static UserEntity createMockCustomer() {
         UserEntity user = createMockUser();
         user.getRoles().add(new Role(UserRole.CUSTOMER));
 
@@ -43,8 +44,7 @@ public class CreationHelper {
     }
 
 
-
-    public static VehicleBrand createMockBrand(){
+    public static VehicleBrand createMockBrand() {
         VehicleBrand brand = new VehicleBrand();
         brand.setId(1);
         brand.setBrandName("brand");
@@ -52,7 +52,7 @@ public class CreationHelper {
         return brand;
     }
 
-    public static VehicleModel createMockModel(){
+    public static VehicleModel createMockModel() {
         VehicleModel model = new VehicleModel();
         model.setId(1);
         model.setModelName("model");
@@ -60,7 +60,7 @@ public class CreationHelper {
         return model;
     }
 
-    public static VehicleYear createMockYear(){
+    public static VehicleYear createMockYear() {
         VehicleYear year = new VehicleYear();
         year.setId(1);
         year.setYear(2000);
@@ -68,7 +68,7 @@ public class CreationHelper {
         return year;
     }
 
-    public static Vehicle createMockVehicle(){
+    public static Vehicle createMockVehicle() {
         Vehicle vehicle = new Vehicle();
         vehicle.setId(1);
         vehicle.setLicensePlate("AA1111AA");
@@ -84,7 +84,7 @@ public class CreationHelper {
         return vehicle;
     }
 
-    public static ServiceType createMockServiceType(){
+    public static ServiceType createMockServiceType() {
         ServiceType serviceType = new ServiceType();
         serviceType.setId(1);
         serviceType.setServiceName("test");
@@ -93,7 +93,7 @@ public class CreationHelper {
         return serviceType;
     }
 
-    public static Order createMockOrder(){
+    public static Order createMockOrder() {
         Order order = new Order();
         order.setId(1);
         order.setServiceType(createMockServiceType());
@@ -104,7 +104,7 @@ public class CreationHelper {
         return order;
     }
 
-    public static Visit createMockVisit(){
+    public static Visit createMockVisit() {
         Visit visit = new Visit();
         visit.setId(1);
         visit.setScheduleDate(LocalDate.now());
@@ -119,7 +119,7 @@ public class CreationHelper {
         return visit;
     }
 
-    public static EventLog createMockEventLog(){
+    public static EventLog createMockEventLog() {
         EventLog log = new EventLog();
         log.setId(1);
         log.setDescription("description");

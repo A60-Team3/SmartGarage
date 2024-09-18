@@ -37,6 +37,27 @@ public class OrderTypeServiceTests {
     }
 
     @Test
+    public void getAll_Should_CallRepository_When_NoFilter(){
+
+        orderTypeService.getAll();
+
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .findAll();
+    }
+
+    @Test
+    public void getAll_Should_CallRepository_When_OnlyPaging(){
+        int offset = 0;
+        int pageSize = 10;
+
+        orderTypeService.getAll(offset, pageSize);
+
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .findAll(Mockito.any(Pageable.class));
+
+    }
+
+    @Test
     public void getAll_Should_CallRepository() {
         int offset = 0;
         int pageSize = 10;
@@ -72,6 +93,48 @@ public class OrderTypeServiceTests {
     }
 
     @Test
+    public void findByName_Should_Return_ServiceType_WhenExisting(){
+        ServiceType mockServiceType = createMockServiceType();
+        Mockito.when(orderTypeRepository.findByServiceName(Mockito.anyString()))
+                .thenReturn(mockServiceType);
+
+        Assertions.assertEquals(mockServiceType, orderTypeService.findByName(Mockito.anyString()));
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .findByServiceName(Mockito.anyString());
+    }
+
+    @Test
+    public void findByName_Should_Return_Null_WhenNotExisting(){
+        Mockito.when(orderTypeRepository.findByServiceName(Mockito.anyString()))
+                .thenReturn(null);
+
+        Assertions.assertNull(orderTypeService.findByName(Mockito.anyString()));
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .findByServiceName(Mockito.anyString());
+    }
+
+    @Test
+    public void getByPrice_Should_Return_ServiceType_WhenExisting(){
+        ServiceType mockServiceType = createMockServiceType();
+        Mockito.when(orderTypeRepository.findByServicePrice(Mockito.any()))
+                .thenReturn(mockServiceType);
+
+        Assertions.assertEquals(mockServiceType, orderTypeService.getByPrice(Mockito.any()));
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .findByServicePrice(Mockito.any());
+    }
+
+    @Test
+    public void getByPrice_Should_Return_Null_WhenNotExisting(){
+        Mockito.when(orderTypeRepository.findByServicePrice(Mockito.any()))
+                .thenReturn(null);
+
+        Assertions.assertNull(orderTypeService.getByPrice(Mockito.any()));
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .findByServicePrice(Mockito.any());
+    }
+
+    @Test
     public void create_Should_CreateOrderType(){
         Mockito.when(orderTypeRepository.findByServiceName(orderType.getServiceName()))
                 .thenReturn(null);
@@ -98,6 +161,19 @@ public class OrderTypeServiceTests {
                 .thenReturn(Optional.of(orderType));
         Mockito.when(orderTypeRepository.findByServiceName(orderType.getServiceName()))
                 .thenReturn(orderType);
+
+        orderTypeService.update(orderType.getId(), orderType);
+
+        Mockito.verify(orderTypeRepository, Mockito.times(1))
+                .save(orderType);
+    }
+
+    @Test
+    public void update_Should_UpdateOrderType_When_NoDuplicate(){
+        Mockito.when(orderTypeRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(orderType));
+        Mockito.when(orderTypeRepository.findByServiceName(orderType.getServiceName()))
+                .thenReturn(null);
 
         orderTypeService.update(orderType.getId(), orderType);
 

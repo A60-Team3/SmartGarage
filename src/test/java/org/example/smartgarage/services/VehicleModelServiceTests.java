@@ -17,7 +17,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.example.smartgarage.helpers.CreationHelper.createMockBrand;
 import static org.example.smartgarage.helpers.CreationHelper.createMockModel;
@@ -36,6 +38,15 @@ public class VehicleModelServiceTests {
     @BeforeEach
     public void setup(){
         model = createMockModel();
+    }
+
+    @Test
+    public void getAll_Should_CallRepository_WithoutFilter() {
+        Mockito.when(vehicleModelRepository.findAll())
+                .thenReturn(List.of(model));
+
+        Assertions.assertEquals(List.of(model),vehicleModelService.getAll());
+        Mockito.verify(vehicleModelRepository, Mockito.times(1)).findAll();
     }
 
     @Test
@@ -108,5 +119,25 @@ public class VehicleModelServiceTests {
                 () -> vehicleModelService.create(model));
     }
 
+    @Test
+    public void save_Should_CallRepository(){
+        vehicleModelService.save(model);
+        Mockito.verify(vehicleModelRepository, Mockito.times(1))
+                .saveAndFlush(Mockito.any(VehicleModel.class));
+    }
 
+    @Test
+    public void saveAll_Should_CallRepository(){
+        vehicleModelService.saveAll(Set.of(model));
+        Mockito.verify(vehicleModelRepository, Mockito.times(1))
+                .saveAll(Mockito.anyCollection());
+    }
+
+    @Test
+    public void findForQuotation_Should_CallRepository(){
+        vehicleModelService.findForQuotation("model", "brand", 2000);
+        Mockito.verify(vehicleModelRepository, Mockito.times(1))
+                .findByModelNameAndBrandBrandNameAndYearsYear
+                        (Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
+    }
 }

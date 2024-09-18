@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.example.smartgarage.helpers.CreationHelper.createMockYear;
@@ -32,6 +33,15 @@ public class VehicleYearServiceTests {
     @BeforeEach
     public void setup(){
         year = createMockYear();
+    }
+
+    @Test
+    public void getAll_Should_CallRepository_WithoutFilter() {
+        Mockito.when(vehicleYearRepository.findAll())
+                .thenReturn(List.of(year));
+
+        Assertions.assertEquals(List.of(year),vehicleYearService.getAll());
+        Mockito.verify(vehicleYearRepository, Mockito.times(1)).findAll();
     }
 
     @Test
