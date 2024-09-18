@@ -21,6 +21,7 @@ function generateOrderInputs() {
         input.setAttribute('list', 'serviceTypeList');  // Associate with the datalist
         input.setAttribute('name', 'serviceTypeIds');
         input.setAttribute('id', 'serviceTypeIds[' + i + ']');
+        input.setAttribute('autocomplete', 'off');
         input.setAttribute('required', 'true');
         input.setAttribute('class', 'form-control');
         input.setAttribute('style', 'height: 55px;')

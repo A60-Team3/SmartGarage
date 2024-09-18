@@ -63,7 +63,7 @@
                     </h4>
                     <select name="" id="role" th:field="*{roles}">
                         <option th:each="role: ${T(org.example.smartgarage.models.enums.UserRole).values()}"
-                        th:text="${role.name}" th:value="${role}"></option>
+                        th:text="${role.name}" th:value="${role}" th:unless="${role.name == 'CUSTOMER'}"></option>
                     </select>
                     <small class="text-white" th:errors="*{roles}">Phone number error placeholder</small>
 

@@ -19,532 +19,674 @@ VALUES ('Engine Diagnostics', 89.99),
        ('Headlight Bulb Replacement', 15.99);
 
 
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sarah', 'Johnson', 'sarah.johnson0@example.com', 'sarah.johnson',
-        '$2b$12$sbRhrIi4G04FDhRyBtolIeT5Io91Upj6ADWSXNWepnRlVg5qiYsje', '4579424670', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Anne', 'Johnson', 'anne.johnson@example.com', 'anne.johnson',
-        '$2b$12$0xD4Q0HpbNtY.mv9rvItQebvRtTmXf7V4DCWRtBqRBF0PPywZ7JxO', '9843454148', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Ann', 'Johnson', 'ann.johnson@example.com', 'ann.johnson',
-        '$2b$12$7wJru6mca9Lp.3nOWhVZfOEJ.rVTy55kQydirUwVB4wf8pco/kMGK', '5764191556', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Chris', 'Brown', 'chris.brown@example.com', 'chris.brown',
-        '$2b$12$av.4buw6S3eAFi.bkdUXLOYBkxK8o7MtL.9bD3pU2Qqsy/VQe89M2', '4779668246', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Chris', 'Smith', 'chris.smith@example.com', 'chris.smith',
-        '$2b$12$tKDG9bn1kMv4/E76F.rl4uI2P.sDsq.Bn15bbc97L5TM9gYnDws6K', '1293848005', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Anna', 'Garcia', 'anna.garcia@example.com', 'anna.garcia',
-        '$2b$12$3kFSdmpEo346tYJkgfMPTuYIlAxzhKkwEUJqSWzUM8xFBS8u4ThWu', '6983426216', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sarah', 'Miller', 'sarah.miller@example.com', 'sarah.miller',
-        '$2b$12$TSlhGv3KKOXECk8jXbU/deNYkCnW8Af34sSHUDcCK/y8GeeOeAR/i', '6515574756', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Michael', 'Smith', 'michael.smith@example.com', 'michael.smith',
-        '$2b$12$K8plux1qUeNnxavgtu7Lv.vhZX/qSFlvsMhqhuQgA5XMrqN96RKsq', '4945019040', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Micael', 'Garcia', 'micael.garcia@example.com', 'micael.garcia',
-        '$2b$12$r/Ta3UyqUi3SLnTb.YkUjuLvZ/cqlwTnoFw2SNoAwqYe1rd77dTGW', '2258329574', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Michael', 'Garcia', 'michael.garcia@example.com', 'michael.garcia',
-        '$2b$12$Tjq8sn6WZC3r8bNKxNMw3OGaHDoeeropkA9/Lai4E82HvJwxDdrBS', '7321880922', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Jane', 'Doe', 'jane.doe@example.com', 'jane.doe',
-        '$2b$12$5cR60I4QOmPJeADELxFYZu7Bz8n6LLI9SaB4MfCfSQC6zHBePb32a', '6920238677', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Emil', 'Garcia', 'emil.garcia@example.com', 'emil.garcia',
-        '$2b$12$zEJev/FsoSxsCdJcLhGNGubHxhrD0CCfSM0uSz55N3xBcGQjv.NNu', '2418440588', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('James', 'Miller', 'james.miller@example.com', 'james.miller',
-        '$2b$12$TKOgiHO52aIvrz/f5uUl4.ZPHLJXywc.kdMV1rFKHNGfdCjFRfAui', '1255176370', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sarah', 'Jones', 'sarah.jones@example.com', 'sarah.jones',
-        '$2b$12$fBOctqpoqsv9FVdz0ENAcehN/sDhMxZN9c3w.wtkTM0dWzeKTW5kW', '8033182705', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Anna', 'Smith', 'anna.smith@example.com', 'anna.smith',
-        '$2b$12$vx1J3SKygwiB1zw.JsOtpehGwzCcjP36rMOAtzcRqrPgz9a5bMP2.', '2602882875', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Emily', 'Garcia', 'emily.garcia@example.com', 'emily.garcia',
-        '$2b$12$qA06DVfs4vOzk4eIHmHlvevSJ9rbe2dOkbmtzv4hOtfSaJCWehohi', '8991228183', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Emily', 'Smith', 'emily.smith@example.com', 'emily.smith',
-        '$2b$12$9JtgQdhsJYbawOuoSRyNhugmNuAEhEVSBxe07fo.9Z7abYN39XrS6', '6363317825', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sarah', 'Doe', 'sarah.doe@example.com', 'sarah.doe',
-        '$2b$12$lgCLONVQqy0h0yURBZl9IuSVf9YJ12CC/U0UMooMzBrUzJWMAiqta', '7430053944', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Anna', 'Brown', 'anna.brown@example.com', 'anna.brown',
-        '$2b$12$9TGEPDRsNmeN1b8pukGwV.KBmJEBBvouuTVodcjg6DMcnfl/ml5TW', '5535975893', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Chris', 'Garcia', 'chris.garcia@example.com', 'chris.garcia',
-        '$2b$12$RlnOhDo0soJM25KhBqEVY.nhYODWKkrzjyTfMNU10.7jZJ6Ojpbx6', '4537313326', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Micael', 'Martinez', 'micael.martinez@example.com', 'micael.martinez',
-        '$2b$12$CGiOX8bUHgCuPw4FSrEB7.UalTMJt3n/h5bjIo6maWMjCq89HE0IK', '9416912753', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('John', 'Miller', 'john.miller@example.com', 'john.miller',
-        '$2b$12$afv9ncuqn2QoHIu.5As0lOM9OT/Ylm3nm.GNxK4Wa9QClQzvmsc22', '8234836859', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Michael', 'Marinez', 'michael.marinez@example.com', 'michael.marinez',
-        '$2b$12$KWKkt3ulT1CRtPJLSQoP/.8bpkiUXlGXZFLU5Zvgjna7mEfvvU/Ce', '4981501496', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sara', 'Miller', 'sara.miller@example.com', 'sara.miller',
-        '$2b$12$8vd8KucsKYkcI6rjB8eyd.RuRmU70x8AQJ4BPHUhld228pR7msc1K', '4198056169', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('James', 'Williams', 'james.williams@example.com', 'james.williams',
-        '$2b$12$ZSH.Zhh7L0cvRLLfkRTRIuZ8TbRFErWhhMkzFq7Q3ywSQfYh69bbm', '2720074278', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Michael', 'Martinez', 'michael.martinez@example.com', 'michael.martinez',
-        '$2b$12$NQ/wzHkPFJcuH3S.aygxQuObCW3ir2F0e2t.F20WsawxbJa8Aubgq', '8125055708', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('David', 'Brown', 'david.brown@example.com', 'david.brown',
-        '$2b$12$B1wmB.d8IRIMNkKAhHSLrumCfvzw3HucYn17k4RlmDJMuXKN6Dvue', '5908410889', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('John', 'Jones', 'john.jones@example.com', 'john.jones',
-        '$2b$12$WtjXEHvwj5J2JLYgw3VRsevZvRnXY6Bpr9LpfE79KiY8MKtwjMQiu', '7474704474', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sara', 'Jones', 'sara.jones@example.com', 'sara.jones',
-        '$2b$12$Q.u.jx8gUb5llm2169OmRuYscTDP9OuQW6YFzqwmTE9jICHIoIcpy', '4052180512', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Sarah', 'Smith', 'sarah.smith@example.com', 'sarah.smith',
-        '$2b$12$3Bk7fg.UPVCTPYES2uVDgeI27moYhJI32sGtCPMkSaSuVFyxJyBQa', '3637295364', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Emily', 'Miler', 'emily.miler@example.com', 'emily.miler',
-        '$2b$12$2FuIPDJPrwUiw5BX74BtEO2zxleD1nu.ehodHEAuBS3LFWc3UwujS', '1567407319', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Jane', 'Davis', 'jane.davis@example.com', 'jane.davis',
-        '$2b$12$mqaNpYlioy8pcmvm.bqEH.HN4T1rTdAiOhvrBTVB9HIo8K70QByR6', '7433368505', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Jane', 'Williams', 'jane.williams@example.com', 'jane.williams',
-        '$2b$12$jg5XuL16ZPaaB125rERC4.Xjaz4LmbTFcJbqa5uNN3mYTbMh8m17m', '2125368625', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Ann', 'Brown', 'ann.brown@example.com', 'ann.brown',
-        '$2b$12$Ze7r/YTW3PpiOaM8rwmffuJUcLcSc3F99nZoaPPc1lLoP0qXoSTYe', '5927784917', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Emily', 'Miller', 'emily.miller@example.com', 'emily.miller',
-        '$2b$12$z5qp.x.kazAAS5AO4G3.XeUuxxIHqqlYUVRjj1I/lbh2cKaSQu1XO', '3520926318', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Johnny', 'Jones', 'johnny.jones@example.com', 'johnny.jones',
-        '$2b$12$Czkq79c6CvsbDbjvC0GtKuHUcNovbBQaMB0pB4Uj7Zoe0WlayOele', '8850224257', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Laura', 'Williams', 'laura.williams@example.com', 'laura.williams',
-        '$2b$12$j45wiu.h86DQ6dFdhZrkueQlW90GYkQ4S2Y3o6gYEr93/8wuMr9TO', '8687205227', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Anna', 'Johnson', 'anna.johnson@example.com', 'anna.johnson',
-        '$2b$12$6XtmhTvSrcwJT086XvCrtu8PRlilz2srxY4LLqKNuu5gv7eQIkyC2', '3114670008', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Anna', 'Martinez', 'anna.martinez@example.com', 'anna.martinez',
-        '$2b$12$uIgbTmH.iYiuhy2E5X/Ud.UJdU7JFjXkAKGxTazSAtVM2Llpa5Ryy', '9200870359', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
-INSERT INTO users (first_name, last_name, email, username, password, phone_number, registered, updated, is_active)
-VALUES ('Janet', 'Davis', 'janet.davis@example.com', 'janet.davis',
-        '$2b$12$cQ1jHEVFaON1Hoy8aOpXOest7X1L7sgeOBIfkvFeuLqspdZD2xYPy', '6276931450', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 1);;
+INSERT INTO users (first_name, last_name, email, username, password, phone_number, is_active)
+VALUES ('Adam', 'Reynolds', 'adam.reynolds@example.com', 'a.reynolds',
+        '$2b$12$sbRhrIi4G04FDhRyBtolIeT5Io91Upj6ADWSXNWepnRlVg5qiYsje', '4579424670', 1),
+       ('Brian', 'Walters', 'brian.walters@example.com', 'b.walters',
+        '$2b$12$0xD4Q0HpbNtY.mv9rvItQebvRtTmXf7V4DCWRtBqRBF0PPywZ7JxO', '9843454148', 1),
+       ('Caroline', 'Spencer', 'caroline.spencer@example.com', 'c.spencer',
+        '$2b$12$7wJru6mca9Lp.3nOWhVZfOEJ.rVTy55kQydirUwVB4wf8pco/kMGK', '5764191556', 1),
+       ('Diana', 'Marshall', 'diana.marshall@example.com', 'd.marshall',
+        '$2b$12$av.4buw6S3eAFi.bkdUXLOYBkxK8o7MtL.9bD3pU2Qqsy/VQe89M2', '4779668246', 1),
+       ('Edward', 'Sullivan', 'edward.sullivan@example.com', 'e.sullivan',
+        '$2b$12$tKDG9bn1kMv4/E76F.rl4uI2P.sDsq.Bn15bbc97L5TM9gYnDws6K', '1293848005', 1),
+       ('Fiona', 'Bradley', 'fiona.bradley@example.com', 'f.bradley',
+        '$2b$12$3kFSdmpEo346tYJkgfMPTuYIlAxzhKkwEUJqSWzUM8xFBS8u4ThWu', '6983426216', 1),
+       ('George', 'Maxwell', 'george.maxwell@example.com', 'g.maxwell',
+        '$2b$12$TSlhGv3KKOXECk8jXbU/deNYkCnW8Af34sSHUDcCK/y8GeeOeAR/i', '6515574756', 1),
+       ('Hannah', 'Robertson', 'hannah.robertson@example.com', 'h.robertson',
+        '$2b$12$K8plux1qUeNnxavgtu7Lv.vhZX/qSFlvsMhqhuQgA5XMrqN96RKsq', '4945019040', 1),
+       ('Ian', 'Clarke', 'ian.clarke@example.com', 'i.clarke',
+        '$2b$12$r/Ta3UyqUi3SLnTb.YkUjuLvZ/cqlwTnoFw2SNoAwqYe1rd77dTGW', '2258329574', 1),
+       ('Jennifer', 'Dixon', 'jennifer.dixon@example.com', 'j.dixon',
+        '$2b$12$Tjq8sn6WZC3r8bNKxNMw3OGaHDoeeropkA9/Lai4E82HvJwxDdrBS', '7321880922', 1),
+       ('Kyle', 'Simmons', 'kyle.simmons@example.com', 'k.simmons',
+        '$2b$12$5cR60I4QOmPJeADELxFYZu7Bz8n6LLI9SaB4MfCfSQC6zHBePb32a', '6920238677', 1),
+       ('Laura', 'Bennett', 'laura.bennett@example.com', 'l.bennett',
+        '$2b$12$zEJev/FsoSxsCdJcLhGNGubHxhrD0CCfSM0uSz55N3xBcGQjv.NNu', '2418440588', 1),
+       ('Mark', 'Harper', 'mark.harper@example.com', 'm.harper',
+        '$2b$12$TKOgiHO52aIvrz/f5uUl4.ZPHLJXywc.kdMV1rFKHNGfdCjFRfAui', '1255176370', 1),
+       ('Natalie', 'Fisher', 'natalie.fisher@example.com', 'n.fisher',
+        '$2b$12$fBOctqpoqsv9FVdz0ENAcehN/sDhMxZN9c3w.wtkTM0dWzeKTW5kW', '8033182705', 1),
+       ('Oliver', 'Knight', 'oliver.knight@example.com', 'o.knight',
+        '$2b$12$vx1J3SKygwiB1zw.JsOtpehGwzCcjP36rMOAtzcRqrPgz9a5bMP2.', '2602882875', 1),
+       ('Paige', 'Jenkins', 'paige.jenkins@example.com', 'p.jenkins',
+        '$2b$12$qA06DVfs4vOzk4eIHmHlvevSJ9rbe2dOkbmtzv4hOtfSaJCWehohi', '8991228183', 1),
+       ('Quentin', 'Turner', 'quentin.turner@example.com', 'q.turner',
+        '$2b$12$9JtgQdhsJYbawOuoSRyNhugmNuAEhEVSBxe07fo.9Z7abYN39XrS6', '6363317825', 1),
+       ('Rachel', 'Cross', 'rachel.cross@example.com', 'r.cross',
+        '$2b$12$lgCLONVQqy0h0yURBZl9IuSVf9YJ12CC/U0UMooMzBrUzJWMAiqta', '7430053944', 1),
+       ('Samuel', 'Foster', 'samuel.foster@example.com', 's.foster',
+        '$2b$12$9TGEPDRsNmeN1b8pukGwV.KBmJEBBvouuTVodcjg6DMcnfl/ml5TW', '5535975893', 1),
+       ('Tiffany', 'Hayes', 'tiffany.hayes@example.com', 't.hayes',
+        '$2b$12$RlnOhDo0soJM25KhBqEVY.nhYODWKkrzjyTfMNU10.7jZJ6Ojpbx6', '4537313326', 1),
+       ('Ulysses', 'Parker', 'ulysses.parker@example.com', 'u.parker',
+        '$2b$12$CGiOX8bUHgCuPw4FSrEB7.UalTMJt3n/h5bjIo6maWMjCq89HE0IK', '9416912753', 1),
+       ('Victoria', 'Reed', 'victoria.reed@example.com', 'v.reed',
+        '$2b$12$afv9ncuqn2QoHIu.5As0lOM9OT/Ylm3nm.GNxK4Wa9QClQzvmsc22', '8234836859', 1),
+       ('William', 'Morgan', 'william.morgan@example.com', 'w.morgan',
+        '$2b$12$KWKkt3ulT1CRtPJLSQoP/.8bpkiUXlGXZFLU5Zvgjna7mEfvvU/Ce', '4981501496', 1),
+       ('Xander', 'Shaw', 'xander.shaw@example.com', 'x.shaw',
+        '$2b$12$8vd8KucsKYkcI6rjB8eyd.RuRmU70x8AQJ4BPHUhld228pR7msc1K', '4198056169', 1),
+       ('Yolanda', 'Evans', 'yolanda.evans@example.com', 'y.evans',
+        '$2b$12$ZSH.Zhh7L0cvRLLfkRTRIuZ8TbRFErWhhMkzFq7Q3ywSQfYh69bbm', '2720074278', 1),
+       ('Zachary', 'Brooks', 'zachary.brooks@example.com', 'z.brooks',
+        '$2b$12$NQ/wzHkPFJcuH3S.aygxQuObCW3ir2F0e2t.F20WsawxbJa8Aubgq', '8125055708', 1),
+       ('Olivia', 'Howard', 'olivia.howard@example.com', 'o.howard',
+        '$2b$12$B1wmB.d8IRIMNkKAhHSLrumCfvzw3HucYn17k4RlmDJMuXKN6Dvue', '5908410889', 1),
+       ('Michael', 'Jordan', 'michael.jordan@example.com', 'm.jordan',
+        '$2b$12$WtjXEHvwj5J2JLYgw3VRsevZvRnXY6Bpr9LpfE79KiY8MKtwjMQiu', '7474704474', 1),
+       ('Sarah', 'Graham', 'sarah.graham@example.com', 's.graham',
+        '$2b$12$Q.u.jx8gUb5llm2169OmRuYscTDP9OuQW6YFzqwmTE9jICHIoIcpy', '4052180512', 1),
+       ('David', 'Cooper', 'david.cooper@example.com', 'd.cooper',
+        '$2b$12$3Bk7fg.UPVCTPYES2uVDgeI27moYhJI32sGtCPMkSaSuVFyxJyBQa', '3637295364', 1),
+       ('Angela', 'Lewis', 'angela.lewis@example.com', 'a.lewis',
+        '$2b$12$2FuIPDJPrwUiw5BX74BtEO2zxleD1nu.ehodHEAuBS3LFWc3UwujS', '1567407319', 1),
+       ('Charles', 'Scott', 'charles.scott@example.com', 'c.scott',
+        '$2b$12$mqaNpYlioy8pcmvm.bqEH.HN4T1rTdAiOhvrBTVB9HIo8K70QByR6', '7433368505', 1),
+       ('Brenda', 'Mitchell', 'brenda.mitchell@example.com', 'b.mitchell',
+        '$2b$12$jg5XuL16ZPaaB125rERC4.Xjaz4LmbTFcJbqa5uNN3mYTbMh8m17m', '2125368625', 1),
+       ('Thomas', 'Hughes', 'thomas.hughes@example.com', 't.hughes',
+        '$2b$12$Ze7r/YTW3PpiOaM8rwmffuJUcLcSc3F99nZoaPPc1lLoP0qXoSTYe', '5927784917', 1),
+       ('Erin', 'Palmer', 'erin.palmer@example.com', 'e.palmer',
+        '$2b$12$z5qp.x.kazAAS5AO4G3.XeUuxxIHqqlYUVRjj1I/lbh2cKaSQu1XO', '3520926318', 1),
+       ('Ethan', 'Gray', 'ethan.gray@example.com', 'e.gray',
+        '$2b$12$Czkq79c6CvsbDbjvC0GtKuHUcNovbBQaMB0pB4Uj7Zoe0WlayOele', '8850224257', 1),
+       ('Ashley', 'Crawford', 'ashley.crawford@example.com', 'a.crawford',
+        '$2b$12$j45wiu.h86DQ6dFdhZrkueQlW90GYkQ4S2Y3o6gYEr93/8wuMr9TO', '8687205227', 1),
+       ('Kevin', 'Murray', 'kevin.murray@example.com', 'k.murray',
+        '$2b$12$6XtmhTvSrcwJT086XvCrtu8PRlilz2srxY4LLqKNuu5gv7eQIkyC2', '3114670008', 1),
+       ('Melissa', 'Collins', 'melissa.collins@example.com', 'm.collins',
+        '$2b$12$uIgbTmH.iYiuhy2E5X/Ud.UJdU7JFjXkAKGxTazSAtVM2Llpa5Ryy', '9200870359', 1),
+       ('Daniel', 'Baker', 'daniel.baker@example.com', 'd.baker',
+        '$2b$12$cQ1jHEVFaON1Hoy8aOpXOest7X1L7sgeOBIfkvFeuLqspdZD2xYPy', '6276931450', 1);
 
-INSERT INTO users_roles (user_id, role_id) VALUES (3,2);;
-INSERT INTO users_roles (user_id, role_id) VALUES (4,2);;
-INSERT INTO users_roles (user_id, role_id) VALUES (5,2);;
-INSERT INTO users_roles (user_id, role_id) VALUES (6,4);;
-INSERT INTO users_roles (user_id, role_id) VALUES (7,4);;
-INSERT INTO users_roles (user_id, role_id) VALUES (8,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (9,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (10,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (11,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (12,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (13,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (14,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (15,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (16,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (17,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (18,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (19,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (20,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (21,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (22,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (23,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (24,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (25,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (26,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (27,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (28,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (29,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (30,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (31,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (32,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (33,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (34,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (35,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (36,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (37,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (38,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (39,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (40,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (41,3);;
-INSERT INTO users_roles (user_id, role_id) VALUES (42,3);;
+INSERT INTO users_roles (user_id, role_id)
+VALUES (3, 2),(4, 2),(5, 2),(6, 4),(7, 4),(8, 3),(9, 3),(10, 3),(11, 3),(12, 3),(13, 3),(14, 3),(15, 3),(16, 3),(17, 3),
+       (18, 3),(19, 3),(20, 3),(21, 3),(22, 3),(23, 3),(24, 3),(25, 3),(26, 3),(27, 3),(28, 3),(29, 3),(30, 3),(31, 3),
+       (32, 3),(33, 3),(34, 3),(35, 3),(36, 3), (37, 3),(38, 3),(39, 3),(40, 3),(41, 3),(42, 3);
 
 
 
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CM2735CP', '5E8HQUTUS8WN210JD', 89, 3288, 10, 4, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('M2803AO', '9NYQ1PUKKIB0D10LX', 81, 2978, 37, 2, 8, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('B5077XH', '37176XM6NBCGKP45A', 132, 308, 28, 3, 9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('EA7487EM', 'GKEH03KFCLQVO66VD', 32, 504, 21, 5, 34, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('C9116HO', '5XYJ9COOCDN7E7LXV', 73, 168, 6, 2, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CB2743YT', 'RN5NZUV0IFNPFM2OC', 60, 4440, 16, 3, 21, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CO3239CH', '60KIUMASJ8HJF6L2J', 33, 1187, 2, 4, 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CH4549TT', 'RL5WOL9C15L2PTNH6', 99, 4182, 10, 5, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('E5897KP', '06J7GE7LWRBLJ9A44', 110, 3303, 15, 2, 40, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('K4231KK', '0KS9SJVXILIRT0402', 140, 133, 35, 3, 37, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('EM4542TC', 'NUKYHUR7NXQ2GHQ2J', 16, 3399, 8, 4, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('PB4905PY', '8BSN9UEM6T85COE7N', 45, 562, 39, 5, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('B4311YK', 'IT1GU3BETYK00C8SX', 111, 2372, 4, 2, 8, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('Y1300EO', '7F7JLVVRCU1JELHEZ', 33, 4240, 32, 3, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('Y7356BP', '3IKBMIUXSXB3FKCF7', 120, 388, 18, 4, 25, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('EA5841OM', 'MR9P6XD894V7VRGUY', 117, 1810, 19,5, 35, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('B5823CP', 'H78CIZSSJYP7SLRCM', 75, 6, 19, 2, 19, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('XX9095TB', 'SWO4999QR979CD86C', 130, 3022, 11,3, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('P9874EY', 'ZCPONVDWSZQV5G9XS', 82, 4585, 2, 4, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('XX8005XA', '3RIBDC0P44D5SZGIL', 112, 4906, 6, 5, 31, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('EM4382MO', 'DKRE4K3BSLSREP5JZ', 119, 1090, 26, 2, 26, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('XX6757HA', 'I8V9F5AJ8WVAOM37Y', 19, 1860, 25, 3, 28, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('BP8372YA', '57FF6OX1ZKNMAL8OY', 59, 4287, 23, 4, 36, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CT2853TY', '0S4AAP7KUK6ZGLQGX', 76, 3290, 32, 5, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CO9718MK', 'DXJ0I3AT3MRW61YJZ', 99, 2, 42, 2, 39, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('BH4554TC', '76I0N7OD5G4BK491K', 72, 4540, 30, 3, 31, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('Y4757HO', 'PVHJOKZL68QTA1APP', 34, 1335, 21, 4, 23, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('E2856TB', '1OBC3YJ7WQS6BQU7Z', 104, 2567, 19, 5, 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('BT4044EM', 'B6VRF3X5NDQ9XB4Q4', 125, 1634, 40, 2, 31, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('XX9746CA', '9SSZX1RPKF9YZ3OU7', 87, 3371, 37, 3, 33, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('XX2050BK', '44UEVAAAUG8LXICFA', 54, 4309, 11, 4, 39, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('BT5953MY', 'JK5GSZG4DRKMB747F', 26, 2833, 13, 5, 29, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('PP3455HH', 'AI9IWQZDO8V1P46G7', 2, 3638, 10, 2, 18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('Y8094PP', 'QQE62CTZ5YC9BI1Z3', 123, 3052, 28, 3, 18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('C6363EB', 'B2W37J4SSDQEWL3FU', 64, 2221, 38, 4, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CP1985HT', '496EPE9SVY793LRDS', 110, 1005, 8, 5, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('XX1688EK', 'C9UDWWM7OO09JE30D', 100, 2558, 7, 3, 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('K2285MY', 'ZVT3HBXTDPIGHQ4KG', 39, 1016, 33, 2, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('CO8985KE', 'WDOTBK9MYXC2G2DJR', 59, 2368, 17, 4, 34, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id, added_on, updated_on)
-VALUES ('BH2095MK', 'ELY49VSEMNGRBL8TG', 130, 4876, 19, 5, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
+INSERT INTO vehicles (license_plate, VIN, brand_id, model_id, year_id, employee_id, owner_id)
+VALUES ('CM2735CP', '5E8HQUTUS8WN210JD', 89, 2528, 12, 2, 38),
+       ('PP3455HH', 'AI9IWQZDO8V1P46G7', 2, 3499, 41, 4, 30),
+       ('EM4542TC', 'NUKYHUR7NXQ2GHQ2J', 16, 788, 14, 5, 24),
+       ('XX6757HA', 'I8V9F5AJ8WVAOM37Y', 19, 954, 34, 4, 16),
+       ('BT5953MY', 'JK5GSZG4DRKMB747F', 26, 3462, 24, 5, 21),
+       ('EA7487EM', 'GKEH03KFCLQVO66VD', 32, 4978, 11, 5, 19),
+       ('CO3239CH', '60KIUMASJ8HJF6L2J', 33, 1489, 2, 4, 40),
+       ('Y1300EO', '7F7JLVVRCU1JELHEZ', 31, 2607, 5, 4, 12),
+       ('Y4757HO', 'PVHJOKZL68QTA1APP', 34, 1966, 24, 4, 42),
+       ('K2285MY', 'ZVT3HBXTDPIGHQ4KG', 39, 1989, 10, 5, 9),
+       ('PB4905PY', '8BSN9UEM6T85COE7N', 45, 4260, 25, 3, 32),
+       ('XX2050BK', '44UEVAAAUG8LXICFA', 54, 2419, 28, 3, 24),
+       ('BP8372YA', '57FF6OX1ZKNMAL8OY', 61, 2166, 12, 3, 28),
+       ('CO8985KE', 'WDOTBK9MYXC2G2DJR', 59, 1054, 42, 4, 8),
+       ('CB2743YT', 'RN5NZUV0IFNPFM2OC', 60, 539, 2, 3, 27),
+       ('C6363EB', 'B2W37J4SSDQEWL3FU', 64, 4571, 32, 3, 8),
+       ('BH4554TC', '76I0N7OD5G4BK491K', 72, 1338, 15, 2, 36),
+       ('C9116HO', '5XYJ9COOCDN7E7LXV', 73, 1408, 25, 5, 37),
+       ('B5823CP', 'H78CIZSSJYP7SLRCM', 75, 4819, 33, 2, 38),
+       ('CT2853TY', '0S4AAP7KUK6ZGLQGX', 76, 4735, 34, 5, 37),
+       ('M2803AO', '9NYQ1PUKKIB0D10LX', 81, 1792, 11, 4, 30),
+       ('P9874EY', 'ZCPONVDWSZQV5G9XS', 82, 2020, 20, 2, 22),
+       ('XX9746CA', '9SSZX1RPKF9YZ3OU7', 87, 1354, 15, 5, 18),
+       ('CH4549TT', 'RL5WOL9C15L2PTNH6', 99, 4043, 3, 3, 17),
+       ('CO9718MK', 'DXJ0I3AT3MRW61YJZ', 101, 3783, 17, 4, 11),
+       ('XX1688EK', 'C9UDWWM7OO09JE30D', 100, 3056, 7, 2, 11),
+       ('E2856TB', '1OBC3YJ7WQS6BQU7Z', 104, 3281, 37, 4, 42),
+       ('E5897KP', '06J7GE7LWRBLJ9A44', 109, 3390, 26, 5, 16),
+       ('CP1985HT', '496EPE9SVY793LRDS', 110, 3429, 3, 2, 25),
+       ('B4311YK', 'IT1GU3BETYK00C8SX', 111, 2334, 30, 4, 34),
+       ('XX8005XA', '3RIBDC0P44D5SZGIL', 112, 4348, 6, 2, 36),
+       ('EA5841OM', 'MR9P6XD894V7VRGUY', 117, 4172, 17, 3, 34),
+       ('EM4382MO', 'DKRE4K3BSLSREP5JZ', 119, 4140, 27, 5, 35),
+       ('Y7356BP', '3IKBMIUXSXB3FKCF7', 120, 4938, 12, 4, 40),
+       ('Y8094PP', 'QQE62CTZ5YC9BI1Z3', 123, 4775, 9, 3, 32),
+       ('BT4044EM', 'B6VRF3X5NDQ9XB4Q4', 125, 4329, 38, 4, 12),
+       ('XX9095TB', 'SWO4999QR979CD86C', 130, 4504, 11, 5, 23),
+       ('BH2095MK', 'ELY49VSEMNGRBL8TG', 131, 4576, 14, 2, 10),
+       ('B5077XH', '37176XM6NBCGKP45A', 1, 735, 34, 5, 14),
+       ('K4231KK', '0KS9SJVXILIRT0402', 140, 4857, 8, 3, 33),
+       ('A1234PP', 'W8G9KD3L5RT7PN2QX', 127, 4403, 12, 2, 42),
+       ('B5678CT', 'P9C4BX2K8V6NF1J3Z', 58, 4282, 4, 2, 9),
+       ('BT9012HK', 'Q2M5L8W9KR3D6J4TX', 83, 2653, 10, 3, 16),
+       ('BP3456EM', 'F6N3D2P9X1M5G8R7K', 11, 4944, 28, 2, 20),
+       ('BH7890MT', 'Z7J9W5L2B8K3P1C6T', 48, 4797, 17, 5, 34),
+       ('BA1234PK', 'M5R9Q2X8B4C6V7K1J', 65, 2137, 16, 2, 13),
+       ('C5678XX', 'B8K5D7P9X2J1R4M6W', 22, 4722, 7, 5, 42),
+       ('CA9012KT', 'J4C2M5P9R6X7K8N3L', 90, 2547, 11, 4, 39),
+       ('CB3456XY', 'V6P3X9J2K1L8D5R4B', 35, 4446, 1, 3, 41),
+       ('CC7890AE', 'L9F5D7R2C3X8P1K6V', 4, 3135, 33, 3, 14),
+       ('CH1234PB', 'T3P6X8M9B5L2J1K4N', 28, 1246, 10, 3, 29),
+       ('CO5678HH', 'X1K5M9R2L7J4C6V8P', 93, 2924, 35, 5, 37),
+       ('CT9012KK', 'B4J2P9K7X8L1N6R5C', 40, 834, 22, 5, 35),
+       ('CM3456CO', 'D9P3C5L7K2J4X8R6T', 13, 363, 34, 3, 26),
+       ('CP7890EA', 'L8X7J5B9R3K2M1P6C', 66, 1680, 20, 2, 15),
+       ('E1234BT', 'W1M9L5C7K3P2J4R8N', 37, 1073, 42, 2, 42),
+       ('EA5678CM', 'N4P5K7R9X3L2J1C6M', 78, 4941, 20, 3, 15),
+       ('EM9012CP', 'P8K9M2L5C7R4X1J6D', 3, 39, 3, 5, 18),
+       ('H3456TK', 'R6L9P2X8J3B7K1M5C', 50, 753, 14, 5, 38),
+       ('K7890MH', 'K3R5X7J9M2C8L1P4N', 106, 4802, 26, 5, 12),
+       ('KH1234BP', 'C5M3L9K7P4X2J8R1T', 20, 2501, 12, 4, 18),
+       ('M5678CA', 'L4P5B9X3M2K8R1J7N', 68, 4810, 9, 4, 18),
+       ('P9012XX', 'N1J9L7X5R3K2C8P4M', 84, 2117, 42, 4, 10),
+       ('PA3456BB', 'P3X6M7J5L9R4C2K8B', 136, 4657, 42, 4, 23),
+       ('PB7890EK', 'V2X8K7P5M3J9R1L4C', 30, 1908, 12, 2, 12),
+       ('PK1234KH', 'M9K5J4C2X8R7P1L3N', 6, 3006, 17, 5, 17),
+       ('PP5678PP', 'K7P2X5L9M8J3R1C4B', 67, 3927, 22, 4, 31),
+       ('T9012XY', 'C8L5J9X2K7R4M3P1T', 9, 654, 25, 4, 10),
+       ('X3456CE', 'J3P9R7K5M4C2X8L1B', 53, 2232, 5, 5, 28),
+       ('XX7890TA', 'R4M5L9J7X2K3C8P1N', 46, 3781, 16, 5, 33),
+       ('Y1234KO', 'K8J5P9M2L3C4R7X1T', 114, 3690, 42, 3, 41),
+       ('A5678MK', 'T6L9X5P3R2K7M4J1C', 1, 45, 28, 4, 34),
+       ('B9012PH', 'N8J5L9K3C7P2X1R4M', 85, 2257, 8, 5, 13),
+       ('BT3456AK', 'X3L9P5R7M2J8K1C4T', 25, 4986, 7, 2, 10),
+       ('BP7890HY', 'P7M5K9X2J3R1C4L8N', 107, 3293, 3, 2, 29),
+       ('BH1234EB', 'C1R7K9P5L3X2J8M4T', 56, 4475, 25, 4, 20),
+       ('BA5678MA', 'K9J7X3L5R2M4P8C1N', 15, 4921, 39, 4, 28),
+       ('C9012TE', 'R5P2K7X9M3C4L1J8T', 108, 3385, 8, 4, 24),
+       ('CA3456CH', 'L3P5K7X9J4M1C2R8B', 88, 2057, 8, 5, 18),
+       ('CB7890ME', 'M7L9P5J3K2C4X1R8T', 12, 3948, 4, 3, 25);
 
 
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-08-08', 27, 2, 34, 'IN_PROGRESS', '2024-01-31', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-04-22', 27, 3, 36, 'IN_PROGRESS', '2024-01-04', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-01-18', 11, 4, 11, 'NOT_STARTED', '2024-04-17', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-10-14', 19, 5, 22, 'NOT_STARTED', '2023-10-23', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-01-28', 33, 2, 5, 'NOT_STARTED', '2024-04-12', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-11-22', 6, 3, 11, 'IN_PROGRESS', '2024-06-05', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-01-04', 9, 4, 16, 'READY_FOR_PICKUP', '2024-07-20', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-02-12', 12, 5, 37, 'READY_FOR_PICKUP', '2024-02-12', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-10-08', 18, 2, 36, 'NOT_STARTED', '2024-01-27', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-05-09', 4, 3, 16, 'IN_PROGRESS', '2024-03-06', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-09-12', 12, 4, 10, 'IN_PROGRESS', '2023-12-13', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2023-09-19', 25, 5, 30, 'NOT_STARTED', '2023-10-10', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-10-31', 33, 3, 13, 'READY_FOR_PICKUP', '2024-06-30', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-09-16', 29, 2, 40, 'IN_PROGRESS', '2024-02-01', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-01-11', 22, 4, 10, 'IN_PROGRESS', '2024-01-19', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-08-18', 32, 5, 6, 'READY_FOR_PICKUP', '2023-12-16', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-01-24', 20, 2, 21, 'NOT_STARTED', '2024-05-21', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-02-13', 21, 3, 28, 'NOT_STARTED', '2023-10-29', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-02-13', 14, 4, 16, 'READY_FOR_PICKUP', '2024-09-09', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-09-12', 30, 5, 29, 'NOT_STARTED', '2024-04-25', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-05-08', 14, 2, 39, 'READY_FOR_PICKUP', '2024-02-29', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-12-14', 27, 3, 22, 'IN_PROGRESS', '2024-01-10', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-04-20', 13, 4, 21, 'READY_FOR_PICKUP', '2024-05-10', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2023-10-15', 13, 5, 24, 'NOT_STARTED', '2024-02-18', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-12-01', 40, 2, 7, 'READY_FOR_PICKUP', '2024-01-12', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-02-17', 37, 3, 14, 'NOT_STARTED', '2024-04-21', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-04-29', 17, 4, 29, 'NOT_STARTED', '2024-07-13', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-07-31', 22, 5, 2, 'IN_PROGRESS', '2024-05-22', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-04-16', 26, 2, 17, 'IN_PROGRESS', '2024-01-07', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-02-16', 24, 3, 21, 'IN_PROGRESS', '2024-03-22', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-11-18', 27, 4, 16, 'IN_PROGRESS', '2024-09-04', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-08-13', 24, 5, 19, 'READY_FOR_PICKUP', '2024-04-15', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2023-10-16', 26, 2, 25, 'IN_PROGRESS', '2024-01-05', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2023-11-10', 36, 3, 30, 'NOT_STARTED', '2024-07-26', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-06-14', 7, 4, 38, 'IN_PROGRESS', '2023-12-02', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2023-12-01', 29, 5, 19, 'READY_FOR_PICKUP', '2024-09-10', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-01-21', 40, 2, 25, 'NOT_STARTED', '2024-03-24', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2024-12-12', 7, 3, 26, 'IN_PROGRESS', '2024-04-11', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-01-31', 35, 4, 16, 'NOT_STARTED', '2024-01-11', CURRENT_TIMESTAMP);;
-INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on, updated_on)
-VALUES ('2025-05-21', 23, 5, 16, 'NOT_STARTED', '2024-07-06', CURRENT_TIMESTAMP);;
 
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (31, 8, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (18, 15, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (17, 7, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (33, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (40, 8, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (25, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (24, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (24, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (39, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (16, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (27, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (26, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (35, 16, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (26, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (22, 16, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (34, 16, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (1, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (37, 9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (4, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (29, 9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (36, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (35, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (24, 15, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (18, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (38, 13, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (29, 18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (28, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (1, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (17, 7, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (12, 18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (1, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (36, 8, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (21, 16, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (11, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (37, 9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (36, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (21, 15, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (6, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (3, 15, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
-INSERT INTO services (visit_id, service_type_id, added_on, updated_on)
-VALUES (17, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);;
+INSERT INTO visits (schedule_date, customer_id, employee_id, vehicle_id, status, booked_on)
+VALUES ('2024-09-29', 38, 2, 1, 'NOT_STARTED', '2024-09-16'),
+       ('2024-10-05', 30, 4, 2, 'NOT_STARTED', '2024-09-14'),
+       ('2024-08-23', 24, 5, 3, 'READY_FOR_PICKUP', '2024-08-18'),
+       ('2024-08-20', 16, 4, 4, 'READY_FOR_PICKUP', '2024-08-19'),
+       ('2024-10-11', 21, 5, 5, 'NOT_STARTED', '2024-09-15'),
+       ('2024-10-03', 19, 5, 6, 'NOT_STARTED', '2024-09-14'),
+       ('2024-08-26', 40, 4, 7, 'READY_FOR_PICKUP', '2024-08-25'),
+       ('2024-10-08', 12, 4, 8, 'NOT_STARTED', '2024-09-17'),
+       ('2024-08-28', 42, 4, 9, 'READY_FOR_PICKUP', '2024-08-24'),
+       ('2024-10-14', 9, 5, 10, 'NOT_STARTED', '2024-09-17'),
+       ('2024-08-23', 32, 3, 11, 'READY_FOR_PICKUP', '2024-08-21'),
+       ('2024-09-14', 24, 3, 12, 'READY_FOR_PICKUP', '2024-09-11'),
+       ('2024-09-30', 28, 3, 13, 'NOT_STARTED', '2024-09-15'),
+       ('2024-10-13', 8, 4, 14, 'NOT_STARTED', '2024-09-15'),
+       ('2024-10-10', 27, 3, 15, 'NOT_STARTED', '2024-09-16'),
+       ('2024-09-24', 8, 3, 16, 'NOT_STARTED', '2024-09-16'),
+       ('2024-09-22', 36, 2, 17, 'NOT_STARTED', '2024-09-16'),
+       ('2024-09-01', 37, 5, 18, 'READY_FOR_PICKUP', '2024-08-28'),
+       ('2024-09-13', 38, 2, 19, 'READY_FOR_PICKUP', '2024-09-12'),
+       ('2024-10-02', 37, 5, 20, 'NOT_STARTED', '2024-09-16'),
+       ('2024-10-11', 30, 4, 21, 'NOT_STARTED', '2024-09-14'),
+       ('2024-08-24', 22, 2, 22, 'READY_FOR_PICKUP', '2024-08-23'),
+       ('2024-08-22', 18, 5, 23, 'READY_FOR_PICKUP', '2024-08-18'),
+       ('2024-08-28', 17, 3, 24, 'READY_FOR_PICKUP', '2024-08-24'),
+       ('2024-09-22', 11, 4, 25, 'NOT_STARTED', '2024-09-15'),
+       ('2024-09-02', 11, 2, 26, 'READY_FOR_PICKUP', '2024-08-29'),
+       ('2024-09-21', 42, 4, 27, 'NOT_STARTED', '2024-09-15'),
+       ('2024-08-24', 16, 5, 28, 'READY_FOR_PICKUP', '2024-08-19'),
+       ('2024-09-01', 25, 2, 29, 'READY_FOR_PICKUP', '2024-08-29'),
+       ('2024-10-11', 34, 4, 30, 'NOT_STARTED', '2024-09-17'),
+       ('2024-09-04', 36, 2, 31, 'READY_FOR_PICKUP', '2024-09-01'),
+       ('2024-10-11', 34, 3, 32, 'NOT_STARTED', '2024-09-14'),
+       ('2024-09-23', 35, 5, 33, 'NOT_STARTED', '2024-09-16'),
+       ('2024-09-10', 40, 4, 34, 'READY_FOR_PICKUP', '2024-09-05'),
+       ('2024-08-26', 32, 3, 35, 'READY_FOR_PICKUP', '2024-08-21'),
+       ('2024-09-06', 12, 4, 36, 'READY_FOR_PICKUP', '2024-09-01'),
+       ('2024-09-14', 23, 5, 37, 'READY_FOR_PICKUP', '2024-09-12'),
+       ('2024-09-07', 10, 2, 38, 'READY_FOR_PICKUP', '2024-09-04'),
+       ('2024-09-06', 14, 5, 39, 'READY_FOR_PICKUP', '2024-09-03'),
+       ('2024-09-29', 33, 3, 40, 'NOT_STARTED', '2024-09-17'),
+       ('2024-09-24', 42, 2, 41, 'NOT_STARTED', '2024-09-16'),
+       ('2024-08-31', 9, 2, 42, 'READY_FOR_PICKUP', '2024-08-30'),
+       ('2024-09-22', 16, 3, 43, 'NOT_STARTED', '2024-09-16'),
+       ('2024-09-01', 20, 2, 44, 'READY_FOR_PICKUP', '2024-08-30'),
+       ('2024-10-18', 34, 5, 45, 'NOT_STARTED', '2024-09-14'),
+       ('2024-10-12', 13, 2, 46, 'NOT_STARTED', '2024-09-17'),
+       ('2024-09-30', 42, 5, 47, 'NOT_STARTED', '2024-09-16'),
+       ('2024-08-21', 39, 4, 48, 'READY_FOR_PICKUP', '2024-08-20'),
+       ('2024-09-29', 41, 3, 49, 'NOT_STARTED', '2024-09-14'),
+       ('2024-09-09', 14, 3, 50, 'READY_FOR_PICKUP', '2024-09-04'),
+       ('2024-10-12', 29, 3, 51, 'NOT_STARTED', '2024-09-17'),
+       ('2024-09-29', 37, 5, 52, 'NOT_STARTED', '2024-09-16'),
+       ('2024-08-29', 35, 5, 53, 'READY_FOR_PICKUP', '2024-08-28'),
+       ('2024-10-05', 26, 3, 54, 'NOT_STARTED', '2024-09-17'),
+       ('2024-08-24', 15, 2, 55, 'READY_FOR_PICKUP', '2024-08-19'),
+       ('2024-09-19', 42, 2, 56, 'NOT_STARTED', '2024-09-13'),
+       ('2024-09-08', 15, 3, 57, 'READY_FOR_PICKUP', '2024-09-03'),
+       ('2024-09-03', 18, 5, 58, 'READY_FOR_PICKUP', '2024-08-30'),
+       ('2024-09-10', 38, 5, 59, 'READY_FOR_PICKUP', '2024-09-08'),
+       ('2024-08-28', 12, 5, 60, 'READY_FOR_PICKUP', '2024-08-27'),
+       ('2024-10-14', 18, 4, 61, 'NOT_STARTED', '2024-09-15'),
+       ('2024-09-04', 18, 4, 62, 'READY_FOR_PICKUP', '2024-09-02'),
+       ('2024-08-26', 10, 4, 63, 'READY_FOR_PICKUP', '2024-08-25'),
+       ('2024-09-17', 23, 4, 64, 'IN_PROGRESS', '2024-09-14'),
+       ('2024-09-10', 12, 2, 65, 'READY_FOR_PICKUP', '2024-09-06'),
+       ('2024-09-03', 17, 5, 66, 'READY_FOR_PICKUP', '2024-09-02'),
+       ('2024-09-26', 31, 4, 67, 'NOT_STARTED', '2024-09-14'),
+       ('2024-09-24', 10, 4, 68, 'NOT_STARTED', '2024-09-16'),
+       ('2024-09-15', 28, 5, 69, 'IN_PROGRESS', '2024-09-14'),
+       ('2024-09-03', 33, 5, 70, 'READY_FOR_PICKUP', '2024-08-29'),
+       ('2024-09-03', 41, 3, 71, 'READY_FOR_PICKUP', '2024-08-29'),
+       ('2024-09-13', 34, 4, 72, 'READY_FOR_PICKUP', '2024-09-08'),
+       ('2024-08-29', 13, 5, 73, 'READY_FOR_PICKUP', '2024-08-25'),
+       ('2024-09-28', 10, 2, 74, 'NOT_STARTED', '2024-09-17'),
+       ('2024-10-09', 29, 2, 75, 'NOT_STARTED', '2024-09-15'),
+       ('2024-09-08', 20, 4, 76, 'READY_FOR_PICKUP', '2024-09-07'),
+       ('2024-10-17', 28, 4, 77, 'NOT_STARTED', '2024-09-13'),
+       ('2024-10-16', 24, 4, 78, 'NOT_STARTED', '2024-09-17'),
+       ('2024-09-12', 18, 5, 79, 'READY_FOR_PICKUP', '2024-09-11'),
+       ('2024-08-28', 25, 3, 80, 'READY_FOR_PICKUP', '2024-08-24');
+
+INSERT INTO services (visit_id, service_type_id)
+VALUES (1, 8),
+       (1, 7),
+       (1, 18),
+       (1, 13),
+       (2, 6),
+       (2, 4),
+       (2, 9),
+       (3, 4),
+       (3, 3),
+       (3, 16),
+       (3, 9),
+       (4, 18),
+       (4, 4),
+       (4, 14),
+       (5, 9),
+       (5, 10),
+       (5, 12),
+       (5, 18),
+       (6, 18),
+       (6, 6),
+       (6, 14),
+       (7, 2),
+       (7, 11),
+       (8, 17),
+       (8, 10),
+       (8, 5),
+       (9, 2),
+       (9, 8),
+       (9, 7),
+       (9, 12),
+       (10, 13),
+       (10, 14),
+       (10, 15),
+       (11, 2),
+       (11, 15),
+       (12, 1),
+       (12, 6),
+       (12, 3),
+       (13, 11),
+       (13, 18),
+       (13, 17),
+       (13, 8),
+       (14, 12),
+       (14, 1),
+       (14, 16),
+       (15, 8),
+       (15, 3),
+       (15, 15),
+       (15, 6),
+       (16, 18),
+       (16, 3),
+       (16, 16),
+       (17, 2),
+       (17, 7),
+       (17, 10),
+       (17, 14),
+       (18, 7),
+       (18, 10),
+       (18, 18),
+       (18, 8),
+       (19, 3),
+       (19, 15),
+       (19, 6),
+       (19, 10),
+       (20, 14),
+       (20, 3),
+       (21, 5),
+       (21, 1),
+       (21, 14),
+       (22, 13),
+       (22, 1),
+       (22, 11),
+       (23, 14),
+       (23, 8),
+       (24, 17),
+       (24, 4),
+       (24, 3),
+       (24, 16),
+       (25, 1),
+       (25, 9),
+       (25, 16),
+       (25, 11),
+       (26, 16),
+       (26, 3),
+       (27, 4),
+       (27, 16),
+       (28, 16),
+       (28, 8),
+       (28, 9),
+       (29, 17),
+       (29, 16),
+       (29, 18),
+       (29, 13),
+       (30, 14),
+       (30, 9),
+       (30, 18),
+       (30, 1),
+       (31, 8),
+       (31, 4),
+       (32, 18),
+       (32, 13),
+       (32, 6),
+       (33, 4),
+       (33, 5),
+       (33, 6),
+       (34, 4),
+       (34, 12),
+       (34, 3),
+       (35, 10),
+       (35, 14),
+       (35, 16),
+       (36, 12),
+       (36, 2),
+       (36, 4),
+       (37, 16),
+       (37, 1),
+       (37, 2),
+       (38, 9),
+       (38, 10),
+       (39, 10),
+       (39, 18),
+       (39, 12),
+       (39, 9),
+       (40, 1),
+       (40, 15),
+       (40, 10),
+       (40, 9),
+       (41, 10),
+       (41, 6),
+       (41, 11),
+       (41, 13),
+       (42, 6),
+       (42, 5),
+       (43, 4),
+       (43, 10),
+       (43, 7),
+       (43, 5),
+       (44, 8),
+       (44, 18),
+       (44, 9),
+       (45, 17),
+       (45, 15),
+       (45, 6),
+       (46, 18),
+       (46, 7),
+       (46, 17),
+       (46, 15),
+       (47, 10),
+       (47, 1),
+       (48, 8),
+       (48, 18),
+       (48, 15),
+       (48, 12),
+       (49, 8),
+       (49, 9),
+       (49, 6),
+       (49, 18),
+       (50, 7),
+       (50, 6),
+       (51, 6),
+       (51, 16),
+       (51, 12),
+       (52, 16),
+       (52, 15),
+       (52, 6),
+       (52, 9),
+       (53, 6),
+       (53, 3),
+       (53, 11),
+       (54, 9),
+       (54, 2),
+       (54, 16),
+       (55, 16),
+       (55, 10),
+       (56, 2),
+       (56, 3),
+       (56, 1),
+       (56, 18),
+       (57, 10),
+       (57, 16),
+       (57, 9),
+       (57, 6),
+       (58, 16),
+       (58, 15),
+       (58, 17),
+       (58, 3),
+       (59, 16),
+       (59, 9),
+       (59, 11),
+       (59, 15),
+       (60, 4),
+       (60, 3),
+       (60, 8),
+       (60, 18),
+       (61, 15),
+       (61, 7),
+       (62, 3),
+       (62, 16),
+       (62, 7),
+       (62, 14),
+       (63, 9),
+       (63, 18),
+       (64, 3),
+       (64, 7),
+       (64, 10),
+       (65, 6),
+       (65, 1),
+       (65, 16),
+       (65, 7),
+       (66, 4),
+       (66, 3),
+       (67, 2),
+       (67, 13),
+       (67, 18),
+       (68, 11),
+       (68, 3),
+       (68, 12),
+       (69, 10),
+       (69, 12),
+       (69, 7),
+       (70, 11),
+       (70, 15),
+       (71, 8),
+       (71, 10),
+       (72, 10),
+       (72, 12),
+       (73, 8),
+       (73, 18),
+       (73, 4),
+       (73, 5),
+       (74, 6),
+       (74, 17),
+       (75, 7),
+       (75, 1),
+       (76, 3),
+       (76, 14),
+       (76, 8),
+       (76, 5),
+       (77, 3),
+       (77, 9),
+       (77, 15),
+       (78, 18),
+       (78, 1),
+       (78, 5),
+       (78, 2),
+       (79, 17),
+       (79, 13),
+       (79, 4),
+       (80, 6),
+       (80, 1)
+;
 
 
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 13', CURRENT_TIMESTAMP, 13);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 6', CURRENT_TIMESTAMP, 6);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 9', CURRENT_TIMESTAMP, 9);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 7', CURRENT_TIMESTAMP, 7);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 1', CURRENT_TIMESTAMP, 1);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 15', CURRENT_TIMESTAMP, 15);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 7', CURRENT_TIMESTAMP, 7);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 9', CURRENT_TIMESTAMP, 9);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 11', CURRENT_TIMESTAMP, 11);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 22', CURRENT_TIMESTAMP, 22);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 16', CURRENT_TIMESTAMP, 16);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 6', CURRENT_TIMESTAMP, 6);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 16', CURRENT_TIMESTAMP, 16);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 1', CURRENT_TIMESTAMP, 1);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 9', CURRENT_TIMESTAMP, 9);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 2', CURRENT_TIMESTAMP, 2);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 33', CURRENT_TIMESTAMP, 33);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 34', CURRENT_TIMESTAMP, 34);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 16', CURRENT_TIMESTAMP, 16);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 28', CURRENT_TIMESTAMP, 28);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 38', CURRENT_TIMESTAMP, 38);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 31', CURRENT_TIMESTAMP, 31);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 8', CURRENT_TIMESTAMP, 8);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 24', CURRENT_TIMESTAMP, 24);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 24', CURRENT_TIMESTAMP, 24);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 14', CURRENT_TIMESTAMP, 14);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 32', CURRENT_TIMESTAMP, 32);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 26', CURRENT_TIMESTAMP, 26);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 27', CURRENT_TIMESTAMP, 27);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 1', CURRENT_TIMESTAMP, 1);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 1', CURRENT_TIMESTAMP, 1);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 4', CURRENT_TIMESTAMP, 4);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 35', CURRENT_TIMESTAMP, 35);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 1', CURRENT_TIMESTAMP, 1);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 39', CURRENT_TIMESTAMP, 39);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 10', CURRENT_TIMESTAMP, 10);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 10', CURRENT_TIMESTAMP, 10);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 4', CURRENT_TIMESTAMP, 4);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 8', CURRENT_TIMESTAMP, 8);;
-INSERT INTO logs (description, timestamp, visit_id)
-VALUES ('Log entry for visit 29', CURRENT_TIMESTAMP, 29);;
+INSERT INTO logs (description, visit_id)
+VALUES ('Visit booked', 1),
+       ('Service added', 1),
+       ('Technician assigned', 1),
+       ('Visit confirmed', 2),
+       ('Service added', 2),
+       ('Visit rescheduled', 3),
+       ('Visit booked', 3),
+       ('Service completed', 4),
+       ('Technician assigned', 4),
+       ('Service added', 5),
+       ('Visit booked', 5),
+       ('Visit confirmed', 6),
+       ('Service in progress', 6),
+       ('Visit completed', 7),
+       ('Service added', 7),
+       ('Technician assigned', 8),
+       ('Service in progress', 8),
+       ('Visit rescheduled', 9),
+       ('Service completed', 9),
+       ('Visit confirmed', 10),
+       ('Technician assigned', 10),
+       ('Service added', 11),
+       ('Visit completed', 11),
+       ('Visit booked', 12),
+       ('Service completed', 12),
+       ('Technician assigned', 13),
+       ('Service added', 13),
+       ('Visit confirmed', 14),
+       ('Visit rescheduled', 14),
+       ('Visit booked', 15),
+       ('Service added', 15),
+       ('Technician assigned', 16),
+       ('Service in progress', 16),
+       ('Visit completed', 17),
+       ('Service added', 17),
+       ('Visit booked', 18),
+       ('Service added', 18),
+       ('Technician assigned', 19),
+       ('Service completed', 19),
+       ('Visit confirmed', 20),
+       ('Service in progress', 20),
+       ('Visit booked', 21),
+       ('Service added', 21),
+       ('Technician assigned', 22),
+       ('Visit completed', 22),
+       ('Service in progress', 23),
+       ('Service added', 23),
+       ('Visit booked', 24),
+       ('Visit rescheduled', 24),
+       ('Technician assigned', 25),
+       ('Service in progress', 25),
+       ('Visit confirmed', 26),
+       ('Service completed', 26),
+       ('Visit booked', 27),
+       ('Service added', 27),
+       ('Technician assigned', 28),
+       ('Service in progress', 28),
+       ('Visit confirmed', 29),
+       ('Visit booked', 29),
+       ('Service completed', 30),
+       ('Service added', 30),
+       ('Technician assigned', 31),
+       ('Service in progress', 31),
+       ('Visit booked', 32),
+       ('Visit rescheduled', 32),
+       ('Technician assigned', 33),
+       ('Service added', 33),
+       ('Visit completed', 34),
+       ('Service in progress', 34),
+       ('Visit booked', 35),
+       ('Technician assigned', 35),
+       ('Service added', 36),
+       ('Visit completed', 36),
+       ('Visit confirmed', 37),
+       ('Service in progress', 37),
+       ('Technician assigned', 38),
+       ('Service completed', 38),
+       ('Visit rescheduled', 39),
+       ('Service added', 39),
+       ('Visit booked', 40),
+       ('Technician assigned', 40),
+       ('Service in progress', 41),
+       ('Visit completed', 41),
+       ('Visit booked', 42),
+       ('Service added', 42),
+       ('Technician assigned', 43),
+       ('Service completed', 43),
+       ('Visit confirmed', 44),
+       ('Service in progress', 44),
+       ('Visit rescheduled', 45),
+       ('Service added', 45),
+       ('Technician assigned', 46),
+       ('Service completed', 46),
+       ('Visit booked', 47),
+       ('Service added', 47),
+       ('Technician assigned', 48),
+       ('Visit rescheduled', 48),
+       ('Service added', 49),
+       ('Technician assigned', 49),
+       ('Visit completed', 50),
+       ('Service in progress', 50),
+       ('Visit booked', 51),
+       ('Service added', 51),
+       ('Technician assigned', 52),
+       ('Visit confirmed', 52),
+       ('Service completed', 53),
+       ('Service added', 53),
+       ('Visit booked', 54),
+       ('Technician assigned', 54),
+       ('Visit completed', 55),
+       ('Service in progress', 55),
+       ('Visit rescheduled', 56),
+       ('Service added', 56),
+       ('Technician assigned', 57),
+       ('Service completed', 57),
+       ('Visit confirmed', 58),
+       ('Visit booked', 58),
+       ('Service added', 59),
+       ('Service in progress', 59),
+       ('Technician assigned', 60),
+       ('Visit rescheduled', 60),
+       ('Service added', 61),
+       ('Visit completed', 61),
+       ('Technician assigned', 62),
+       ('Service in progress', 62),
+       ('Visit confirmed', 63),
+       ('Service added', 63),
+       ('Technician assigned', 64),
+       ('Service completed', 64),
+       ('Visit booked', 65),
+       ('Service added', 65),
+       ('Technician assigned', 66),
+       ('Service completed', 66),
+       ('Visit confirmed', 67),
+       ('Service in progress', 67),
+       ('Technician assigned', 68),
+       ('Service added', 68),
+       ('Visit completed', 69),
+       ('Visit booked', 69),
+       ('Service in progress', 70),
+       ('Technician assigned', 70),
+       ('Visit rescheduled', 71),
+       ('Service added', 71),
+       ('Visit completed', 72),
+       ('Service in progress', 72),
+       ('Technician assigned', 73),
+       ('Service completed', 73),
+       ('Visit booked', 74),
+       ('Service added', 74),
+       ('Visit confirmed', 75),
+       ('Technician assigned', 75),
+       ('Service in progress', 76),
+       ('Service added', 76),
+       ('Technician assigned', 77),
+       ('Service completed', 77),
+       ('Visit booked', 78),
+       ('Visit rescheduled', 78),
+       ('Service added', 79),
+       ('Technician assigned', 79),
+       ('Service completed', 80),
+       ('Service in progress', 80);

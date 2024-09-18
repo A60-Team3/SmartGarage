@@ -34,7 +34,7 @@
                 <div class="col-12 col-sm-6">
                     <h5><label for="client-input" class="text-dark">Client Id</label></h5>
                     <input class="form-control border-0" list="clients" id="client-input" oninput="filterVehicles()"
-                           placeholder="Client" th:name="customerId" style="height: 55px;">
+                           placeholder="Client" th:name="customerId" style="height: 55px;" autocomplete="off">
                     <label class="label-error" th:errors="*{customerId}">Customer error placeholder</label>
                     <datalist id="clients">
                         <option selected>Client</option>

@@ -153,7 +153,20 @@ public class VehicleMvcController {
     @GetMapping("/vehicles/{vehicleId}")
     public String showSingleVehiclePage(Model model, @PathVariable Long vehicleId) {
 
-        Vehicle vehicle = vehicleService.getById(vehicleId);
+        Vehicle vehicle;
+        try {
+            vehicle = vehicleService.getById(vehicleId);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.CONFLICT.getReasonPhrase());
+            model.addAttribute("error", "Client Car has been scraped");
+            return "error-page";
+        }
+
+        if (vehicle.isDeleted()) {
+            model.addAttribute("statusCode", HttpStatus.CONFLICT.getReasonPhrase());
+            model.addAttribute("error", "Client Car has been scraped");
+            return "error-page";
+        }
         VehicleOutDTO dto = vehicleMapper.toDTO(vehicle);
 
         VisitFilterOptions visitFilterOptions =

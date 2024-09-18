@@ -63,33 +63,6 @@ public class VehicleAPIServiceImpl implements VehicleAPIService {
         List<VehiclesRequestDto> vehicles = getVehicles();
 
         saveVehiclesToDatabase(vehicles);
-
-
-//        URL url = new URL(API_URL);
-//
-//        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-//        request.connect();
-//
-//        JsonElement root = JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
-//        if (root.isJsonArray()) {
-//            JsonArray jsonArray = root.getAsJsonArray();
-//            for (JsonElement jsonElement : jsonArray) {
-//                JsonObject object = jsonElement.getAsJsonObject();
-//
-//                String make = object.get("make").getAsString();
-//                VehicleBrand brandName = vehicleBrandService.getByName(make);
-//
-//                int year = object.get("year").getAsInt();
-//                VehicleYear productionYear = vehicleYearService.getByYear(year);
-//
-//                String model = object.get("model").getAsString();
-//                VehicleModel vehicleModel = vehicleModelService.getByName(model);
-//                vehicleModel.setBrand(brandName);
-//                vehicleModel.getYears().add(productionYear);
-//
-//                vehicleModelService.save(vehicleModel);
-//            }
-//        }
     }
 
     private void saveVehiclesToDatabase(List<VehiclesRequestDto> vehicles) {
@@ -124,7 +97,6 @@ public class VehicleAPIServiceImpl implements VehicleAPIService {
                 .queryParam("select", "make,model,year")
                 .queryParam("limit", "-1")
                 .build().encode().toUri();
-
 
         return carApiClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });

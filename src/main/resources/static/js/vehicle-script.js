@@ -17,7 +17,9 @@ function confirmDelete() {
         },
         success: function (response) {
             showAlert('Vehicle scraped successfully', 'success');
-            location.reload();  // Reload the page to update the table
+            setTimeout(() => {
+                location.href = "/garage/vehicles";  // Reload the page to update the table
+            }, 3000);
         },
         error: function (response) {
             showAlert('Error: ' + response.responseText, 'danger');
