@@ -100,7 +100,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserEntity registerEmployee(UserEntity employee, HttpServletRequest request) {
-        //TODO implement email validation email for employees (ValidationToken, tokenDeleteScheduler)
 
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
