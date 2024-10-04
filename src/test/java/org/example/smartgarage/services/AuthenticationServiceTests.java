@@ -140,6 +140,29 @@ public class AuthenticationServiceTests {
     }
 
     @Test
+    public void registerCustomer_Should_Return_RegisteredCustomerSingleRole() {
+        UserEntity mockCustomer = CreationHelper.createMockCustomer();
+        mockCustomer.setRoles(null);
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+
+        Mockito.when(passwordEncoder.encode(Mockito.anyString()))
+                .thenReturn(mockCustomer.getPassword());
+        Mockito.when(roleService.findByAuthority(Mockito.any(UserRole.class)))
+                .thenReturn(new Role(UserRole.CUSTOMER));
+        Mockito.when(userService.saveUser(Mockito.any(UserEntity.class)))
+                .thenReturn(mockCustomer);
+
+        UserEntity user = authenticationService.registerCustomer(mockCustomer, request);
+
+        Assertions.assertEquals(mockCustomer, user);
+
+        Mockito.verify(eventPublisher, Mockito.times(1))
+                .publishEvent(Mockito.any(CustomerRegistrationEvent.class));
+        Mockito.verify(userService, Mockito.times(1))
+                .saveUser(Mockito.any(UserEntity.class));
+    }
+
+    @Test
     public void registerEmployee_Should_Return_RegisteredHR_When_NoOtherEmployees() {
         UserEntity mockEmployee = CreationHelper.createMockUser();
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);

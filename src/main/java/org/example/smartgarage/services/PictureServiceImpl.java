@@ -53,7 +53,7 @@ public class PictureServiceImpl implements PictureService {
                 .orElse(null);
 
         if (profilePicture != null) {
-//            pictureRepository.deletePhoto(profilePicture);
+            pictureRepository.delete(profilePicture);
         } else {
             throw new EntityNotFoundException(
                     "Picture",

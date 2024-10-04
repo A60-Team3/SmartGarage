@@ -127,4 +127,8 @@ public class CreationHelper {
 
         return log;
     }
+
+    public static ProfilePicture createMockProfilePicture() {
+        return new ProfilePicture("http:/testMockTest.org/avatar.jpg");
+    }
 }

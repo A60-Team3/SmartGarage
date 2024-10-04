@@ -2,7 +2,6 @@ package org.example.smartgarage.services;
 
 import org.example.smartgarage.helpers.CreationHelper;
 import org.example.smartgarage.models.EventLog;
-import org.example.smartgarage.models.VehicleModel;
 import org.example.smartgarage.repositories.contracts.HistoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
